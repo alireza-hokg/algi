@@ -28,18 +28,10 @@ const Product = sequelize.define('Product', {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    base_price: {
+    price: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    discount_percentage: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
-    sku: {
-        type: DataTypes.STRING,
-        allowNull: true
-    }
 }, {
     timestamps: true,
     tableName: "products"

@@ -2,22 +2,12 @@ import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
 import Product from "./products.js";
 
-const ProductVariant = sequelize.define("product-variants", {
+const ProductVariant = sequelize.define("ProductVariants", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
-    },
-    product_id: {
-        type: DataTypes.INTEGER,
-        index: true,
-        references: {
-            model: "products",
-            key: "id"
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE"
     },
     size: {
         type: DataTypes.INTEGER,
@@ -31,17 +21,23 @@ const ProductVariant = sequelize.define("product-variants", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    price: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     image_url: {
         type: DataTypes.TEXT,
         allowNull: true
     }
 }, {
     timestamps: true,
-    tableName: "product-variants"
+    tableName: "product_variants"
+})
+
+Product.hasMany(ProductVariant, {
+    foreignKey: {
+        name: "fk_product_id_idx",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        allowNull: false
+    },
+    sourceKey: "id",
 })
 
 export default ProductVariant;

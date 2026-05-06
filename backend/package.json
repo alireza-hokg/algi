@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sequelize/core": "^7.0.0-alpha.27",
+    "@sequelize/core": "^7.0.0-alpha.48",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

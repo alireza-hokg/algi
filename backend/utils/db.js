@@ -8,7 +8,8 @@ const sequelize = new Sequelize({
     database: DB_NAME,
     password: DB_PASS,
     dialect: DB_DIALECT,
-    port: DB_PORT || 3306
+    port: DB_PORT || 3306,
+    logging: console.log
 })
 
 try {
