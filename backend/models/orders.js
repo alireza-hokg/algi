@@ -1,6 +1,6 @@
-import sequelize from "../utils/db";
+import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
-import User from "./users";
+import User from "./users.js";
 
 const Order = sequelize.define("Orders", {
     id: {
@@ -49,6 +49,7 @@ User.hasOne(Order, {
         name: "fk_user_id_idx",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
+        allowNull: false
     },
     sourceKey: "id"
 });

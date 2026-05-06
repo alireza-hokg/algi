@@ -8,6 +8,7 @@ import ProductVariantsRoutes from "./routes/product-variants.js";
 
 import User from "./models/users.js";
 import ProductVariant from "./models/product-variants.js"
+import Order from "./models/orders.js";
 
 const { SERVER_PORT = 9000 } = process.env;
 const app = express();
