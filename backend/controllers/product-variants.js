@@ -1,11 +1,28 @@
-import ProductVariant from "../models/products.js";
+import Product from "../models/products.js";
+import ProductVariant from "../models/product-variants.js";
 
 
 export default class ProductVariantController {
     // Get all product-variants
-    static async getProductVariants(req, res) {
+    static async getPV(req, res) {
+        let { productId } = req.params
+        console.log(productId)
+
+        const product = await Product.findByPk(productId)
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                body: null,
+                message: "Product not found."
+            })
+        }
         try {
-            const result = await ProductVariant.findAndCountAll();
+            const result = await ProductVariant.findAndCountAll({
+                where: {
+                    product_id: productId
+                }
+            });
+            console.log(result.rows)
             return res.status(200).json({
                 success: true,
                 body: result.rows,
@@ -21,22 +38,29 @@ export default class ProductVariantController {
     }
 
     // Get Product-variant by id 
-    static async getProductVariantsById(req, res) {
-        let { id } = req.params;
-        id = Number(id);
-        if (id !== parseInt(id)) {
-            return res.json({
+    static async getPVByProductId(req, res) {
+        let { productId } = req.params
+        console.log(productId)
+
+        const product = await Product.findByPk(productId)
+        if (!product) {
+            return res.status(404).json({
                 success: false,
                 body: null,
-                message: "id must be integer."
+                message: "Product not found."
             })
         }
         try {
-            const result = await ProductVariant.findByPk(id);
-            return res.json({
+            const result = await ProductVariant.findAndCountAll({
+                where: {
+                    product_id: productId
+                }
+            });
+            console.log(result.rows)
+            return res.status(200).json({
                 success: true,
                 body: result.rows,
-                message: "Product-variant fetched successfully"
+                message: "Product-variants fetched successfully"
             })
         } catch(err) {
             res.json({
@@ -48,13 +72,24 @@ export default class ProductVariantController {
     }
 
     // Create product-variant
-    static async createProductVariant(req, res) {
-        const { product_id, size, color, quantity, price, image_url } = req.body;
-        if (product_id, size, color, quantity, price) {
+    static async createPV(req, res) {
+        const { product_id, size, color, quantity, image_url } = req.body;
+        if (!(product_id && size && color && quantity)) {
             return res.status(400).json({
                 success: false,
                 body: null,
                 message: "Invalid request."
+            })
+        }
+
+        const existingVariant = await ProductVariant.findOne({
+            where: {product_id, size, color}
+        })
+        if (existingVariant) {
+            return res.status(409).json({
+                success: false,
+                body: null,
+                message: "A variant with this color and size already exists for this product."
             })
         }
         try {
@@ -79,4 +114,44 @@ export default class ProductVariantController {
         }
     }
 
+    // Update product-variant by id
+    static async updatePV(req, res) {
+        const { id } = req.params;
+        const { product_id, size, color, quantity, image_url } = req.body;
+        const productVariant = await ProductVariant.findByPk(id);
+        if (!productVariant) {
+            return res.status(404).json({
+                success: false,
+                body: null,
+                message: "product variant not found."
+            })
+        }
+        if (!(product_id && size && color && quantity)) {
+            return res.status(400).json({
+                success: false,
+                body: null,
+                message: "Invalid request."
+            })
+        }
+
+        const existingVariant = await ProductVariant.findOne({
+            where: {product_id, size, color}
+        })
+
+        if (existingVariant) {
+            return res.status(409).json({
+                success: false,
+                body: null,
+                message: "A variant with this color and size already exists for this product."
+            })
+        }
+        const result = await productVariant.update({
+            product_id, size, color, quantity, image_url
+        },)
+        res.json({
+            success: true,
+            body: result,
+            message: "product variant updated."
+        })
+    }
 }

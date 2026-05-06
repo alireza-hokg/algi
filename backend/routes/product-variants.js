@@ -4,10 +4,12 @@ import ProductVariantController from "../controllers/product-variants.js";
 // Define a router using express
 const router = express.Router();
 
-router.get("/product-variants", ProductVariantController.getProductVariants);
+router.get("/products/:productId/product-variants/", ProductVariantController.getPV);
 
-router.get("/product-variants/:id", ProductVariantController.getProductVariantsById);
+router.get("/products/:productId/product-variants/", ProductVariantController.getPVByProductId);
 
-router.post("/product-variants", ProductVariantController.createProductVariant);
+router.post("/product-variants/", ProductVariantController.createPV);
+
+router.put("/product-variants/", ProductVariantController.updatePV);
 
 export default router;

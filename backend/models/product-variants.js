@@ -32,7 +32,7 @@ const ProductVariant = sequelize.define("ProductVariants", {
 
 Product.hasMany(ProductVariant, {
     foreignKey: {
-        name: "fk_product_id_idx",
+        name: "product_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         allowNull: false

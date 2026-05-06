@@ -9,6 +9,7 @@ import ProductVariantsRoutes from "./routes/product-variants.js";
 import User from "./models/users.js";
 import ProductVariant from "./models/product-variants.js"
 import Order from "./models/orders.js";
+import { createData } from "./seeders/seed.js";
 
 const { SERVER_PORT = 9000 } = process.env;
 const app = express();
@@ -25,6 +26,7 @@ async function startServer() {
         // Start syncing database
         await sequelize.sync({ force: true });
         console.log("Database connected successfully");
+        createData();
 
         // Start listening to port 9000
         app.listen(SERVER_PORT, (req, res) => {
