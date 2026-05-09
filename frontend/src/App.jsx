@@ -1,10 +1,15 @@
+import { BrowserRouter } from "react-router-dom"
+
+import AppRoutes from "./routes/index.jsx"
 
 function App() {
 
   return (
-    <div className="">
-      Hellloo
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen">
+        <AppRoutes />
+      </div>
+    </BrowserRouter>
   )
 }
 
