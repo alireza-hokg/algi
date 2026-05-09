@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+/* Products component */
+.wrapper-title {
+    position: relative;
+}
+
+.wrapper-title::after {
+    content: " ";
+    position: absolute;
+    display: table;
+    height: 1px;
+    background-color: #999;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    transform: translateY(50%);
+}
