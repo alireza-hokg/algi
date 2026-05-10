@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: Vazir;
+  src: url('./assets/fonts/Vazir-FD-WOL.eot');
+  src: url('./assets/fonts/?#iefix') format('embedded-opentype'),
+       url('./assets/fonts/Vazir-FD-WOL.woff') format('woff'),
+       url('./assets/fonts/Vazir-FD-WOL.woff2') format('woff2')
+       url('./assets/fonts/Vazir-FD-WOL.ttf') format('truetype');
+  font-weight: normal;
+}
+
+body {
+    font-family: "Vazir";
+}
+
 /* Products component */
 .wrapper-title {
     position: relative;
@@ -9,8 +23,8 @@
     content: " ";
     position: absolute;
     display: table;
-    height: 1px;
-    background-color: #999;
+    height: 2px;
+    background-color: #ccc;
     width: 100%;
     left: 0;
     right: 0;

@@ -19,7 +19,7 @@ const Header = () => {
                     </h1>
                     {/* Search bigger than medium width */}
                     <div className="hidden md:block flex-1">
-                        <div className="hidden md:flex items-center flex-1 max-w-lg border border-gray-300 rounded-4xl
+                        <div className="hidden md:flex items-center flex-1 max-w-lg lg:max-w-xl border border-gray-300 rounded-4xl
                             ">
                             <input
                                 type="text"
