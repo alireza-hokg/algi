@@ -1,10 +1,9 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import Product from "./Product.jsx";
+import ProductItem from "./ProductItem.jsx";
 
-const Products = () => {
+const ProductList = () => {
     return (
-        
         <main>
             <div className="my-10 px-2">
                 {/* Title for products */}
@@ -23,15 +22,16 @@ const Products = () => {
                     </div>
                 </div>
                 {/* Products list */}
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 space-y-10">
-                    <Product />
-                    <Product />
-                    <Product />
-                    <Product />
-                    <Product />
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-12
+                gap-x-4">
+                    <ProductItem />
+                    <ProductItem />
+                    <ProductItem />
+                    <ProductItem />
+                    <ProductItem />
                 </ul>
             </div>
         </main>
     )
 }
-export default Products;
+export default ProductList;

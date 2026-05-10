@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import Sylvanas from "../../assets/images/download.jpg";
 
-const Product = () => {
+const ProductItem = () => {
     return( 
-        <li className="px-2">
+        <li>
             <figure>
                 <div className="mb-2 rounded-md overflow-hidden">
                     <img
@@ -12,8 +12,8 @@ const Product = () => {
                 </div>
                 <div>
                     <figcaption>
-                        <div className="space-y-2">
-                            <div className="flex flex-col">
+                        <div className="space-y-4">
+                            <div className="flex flex-col mx-4 space-y-1">
                                 <h3 className="text-gray-700">ست پوما Q45406</h3>
                                 <span className="font-bold text-sm">376,000 تومان</span>
                             </div>
@@ -31,4 +31,4 @@ const Product = () => {
         </li>
     )
 }
-export default Product;
+export default ProductItem;
