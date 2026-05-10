@@ -21,6 +21,12 @@ const ProductVariant = sequelize.define("ProductVariants", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    height: {
+        type: DataTypes.DECIMAL(10,2),
+    },
+    width: {
+        type: DataTypes.DECIMAL(10,2)
+    },
     image_url: {
         type: DataTypes.TEXT,
         allowNull: true

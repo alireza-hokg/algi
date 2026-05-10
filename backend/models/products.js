@@ -32,6 +32,10 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    sku: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 }, {
     timestamps: true,
     tableName: "products"

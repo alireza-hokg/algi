@@ -4,19 +4,22 @@ export const productsData = [
         id: 1,
         name: "T-Shirt",
         price: 2999,
-        description: "Comfortable cotton t-shirt"
+        description: "Comfortable cotton t-shirt",
+        sku: "Q429"
     },
     {
         id: 2,
         name: "Jeans",
         price: 7999,
-        description: "Blue denim jeans"
+        description: "Blue denim jeans",
+        sku: "Q429"
     },
     {
         id: 3,
         name: "Jacket",
         price: 14999,
-        description: "Winter jacket"
+        description: "Winter jacket",
+        sku: "Q429"
     }
 ];
 
@@ -64,3 +67,11 @@ export const variantsData = [
         image_url: "http://example.com/jacket-black.jpg"
     }
 ];
+
+export const usersData = [
+    {
+        phoneNumber: "09371036096",
+        password: "Alirezza2547",
+        role: "admin",
+    }
+]
