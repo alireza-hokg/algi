@@ -22,9 +22,9 @@ async function startServer() {
     try {
         await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
         // Start syncing database
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ force: true });
         console.log("Database connected successfully");
-        // createData();
+        createData();
 
         // Start listening to port 9000
         app.listen(SERVER_PORT, (req, res) => {

@@ -14,7 +14,6 @@ const sequelize = new Sequelize({
 
 try {
     await sequelize.authenticate();
-    console.log('s')
 } catch(err) {
     console.log(err.message);
     process.exit();

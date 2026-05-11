@@ -71,7 +71,15 @@ export const variantsData = [
 export const usersData = [
     {
         phoneNumber: "09371036096",
-        password: "Alirezza2547",
+        password: "$2b$10$kESq4QfjM4JJ1PdpT8j5juKEyAURapquE6S5ywxZPBxs3FHTV/Cii",
         role: "admin",
+    }
+]
+
+export const otpsData = [
+    {
+        phoneNumber: "09127361268",
+        code: "123456",
+        expiresAt: new Date(Date.now()+1000*60*2)
     }
 ]

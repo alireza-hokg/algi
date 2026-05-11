@@ -3,8 +3,10 @@ import UserController from "../controllers/users.js";
 
 const router = express.Router();
 
-router.post("/auth", UserController.getUser);
+router.get("/auth/send-otp", UserController.sendOTP);
 
-// router.post("/auth", UserController.p);
+router.get("/auth/login", UserController.login);
+
+router.post("/auth/register", UserController.register);
 
 export default router;
