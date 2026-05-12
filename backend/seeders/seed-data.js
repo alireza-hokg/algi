@@ -5,21 +5,24 @@ export const productsData = [
         name: "T-Shirt",
         price: 2999,
         description: "Comfortable cotton t-shirt",
-        sku: "Q429"
+        sku: "Q429",
+        slug: "t-shirt-q429"
     },
     {
         id: 2,
         name: "Jeans",
         price: 7999,
         description: "Blue denim jeans",
-        sku: "Q429"
+        sku: "Q429",
+        slug: "Jeans-q429"
     },
     {
         id: 3,
         name: "Jacket",
         price: 14999,
         description: "Winter jacket",
-        sku: "Q429"
+        sku: "Q429",
+        slug: "jacket-q429"
     }
 ];
 
@@ -83,3 +86,4 @@ export const otpsData = [
         expiresAt: new Date(Date.now()+1000*60*2)
     }
 ]
+

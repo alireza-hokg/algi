@@ -6,8 +6,8 @@ export default class ProductVariantController {
 
     // Get Product-variant by id 
     static async getPVByProductId(req, res) {
-        let { productId } = req.params
-        console.log(productId)
+        // Get params
+        let { productId } = req.params;
         // Check product exists
         const product = await Product.findByPk(productId)
         if (!product) {
@@ -17,7 +17,7 @@ export default class ProductVariantController {
                 message: "Product not found."
             })
         }
-        // Check product exists
+        // Get product-variants by productId exists
         try {
             const products = await ProductVariant.findAndCountAll({
                 where: {
@@ -25,7 +25,6 @@ export default class ProductVariantController {
                 },
                 raw: true
             });
-            console.log(products)
             return res.status(200).json({
                 success: true,
                 count: products.count,

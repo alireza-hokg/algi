@@ -34,15 +34,20 @@ const Product = sequelize.define('Product', {
     },
     sku: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
+    },
+    slug: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
     }
 }, {
     timestamps: true,
     tableName: "products",
     hooks: {
-        beforeUpdate: user => {
-            user.updatedAt = new Date();
-        }
+        beforeUpdate: product => {
+            product.updatedAt = new Date();
+        },
     }
 })
 

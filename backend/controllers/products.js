@@ -1,4 +1,5 @@
 import { Op } from "@sequelize/core";
+import slugify from "slugify";
 
 import Product from "../models/products.js";
 
@@ -52,8 +53,8 @@ export default class ProductController {
 
     static async createProduct(req, res) {
         // PARAMETERS name, description, base_price, discount_percentage, sku
-        const { name, description, base_price, discount_percentage, sku } = req.body;
-        if (!name || !base_price) {
+        const { name, price, sku } = req.body;
+        if (!name || !price) {
             return res.status(400).json({
                 success: false,
                 body: null,
@@ -63,10 +64,9 @@ export default class ProductController {
         try {
             const result = await Product.create({
                 name,
-                description,
-                base_price,
-                discount_percentage,
-                sku
+                price,
+                sku,
+                slug: slugify(name, { lower: true }) + `-${sku}`
             })
             console.log(result)
             res.status(201).json({
