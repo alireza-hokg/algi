@@ -33,7 +33,12 @@ const ProductVariant = sequelize.define("ProductVariants", {
     }
 }, {
     timestamps: true,
-    tableName: "product_variants"
+    tableName: "product_variants",
+    hooks: {
+        beforeUpdate: user => {
+            user.updatedAt = new Date()
+        }
+    }
 })
 
 Product.hasMany(ProductVariant, {

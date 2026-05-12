@@ -38,7 +38,12 @@ const Product = sequelize.define('Product', {
     }
 }, {
     timestamps: true,
-    tableName: "products"
+    tableName: "products",
+    hooks: {
+        beforeUpdate: user => {
+            user.updatedAt = new Date();
+        }
+    }
 })
 
 export default Product;

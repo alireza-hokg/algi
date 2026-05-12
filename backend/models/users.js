@@ -8,14 +8,6 @@ const User = sequelize.define("User", {
         autoIncrement: true,
         allowNull: false
     },
-    firstname: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    lastname: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     phoneNumber: {
         type: DataTypes.STRING,
         unique: true,
@@ -38,7 +30,12 @@ const User = sequelize.define("User", {
         allowNull: true
     }
 }, {
-    timestamps: false,
+    timestamps: true,
+    hooks: {
+        beforeUpdate: (user) => {
+            user.updatedAt = new Date();
+        }
+    }
 })
 
 export default User;

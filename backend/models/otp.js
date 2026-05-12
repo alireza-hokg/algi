@@ -20,6 +20,14 @@ const otpSchema = sequelize.define(
             type: DataTypes.INTEGER,
             defaultValue: 0
         }
+    },
+    {
+        timestamps: true,
+        hooks: {
+            beforeUpdate: user => {
+                user.updatedAt = new Date()
+            }
+        }
     }
 )
 

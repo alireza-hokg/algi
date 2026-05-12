@@ -41,7 +41,12 @@ const Order = sequelize.define("Orders", {
     },
 
 }, {
-    timestamps: true
+    timestamps: true,
+    hooks: {
+        beforeUpdate: user => {
+            user.updatedAt = new Date();
+        }
+    }
 })
 
 User.hasOne(Order, {
