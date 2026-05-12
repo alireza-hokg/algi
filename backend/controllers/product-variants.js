@@ -3,45 +3,12 @@ import ProductVariant from "../models/product-variants.js";
 
 
 export default class ProductVariantController {
-    // Get all product-variants
-    static async getPV(req, res) {
-        let { productId } = req.params
-        console.log(productId)
-
-        const product = await Product.findByPk(productId)
-        if (!product) {
-            return res.status(404).json({
-                success: false,
-                body: null,
-                message: "Product not found."
-            })
-        }
-        try {
-            const result = await ProductVariant.findAndCountAll({
-                where: {
-                    product_id: productId
-                }
-            });
-            console.log(result.rows)
-            return res.status(200).json({
-                success: true,
-                body: result.rows,
-                message: "Product-variants fetched successfully"
-            })
-        } catch(err) {
-            res.json({
-                success: false,
-                body: null,
-                message: err.message
-            })
-        }
-    }
 
     // Get Product-variant by id 
     static async getPVByProductId(req, res) {
         let { productId } = req.params
         console.log(productId)
-
+        // Check product exists
         const product = await Product.findByPk(productId)
         if (!product) {
             return res.status(404).json({
@@ -50,16 +17,21 @@ export default class ProductVariantController {
                 message: "Product not found."
             })
         }
+        // Check product exists
         try {
-            const result = await ProductVariant.findAndCountAll({
+            const products = await ProductVariant.findAndCountAll({
                 where: {
                     product_id: productId
-                }
+                },
+                raw: true
             });
-            console.log(result.rows)
+            console.log(products)
             return res.status(200).json({
                 success: true,
-                body: result.rows,
+                count: products.count,
+                body: {
+                    products: products.rows,
+                },
                 message: "Product-variants fetched successfully"
             })
         } catch(err) {
