@@ -24,10 +24,6 @@ const Product = sequelize.define('Product', {
             }
         }
     },
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: true
-    },
     price: {
         type: DataTypes.INTEGER,
         allowNull: false

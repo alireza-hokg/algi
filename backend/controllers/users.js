@@ -23,7 +23,7 @@ export default class UserController {
         }
         const cleanPhone = normalizePhone(phoneNumber);
         // Check phone number is valid
-        if (!phoneRegex.test(phoneNumber)) {
+        if (!phoneRegex.test(cleanPhone)) {
             return res.status(400).json({
                 success: false,
                 body: null,

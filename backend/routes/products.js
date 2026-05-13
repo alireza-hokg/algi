@@ -10,10 +10,6 @@ router.get("/products/:id", TaskController.getProductById)
 
 router.post("/products", TaskController.createProduct)
 
-router.put("/products/:id", TaskController.updateProduct)
-
-router.delete("/products/:id", (req, res) => {
-
-})
+router.delete("/products/:id", TaskController.deleteProduct)
 
 export default router;

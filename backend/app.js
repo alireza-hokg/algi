@@ -13,6 +13,7 @@ const { SERVER_PORT = 9000 } = process.env;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use("/api/v1/", productsRoutes)
 app.use("/api/v1/", ProductVariantsRoutes)

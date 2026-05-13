@@ -52,7 +52,7 @@ export default class ProductController {
     }
 
     static async createProduct(req, res) {
-        // PARAMETERS name, description, base_price, discount_percentage, sku
+        // PARAMETERS name, price, sku
         const { name, price, sku } = req.body;
         if (!name || !price) {
             return res.status(400).json({
@@ -68,7 +68,6 @@ export default class ProductController {
                 sku,
                 slug: slugify(name, { lower: true }) + `-${sku}`
             })
-            console.log(result)
             res.status(201).json({
                 success: true,
                 body: result,
@@ -83,7 +82,34 @@ export default class ProductController {
         }
     }
 
-    static async updateProduct(req, res) {
-        
+    static async deleteProduct(req, res) {
+        const { id } = req.params;
+        const product = await Product.findOne({
+            where: {
+                id
+            },
+            raw: true
+        })
+        // Product do not exists
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                body: null,
+                message: "محصول پیدا نشد."
+            })
+        }
+        try {
+            await Product.destroy({
+                where: {
+                    id
+                }
+            })
+        } catch(err) {
+            return res.status(500).json({
+                success: false,
+                body: null,
+                message: "خطای سرور"
+            })
+        }
     }
 }

@@ -1,11 +1,10 @@
 // Accessibles phone numbers
-const phoneRegex = new RegExp(/^(09|98)[0-9]{9}$/g);
+const phoneRegex = new RegExp(/^09\d{9}$/);
 
 // Normalize phone number
 function normalizePhone(phone) {
     let cleanPhone = phone.toString().trim();
     // normalize phone number
-    cleanPhone = cleanPhone;
     if (cleanPhone.startsWith("98")) {
         cleanPhone = "0" + cleanPhone.slice(2);
     }
