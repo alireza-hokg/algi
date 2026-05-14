@@ -13,9 +13,10 @@ const ProductVariant = sequelize.define("ProductVariants", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    color: {
-        type: DataTypes.STRING,
+    colors: {
+        type: DataTypes.JSON,
         allowNull: false,
+        defaultValue: []
     },
     quantity: {
         type: DataTypes.INTEGER,

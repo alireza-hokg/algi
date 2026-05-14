@@ -30,42 +30,42 @@ export const variantsData = [
     {
         product_id: 1,
         size: 42,
-        color: "Red",
+        colors: "Red",
         quantity: 10,
         image_url: "http://example.com/tshirt-red.jpg"
     },
     {
         product_id: 1,
         size: 44,
-        color: "Red",
+        colors: "Red",
         quantity: 15,
         image_url: "http://example.com/tshirt-red-xl.jpg"
     },
     {
         product_id: 1,
         size: 42,
-        color: "Blue",
+        colors: "Blue",
         quantity: 8,
         image_url: "http://example.com/tshirt-blue.jpg"
     },
     {
         product_id: 2,
         size: 32,
-        color: "Blue",
+        colors: "Blue",
         quantity: 20,
         image_url: "http://example.com/jeans-blue.jpg"
     },
     {
         product_id: 2,
         size: 34,
-        color: "Blue",
+        colors: "Blue",
         quantity: 25,
         image_url: "http://example.com/jeans-blue-34.jpg"
     },
     {
         product_id: 3,
         size: 44,
-        color: "Black",
+        colors: "Black",
         quantity: 5,
         image_url: "http://example.com/jacket-black.jpg"
     }
