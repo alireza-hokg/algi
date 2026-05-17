@@ -27,6 +27,14 @@ export default class ProductVariantController {
                 where: {
                     product_id: product.id
                 },
+                attributes: ["id", "size", "color", "quantity", "height", "width",
+                    "waist", "image_url",
+                ],
+                include: [{
+                    model: Product,
+                    required: true,
+                    attributes: ["id", "name", "price"]
+                }],
                 raw: true
             });
             return res.status(200).json({
@@ -48,8 +56,8 @@ export default class ProductVariantController {
 
     // Create product-variant
     static async createPV(req, res) {
-        const { product_id, size, colors, quantity, image_url } = req.body;
-        if (!(product_id && size && colors && quantity)) {
+        const { product_id, size, color, quantity, width, height, waist, image_url } = req.body;
+        if (!(product_id && size && color && quantity)) {
             return res.status(400).json({
                 success: false,
                 body: null,
@@ -71,9 +79,12 @@ export default class ProductVariantController {
             const result = await ProductVariant.create({
                 product_id,
                 size,
-                colors,
+                color,
                 quantity,
-                price
+                price,
+                width,
+                height,
+                waist
             })
             return res.status(201).json({
                 success: true,
@@ -92,7 +103,7 @@ export default class ProductVariantController {
     // Update product-variant by id
     static async updatePV(req, res) {
         const { id } = req.params;
-        const { product_id, size, colors, quantity, image_url } = req.body;
+        const { product_id, size, color, quantity, width, height, waist, image_url } = req.body;
         const productVariant = await ProductVariant.findByPk(id);
         if (!productVariant) {
             return res.status(404).json({
@@ -101,7 +112,7 @@ export default class ProductVariantController {
                 message: "product variant not found."
             })
         }
-        if (!(product_id && size && colors && quantity)) {
+        if (!(product_id && size && color && quantity)) {
             return res.status(400).json({
                 success: false,
                 body: null,
@@ -110,7 +121,7 @@ export default class ProductVariantController {
         }
 
         const existingVariant = await ProductVariant.findOne({
-            where: {product_id, size, colors}
+            where: {product_id, size, color}
         })
 
         if (existingVariant) {
@@ -121,7 +132,7 @@ export default class ProductVariantController {
             })
         }
         const result = await productVariant.update({
-            product_id, size, colors, quantity, image_url
+            product_id, size, color, quantity, width, height, waist, image_url
         },)
         res.json({
             success: true,

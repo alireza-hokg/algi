@@ -13,10 +13,9 @@ const ProductVariant = sequelize.define("ProductVariants", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    colors: {
-        type: DataTypes.JSON,
+    color: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: []
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -24,9 +23,15 @@ const ProductVariant = sequelize.define("ProductVariants", {
     },
     height: {
         type: DataTypes.DECIMAL(10,2),
+        allowNull: true
     },
     width: {
-        type: DataTypes.DECIMAL(10,2)
+        type: DataTypes.DECIMAL(10,2),
+        allowNull: true
+    },
+    waist: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
     },
     image_url: {
         type: DataTypes.TEXT,
