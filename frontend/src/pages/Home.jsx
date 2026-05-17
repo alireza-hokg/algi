@@ -1,6 +1,6 @@
 import Header from "../components/layout/Header";
-import HeroSection from "../components/layout/HeroSection";
-import ProductList from "../components/layout/ProductList";
+import HeroSection from "../components/page-components/HeroSection";
+import ProductList from "../components/page-components/ProductList";
 
 const Home = () => {
     return (

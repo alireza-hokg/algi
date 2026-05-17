@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import Sylvanas from "../../assets/images/download.jpg";
 
-const ProductItem = () => {
+const ProductItem = ({ product }) => {
+    
     return( 
         <li>
             <figure>
-                <div className="mb-2 rounded-md overflow-hidden">
+                <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
                     <img
                         className="w-full inline-block"
                         src={Sylvanas}/>
@@ -21,7 +22,7 @@ const ProductItem = () => {
                                 <Link
                                     className="block text-center py-2 px-4 rounded-md bg-orange-500 text-white 
                                     scale-x-95 hover:scale-x-100 opacity-80 hover:opacity-100 transition-all duration-300"
-                                    to={`/products/123`}>انتخاب گزینه ها
+                                    to={`/products/${product.slug}/product-variants`}>انتخاب گزینه ها
                                 </Link>
                             </div>
                         </div>

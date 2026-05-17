@@ -34,7 +34,7 @@ const Header = () => {
                     {/* Login or sign up for bigger than medium width */}
                     <div className="hidden md:block">
                         <Link
-                            to="/al"
+                            to="/auth"
                             className="flex text-white bg-orange-500 py-1 px-4 rounded-lg whitespace-nowrap">
                             <i><LogIn /></i>
                             <span>ورود | ثبت نام</span>
