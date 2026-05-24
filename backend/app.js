@@ -8,13 +8,16 @@ import ProductVariantsRoutes from "./routes/product-variants.js";
 import UserRoutes from "./routes/users.js";
 
 import { createData } from "./seeders/seed.js";
+import { responseFormatter } from "./middlewares/responseFormatter.js";
 
 const { SERVER_PORT = 9000 } = process.env;
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors());
+app.use(responseFormatter);
+
 app.use("/api/v1/", productsRoutes)
 app.use("/api/v1/", ProductVariantsRoutes)
 app.use("/api/v1", UserRoutes)

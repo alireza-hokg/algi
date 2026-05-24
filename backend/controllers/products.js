@@ -10,15 +10,11 @@ export default class ProductController {
     static async getProducts(req, res) {
         try {
             const result = await ProductService.getAllProducts();
-            console.log(result);
-            return res.json(result);
-
+            console.log(result)
+            return res.success(result, "Products fetched Successfully");
+            
         } catch(err) {
-            res.status(500).json({
-                success: false,
-                body: null,
-                message: err.message
-            })
+            res.error(err.message, err.code);
         }
     }
 
