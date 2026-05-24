@@ -17,23 +17,11 @@ export default class ProductService {
                     count: 0
                 }
             }
-
-            const formattedData = results.rows.map(product=> ({
-                id: product.id,
-                name: product.name,
-                price: product.name,
-                sku: product.sku
-            }));
-
-            return {
-                success: true,
-                body: formattedData,
-                count: results.count,
-                message: "All products fetched"
-            }
+            const formattedData = this._formatProducts(results.rows);
+            
+            return this._buildResponse(true, formattedData, "All products fetched successfully", results.count)
         } catch(err) {
             console.log("Error in ProductService.getAllProducts:", err);
-
             throw new Error(`Database error ${err.message}`)
         }
     }
@@ -43,11 +31,43 @@ export default class ProductService {
         if (isNaN(numericId)) {
             throw new Error("Id must be integer")
         }
+        try {
+            const product = await ProductRepository.getProductById(id);
+            if (!product) {
+                throw new Error('Product not found.')
+            }
+            const formattedData = this._formatProduct(product);
+            return this._buildResponse(true, formattedData, "Product fetched  successfully")
 
-        const product = await ProductRepository.getProductById(id);
-        if (!product) {
-            throw new Error('Product not found.')
+        } catch(err) {
+            this._handleError(err, "services:getProductById")
         }
-        return product;
+    }
+    
+    static _formatProduct(product) {
+        return {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            sku: product.sku
+        }
+    }
+
+    static _formatProducts(products) {
+        return products.map(product=> this._formatProduct(product))
+    }
+
+    static _buildResponse(success, body, message, count) {
+        return {
+            success,
+            body,
+            message,
+            count
+        }
+    }
+
+    static async _handleError(err, methodName) {
+        console.log(`Error in ${methodName}: `, err);
+        throw new Error(`Database error ${err.message}`)
     }
 }

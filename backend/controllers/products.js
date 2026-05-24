@@ -10,13 +10,8 @@ export default class ProductController {
     static async getProducts(req, res) {
         try {
             const result = await ProductService.getAllProducts();
-    
-            return res.json({
-                success: result.success,
-                body: result.rows,
-                message: result.message,
-                count: result.count
-            })
+            console.log(result);
+            return res.json(result);
 
         } catch(err) {
             res.status(500).json({
@@ -32,11 +27,7 @@ export default class ProductController {
         let { id } = req.params;
         try {
             const result = await ProductService.getProductById(id);
-            return res.json({
-                success: true,
-                body: result,
-                message: "Product fetched successfully"
-            })
+            return res.json(result)
         } catch(err) {
             return res.status(404).json({
                 success: false,

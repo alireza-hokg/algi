@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/products", TaskController.getProducts);
 
-// router.get("/products/:id", TaskController.getProductById)
+router.get("/products/:id", TaskController.getProductById)
 
 router.post("/products", TaskController.createProduct)
 
