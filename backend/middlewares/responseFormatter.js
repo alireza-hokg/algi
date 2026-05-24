@@ -48,5 +48,9 @@ export const responseFormatter = (req, res, next) => {
         return res.error(message, 403)
     };
 
+    res.internalServer = (message = "Internal Server Error.") => {
+        return res.error(message, 500);
+    }
+
     next();
 }

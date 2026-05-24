@@ -33,11 +33,19 @@ export default class ProductService {
                 throw new NotFoundError('Product not found.')
             }
             const formattedData = this._formatProduct(product);
-            return this._buildResponse(true, formattedData, "Product fetched  successfully")
+            return formattedData;
 
         } catch(err) {
             throw new DatabaseError('Database error.')
         }
+    }
+
+    static async createProduct(product) {
+
+    }
+
+    static async updateProduct(product, productId) {
+
     }
     
     static _formatProduct(product) {

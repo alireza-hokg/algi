@@ -10,7 +10,6 @@ export default class ProductController {
     static async getProducts(req, res) {
         try {
             const result = await ProductService.getAllProducts();
-            console.log(result)
             return res.success(result, "Products fetched Successfully");
             
         } catch(err) {
@@ -23,13 +22,12 @@ export default class ProductController {
         let { id } = req.params;
         try {
             const result = await ProductService.getProductById(id);
-            return res.json(result)
+            if (!result) {
+                return res.notFound("Product not found.")
+            }
+            return res.success(result, "Product fetched successfully.", 200);
         } catch(err) {
-            return res.status(404).json({
-                success: false,
-                body: null,
-                message: "Product not found."
-            })
+            return res.error(err.message, err.statusCode || 500)
         }
     }
 
@@ -37,11 +35,7 @@ export default class ProductController {
         // PARAMETERS name, price, sku
         const { name, price, sku } = req.body;
         if (!name || !price) {
-            return res.status(400).json({
-                success: false,
-                body: null,
-                message: "Invalid request."
-            })
+            return res.error("invalid request.", 400)
         }
         try {
             const result = await Product.create({
@@ -50,17 +44,9 @@ export default class ProductController {
                 sku,
                 slug: slugify(name, { lower: true }) + `-${sku}`
             })
-            res.status(201).json({
-                success: true,
-                body: result,
-                message: "Product created successfully"
-            })
+            return res.create(result);
         } catch(err) {
-            return res.status(500).json({
-                success: false,
-                body: null,
-                message: err.message
-            })
+            return res.error(err.message, err.statusCode || 500)
         }
     }
 
