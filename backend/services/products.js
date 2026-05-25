@@ -1,16 +1,18 @@
 import slugify from "slugify";
 
 import Product from "../models/products.js";
-import ProductRepository from "../repository/products.js";
 import { NotFoundError, ValidationError, DatabaseError } from "../utils/Error.js";
 
 // Service just received the data and process it
 // Logic and validation happens here
 export default class ProductService {
+    constructor(productRepository) {
+        this.productRepository = productRepository;
+    }
 
-    static async getAllProducts() {
+    async getAllProducts() {
         try {
-            const results = await ProductRepository.getAllProducts();
+            const results = await this.productRepository.getAllProducts();
             // No data
             if (results.rows.length === 0) {
                 throw new NotFoundError("no product found.");
@@ -18,81 +20,97 @@ export default class ProductService {
             const formattedData = this._formatProducts(results.rows);
             return formattedData;
         } catch(err) {
+            if (err instanceof NotFoundError) {
+                return err
+            }
             throw new DatabaseError(`Database error ${err.message}`)
         }
     }
 
-    static async getProductById(id) {
+    async getProductById(id) {
         const numericId = Number(id);
         if (isNaN(numericId)) {
             throw new ValidationError("Id must be integer", 400)
         }
         try {
-            const product = await ProductRepository.getProductById(id);
+            const product = await this.productRepository.getById(id);
             if (!product) {
-                throw new NotFoundError('Product not found.', 404)
+                throw new NotFoundError("product not found.")
             }
             const formattedData = this._formatProduct(product);
             return formattedData;
-
+            
         } catch(err) {
+            if (err instanceof NotFoundError || err instanceof ValidationError) {
+                throw err
+            }
             throw new DatabaseError('Database error.', 500)
         }
     }
 
-    static async createProduct(product) {
-        const { name, price, sku } = product;
-        if (!name || !price) {
+    async createProduct(product) {
+        const { name, price, sku, category_id, slug } = product;
+        if (!name || !price || !sku || !slug) {
             throw new ValidationError("invalid data", 400);
         }
+        const formattedData = {
+            name,
+            price,
+            sku,
+            category_id,
+            slug
+        }
         try {
-            const result = await Product.create({
-                name,
-                price,
-                sku,
-                slug: slugify(name, { lower: true }) + `-${sku}`
-            })
+            const result = await this.productRepository.create(formattedData)
             return result.dataValues
         } catch(err) {
-            console.log(err)
+            if (err instanceof ValidationError) {
+                return err;
+            }
             throw new DatabaseError(err.message, 500);
         }
     }
 
-    static async updateProduct(product, productId) {
+    async updateProduct(product, productId) {
         const numericProductId = Number(productId);
         if (isNaN(numericProductId)) {
             throw new ValidationError("productId must be integer");
         }
+        const currentProduct = await this.productRepository.getById(numericProductId);
+        if (!currentProduct) {
+            throw new NotFoundError("No product found.")
+        }
         try {
-            const [updatedCount] = await Product.update({
-                name: product.name,
-                price: product.price,
-                category_id: product.category_id,
-                sku: product.sku,
-                slug: slugify(product.name, { lower: true }) + `-${product.sku}`
-            }, {
-                where: { id: productId }
-            })
-            if (updatedCount === 1) {
+            const [isUpdated] = await this.productRepository.update(product, productId);
+            if (isUpdated) {
                 return product
             }
         } catch(err) {
-            throw new Error(err.message, err.statusCode || 500)
+            if (err instanceof ValidationError || err instanceof NotFoundError) {
+                return err;
+            }
+            throw new DatabaseError(err.message, err.statusCode || 500)
         }
     }
 
-    static async deleteProduct(productId) {
+    async deleteProduct(productId) {
+        const numericProductId = Number(productId);
+        if (!numericProductId) {
+            throw new NotFoundError("No product found.")
+        }
         const product = await this.getProductById(productId);
         try {
-            const result = await ProductRepository.delete(productId); 
+            const result = await this.productRepository.delete(productId); 
             return result;
         } catch(err) {
+            if (err instanceof NotFoundError) {
+                return err;
+            }
             throw new DatabaseError(err.message, 500)
         }
     }
     
-    static _formatProduct(product) {
+    _formatProduct(product) {
         return {
             id: product.id,
             name: product.name,
@@ -101,7 +119,23 @@ export default class ProductService {
         }
     }
 
-    static _formatProducts(products) {
+    _formatProducts(products) {
         return products.map(product=> this._formatProduct(product))
+    }
+
+    async getProductBySlug(slug) {
+        try {
+            const product = await this.productRepository.getBySlug(slug);
+            console.log(product)
+            if (!product) {
+                throw new NotFoundError("No product found.")
+            }
+            return product
+        } catch(err) {
+            if (err instanceof NotFoundError) {
+                return err
+            }
+            throw new DatabaseError("Internal server error.")
+        }
     }
 }

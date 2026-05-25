@@ -1,56 +1,15 @@
-import Product from "../models/products.js";
 import ProductVariant from "../models/product-variants.js";
-
+import ProductVariantService from "../services/product-variants.js";
 
 export default class ProductVariantController {
 
     // Get Product-variant by slug 
-    static async getPVByslug(req, res) {
-        // Get params
-        let { slug } = req.params;
-        // Check product exists
-        const product = await Product.findOne({
-            where: {
-                slug
-            }
-        })
-        if (!product) {
-            return res.status(404).json({
-                success: false,
-                body: null,
-                message: "Product not found."
-            })
-        }
-        // Get all product-variants by productId exists
+    static async getVariantsByProductSlug(req, res) {
+        const { slug } = req.params;
         try {
-            const products = await ProductVariant.findAndCountAll({
-                where: {
-                    product_id: product.id
-                },
-                attributes: ["id", "size", "color", "quantity", "height", "width",
-                    "waist", "image_url",
-                ],
-                include: [{
-                    model: Product,
-                    required: true,
-                    attributes: ["id", "name", "price"]
-                }],
-                raw: true
-            });
-            return res.status(200).json({
-                success: true,
-                count: products.count,
-                body: {
-                    products: products.rows,
-                },
-                message: "Product-variants fetched successfully"
-            })
+           const product = await ProductVariantService.getVariantsByProductSlug(slug);
         } catch(err) {
-            res.json({
-                success: false,
-                body: null,
-                message: err.message
-            })
+            return res.error(err.message, err.statusCode || 500);
         }
     }
 

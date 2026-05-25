@@ -1,17 +1,23 @@
 import express from "express";
 
-import TaskController from "../controllers/products.js"
+import ProductRepository from "../repository/products.js";
+import ProductService from "../services/products.js";
+import ProductController from "../controllers/products.js";
+
+const productRepository = new ProductRepository();
+const productService = new ProductService(productRepository);
+const productController = new ProductController(productService);
 
 const router = express.Router();
 
-router.get("/products", TaskController.getProducts);
+router.get("/products", productController.getProducts.bind(productController));
 
-router.get("/products/:id", TaskController.getProductById)
+router.get("/products/:id", productController.getProductById.bind(productController))
 
-router.post("/products", TaskController.createProduct);
+router.post("/products", productController.createProduct.bind(productController));
 
-router.put("/products/:id", TaskController.updateProduct);
+router.put("/products/:id", productController.updateProduct.bind(productController));
 
-router.delete("/products/:id", TaskController.deleteProduct)
+router.delete("/products/:id", productController.deleteProduct.bind(productController))
 
 export default router;

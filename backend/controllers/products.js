@@ -1,14 +1,14 @@
-import { Op } from "@sequelize/core";
-
-import Product from "../models/products.js";
-import ProductService from "../services/products.js";
+import slugify from "slugify";
 
 // Controller just recieves the request and responses
 export default class ProductController {
+    constructor(productService) {
+        this.productService = productService;
+    }
     // Get All the products
-    static async getProducts(req, res) {
+    async getProducts(req, res) {
         try {
-            const result = await ProductService.getAllProducts();
+            const result = await this.productService.getAllProducts();
             return res.success(result, "Products fetched Successfully");
             
         } catch(err) {
@@ -17,10 +17,10 @@ export default class ProductController {
     }
 
     // Get Product by id
-    static async getProductById(req, res) {
+    async getProductById(req, res) {
         let { id } = req.params;
         try {
-            const result = await ProductService.getProductById(id);
+            const result = await this.productService.getProductById(id);
             if (!result) {
                 return res.notFound("Product not found.")
             }
@@ -30,45 +30,47 @@ export default class ProductController {
         }
     }
 
-    static async createProduct(req, res) {
+    async createProduct(req, res) {
         // PARAMETERS name, price, sku
-        const { name, price, sku } = req.body;
+        const { name, price, sku, category_id } = req.body;
         const initialData = {
             name,
             price,
-            sku
+            sku,
+            category_id,
+            slug: slugify(name, { lower: true }) + `-${sku}`
         };
         try {
-            const result = await ProductService.createProduct(initialData);
+            const result = await this.productService.createProduct(initialData);
             return res.success(result, 201);
         } catch(err) {
             res.error(err.message, err.statusCode || 500);
         }
     }
 
-    static async updateProduct(req, res) {
+    async updateProduct(req, res) {
         const { id } = req.params;
         const { name, price, category_id, sku } = req.body;
-        const formattedData = { 
+        const formattedData = {
             name,
             price,
             category_id,
-            sku
+            sku,
+            slug: slugify(name, { lower: true }) + `-${sku}`
         }
         try {
-            const result = await ProductService.updateProduct(formattedData, id);
-            
+            const result = await this.productService.updateProduct(formattedData, id);
             return res.updated(result, "Product updated.");
         } catch(err) {
             res.error(err.message, err.statusCode || 500)
         }
     }
 
-    static async deleteProduct(req, res) {
+    async deleteProduct(req, res) {
         const { id } = req.params;
         
         try {
-            const result = await ProductService.deleteProduct(id);
+            const result = await this.productService.deleteProduct(id);
             return res.success("product deleted successfully", 200);
         } catch(err) {
             return res.error(err.message, err.statusCode || 500);
