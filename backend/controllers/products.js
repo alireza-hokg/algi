@@ -1,5 +1,4 @@
 import { Op } from "@sequelize/core";
-import slugify from "slugify";
 
 import Product from "../models/products.js";
 import ProductService from "../services/products.js";
@@ -34,50 +33,45 @@ export default class ProductController {
     static async createProduct(req, res) {
         // PARAMETERS name, price, sku
         const { name, price, sku } = req.body;
-        if (!name || !price) {
-            return res.error("invalid request.", 400)
+        const initialData = {
+            name,
+            price,
+            sku
+        };
+        try {
+            const result = await ProductService.createProduct(initialData);
+            return res.success(result, 201);
+        } catch(err) {
+            res.error(err.message, err.statusCode || 500);
+        }
+    }
+
+    static async updateProduct(req, res) {
+        const { id } = req.params;
+        const { name, price, category_id, sku } = req.body;
+        const formattedData = { 
+            name,
+            price,
+            category_id,
+            sku
         }
         try {
-            const result = await Product.create({
-                name,
-                price,
-                sku,
-                slug: slugify(name, { lower: true }) + `-${sku}`
-            })
-            return res.create(result);
+            const result = await ProductService.updateProduct(formattedData, id);
+            
+            return res.updated(result, "Product updated.");
         } catch(err) {
-            return res.error(err.message, err.statusCode || 500)
+            res.error(err.message, err.statusCode || 500)
         }
     }
 
     static async deleteProduct(req, res) {
         const { id } = req.params;
-        const product = await Product.findOne({
-            where: {
-                id
-            },
-            raw: true
-        })
-        // Product do not exists
-        if (!product) {
-            return res.status(404).json({
-                success: false,
-                body: null,
-                message: "محصول پیدا نشد."
-            })
-        }
+        
         try {
-            await Product.destroy({
-                where: {
-                    id
-                }
-            })
+            const result = await ProductService.deleteProduct(id);
+            return res.success("product deleted successfully", 200);
         } catch(err) {
-            return res.status(500).json({
-                success: false,
-                body: null,
-                message: "خطای سرور"
-            })
+            return res.error(err.message, err.statusCode || 500);
         }
     }
 }

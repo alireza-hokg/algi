@@ -13,4 +13,30 @@ export default class ProductRepository {
         });
     }
     
+    static async create(product) {
+        return await Product.create(product);
+    }
+
+    static async update(product, productId) {
+        return await Product.update(
+            {
+                name: product.name,
+                price: product.price,
+                sku: product.sku
+            },
+            {
+                where: {
+                    id: productId
+                }
+            }
+        )
+    }
+
+    static async delete(productId) {
+        return await Product.destroy({
+            where: {
+                id: productId
+            },
+        })
+    }
 }

@@ -8,7 +8,9 @@ router.get("/products", TaskController.getProducts);
 
 router.get("/products/:id", TaskController.getProductById)
 
-router.post("/products", TaskController.createProduct)
+router.post("/products", TaskController.createProduct);
+
+router.put("/products/:id", TaskController.updateProduct);
 
 router.delete("/products/:id", TaskController.deleteProduct)
 
