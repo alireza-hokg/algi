@@ -33,7 +33,7 @@ export default class ProductService {
             throw new ValidationError("Id must be integer", 400)
         }
         try {
-            const product = await this.productRepository.getById(id);
+            const product = await this.productRepository.getById(numericId);
             if (!product) {
                 throw new NotFoundError("product not found.")
             }
@@ -126,7 +126,6 @@ export default class ProductService {
     async getProductBySlug(slug) {
         try {
             const product = await this.productRepository.getBySlug(slug);
-            console.log(product)
             if (!product) {
                 throw new NotFoundError("No product found.")
             }

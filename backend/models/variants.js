@@ -2,7 +2,7 @@ import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
 import Product from "./products.js";
 
-const ProductVariant = sequelize.define("ProductVariants", {
+const Variant = sequelize.define("Variant", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -39,7 +39,7 @@ const ProductVariant = sequelize.define("ProductVariants", {
     }
 }, {
     timestamps: true,
-    tableName: "product_variants",
+    tableName: "variants",
     hooks: {
         beforeUpdate: user => {
             user.updatedAt = new Date()
@@ -47,7 +47,7 @@ const ProductVariant = sequelize.define("ProductVariants", {
     }
 })
 
-Product.hasMany(ProductVariant, {
+Product.hasMany(Variant, {
     foreignKey: {
         name: "product_id",
         onDelete: "CASCADE",
@@ -57,4 +57,4 @@ Product.hasMany(ProductVariant, {
     sourceKey: "id",
 })
 
-export default ProductVariant;
+export default Variant;

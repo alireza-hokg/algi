@@ -4,7 +4,7 @@ import "dotenv/config";
 
 import sequelize from "./utils/db.js";
 import productsRoutes from "./routes/products.js";
-import ProductVariantsRoutes from "./routes/product-variants.js";
+import VariantsRoutes from "./routes/variants.js";
 import UserRoutes from "./routes/users.js";
 
 import { createData } from "./seeders/seed.js";
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(responseFormatter);
 
 app.use("/api/v1/", productsRoutes)
-app.use("/api/v1/", ProductVariantsRoutes)
+app.use("/api/v1/", VariantsRoutes)
 app.use("/api/v1", UserRoutes)
 
 async function startServer() {

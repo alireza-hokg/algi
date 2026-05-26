@@ -26,3 +26,9 @@ export class DatabaseError extends AppError {
         super(message, 500, "DATABASE_ERROR")
     }
 }
+
+export class ConflictError extends AppError {
+    constructor(message = "Conflict error") {
+        super(message, 409, "CONFLICT");
+    }
+}
