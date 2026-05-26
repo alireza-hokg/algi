@@ -20,4 +20,13 @@ export default class VariantRepo {
     async create(variantData) {
         return await Variant.create(variantData);
     }
+
+    async update(variantData, variantId) {
+        return await Variant.update(
+            variantData, {
+            where: {
+                id: variantId
+            }
+        })
+    }
 }

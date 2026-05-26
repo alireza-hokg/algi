@@ -18,6 +18,6 @@ router.get("/products/:slug/variants", variantController.getVariantsBySlug.bind(
 
 router.post("/variants/", variantController.createVariant.bind(variantController));
 
-// router.put("/variants/", variantController.updateVariant.bind(variantController));
+router.put("/variants/:id", variantController.updateVariant.bind(variantController));
 
 export default router;

@@ -44,6 +44,12 @@ export default class VariantController {
     async updateVariant(req, res) {
         const { id } = req.params;
         const { product_id, size, color, quantity, width, height, waist, image_url } = req.body;
-        
+        const formattedData = { product_id, size, color, quantity, width, height, waist, image_url };
+        try {
+            await this.variantService.updateVariant(formattedData, id);
+            return res.updated(formattedData);
+        } catch(err) {
+            return res.error(err.message, err.statusCode || 500);
+        }
     }
 }
