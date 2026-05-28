@@ -25,7 +25,7 @@ export default class VariantService {
     // Check if product_id, size and color is not the same
     async isVariantDuplicate(variantData) {
         const existing = await this.variantRepo.findOneByProductIdAndSizeAndColor(variantData);
-        return !!existing;
+        return existing !== null && Object.keys(existing).length > 0;
     }
     
     async createVariant(variantData) {

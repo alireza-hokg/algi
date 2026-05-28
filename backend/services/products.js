@@ -1,6 +1,4 @@
-import slugify from "slugify";
 
-import Product from "../models/products.js";
 import { NotFoundError, ValidationError, DatabaseError } from "../utils/Error.js";
 
 // Service just received the data and process it
@@ -12,16 +10,16 @@ export default class ProductService {
 
     async getAllProducts() {
         try {
-            const results = await this.productRepository.getAllProducts();
+            const {rows, count} = await this.productRepository.getAllProducts();
             // No data
-            if (results.rows.length === 0) {
+            if (rows.length === 0) {
                 throw new NotFoundError("no product found.");
             }
-            const formattedData = this._formatProducts(results.rows);
-            return formattedData;
+            const normalizedProducts = this.#normalizeProducts(rows);
+            return normalizedProducts;
         } catch(err) {
             if (err instanceof NotFoundError) {
-                return err
+                throw err
             }
             throw new DatabaseError(`Database error ${err.message}`)
         }
@@ -37,8 +35,8 @@ export default class ProductService {
             if (!product) {
                 throw new NotFoundError("product not found.")
             }
-            const formattedData = this._formatProduct(product);
-            return formattedData;
+            const normalizedProduct = this.#normalizeProduct(product);
+            return normalizedProduct;
             
         } catch(err) {
             if (err instanceof NotFoundError || err instanceof ValidationError) {
@@ -53,7 +51,7 @@ export default class ProductService {
         if (!name || !price || !sku || !slug) {
             throw new ValidationError("invalid data", 400);
         }
-        const formattedData = {
+        const normalizedProducts = {
             name,
             price,
             sku,
@@ -61,11 +59,11 @@ export default class ProductService {
             slug
         }
         try {
-            const result = await this.productRepository.create(formattedData)
+            const result = await this.productRepository.create(normalizedProducts)
             return result.dataValues
         } catch(err) {
             if (err instanceof ValidationError) {
-                return err;
+                throw err;
             }
             throw new DatabaseError(err.message, 500);
         }
@@ -87,7 +85,7 @@ export default class ProductService {
             }
         } catch(err) {
             if (err instanceof ValidationError || err instanceof NotFoundError) {
-                return err;
+                throw err;
             }
             throw new DatabaseError(err.message, err.statusCode || 500)
         }
@@ -96,9 +94,12 @@ export default class ProductService {
     async deleteProduct(productId) {
         const numericProductId = Number(productId);
         if (!numericProductId) {
-            throw new NotFoundError("No product found.")
+            throw new NotFoundError("productId must be integer")
         }
         const product = await this.getProductById(productId);
+        if (!product) {
+            throw new NotFoundError("No product found.")
+        }
         try {
             const result = await this.productRepository.delete(productId); 
             return result;
@@ -110,7 +111,7 @@ export default class ProductService {
         }
     }
     
-    _formatProduct(product) {
+    #normalizeProduct(product) {
         return {
             id: product.id,
             name: product.name,
@@ -119,8 +120,8 @@ export default class ProductService {
         }
     }
 
-    _formatProducts(products) {
-        return products.map(product=> this._formatProduct(product))
+    #normalizeProducts(products) {
+        return products.map(product=> this.#normalizeProduct(product))
     }
 
     async getProductBySlug(slug) {

@@ -2,9 +2,13 @@ import Product from "../models/products.js";
 
 export default class ProductRepository {
     async getAllProducts() {
-        return await Product.findAndCountAll({
+        const result = await Product.findAndCountAll({
             raw: true
         });
+        return {
+            rows: result.rows,
+            count: result.count
+        }
     }
 
     async getById(id) {
