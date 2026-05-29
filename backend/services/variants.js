@@ -1,3 +1,5 @@
+import { UpdatedAt } from "@sequelize/core/decorators-legacy";
+import UpdateVariantDto from "../dtos/product/updateProductDto.js";
 import { NotFoundError, DatabaseError, ValidationError, ConflictError } from "../utils/Error.js";
 
 export default class VariantService {
@@ -39,7 +41,20 @@ export default class VariantService {
             if (isDuplicate) {
                 throw new ConflictError("createVariant conflict error");
             }
-            const createdVariant = await this.variantRepo.create(variantData);
+            const allowedFields = {
+                product_id,
+                size,
+                color,
+                quantity,
+                width,
+                height,
+                waist,
+                image_url 
+            };
+            const cleanFields = Object.fromEntries(
+                Object.entries(allowedFields).filter(([_, v])=> v !== undefined && v !== null)
+            )
+            const createdVariant = await this.variantRepo.create(cleanFields);
             return createdVariant.dataValues;
         } catch(err) {
             if (err instanceof ValidationError || err instanceof ConflictError) {
@@ -49,24 +64,35 @@ export default class VariantService {
         }
     }
 
-    async updateVariant(variantData, id) {
-        const { product_id, size, color, quantity, width, height, waist, image_url } = variantData;
+    async updateVariant(updateFields, id) {
+        const { product_id, size, color, quantity, width, height, waist, image_url } = updateFields;
         const numericId = Number(id);
         if (Number.isNaN(numericId)) {
             throw new NotFoundError("id must be integer.")
         }
         try {
-            if (!(product_id && size && color && quantity)) {
-                throw new ValidationError("product_id, size, color, quantity is required.")
+            const updateDto = new UpdateVariantDto(updateFields);
+            // Is there any fields for update
+            if (!updateDto.hasAnyFieldToUpdate()) {
+                throw new ValidationError("No valid fields updated.")
             }
+            // validation
+            UpdateVariantDto.validateForUpdate(updateFields);
+            // Remove null and undefiend fields and get the clean fields
+            const cleanData = updateDto.getCleanData();
+            
             const isDuplicate = await this.isVariantDuplicate({product_id, size, color})
             if (isDuplicate) {
-                throw new ConflictError("createVariant conflict error");
+                throw new ConflictError("UpdateVariant conflict error");
             }
-            const [isUpdated] = await this.variantRepo.update(variantData, numericId);
-            return isUpdated;
+
+            const [rowsAffected] = await this.variantRepo.update(cleanData, numericId);
+            return rowsAffected;
         } catch(err) {
-            throw new DatabaseError("update variantService database error.")
+            if (err instanceof NotFoundError || err instanceof ConflictError || err instanceof ValidationError) {
+                throw err
+            }
+            throw new DatabaseError("Update variantService database error.")
         }
     }
 }
