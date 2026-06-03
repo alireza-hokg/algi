@@ -1,5 +1,4 @@
-import { UpdatedAt } from "@sequelize/core/decorators-legacy";
-import UpdateVariantDto from "../dtos/product/updateProductDto.js";
+import UpdateVariantDto from "../dtos/variant/updateVariant.js";
 import { NotFoundError, DatabaseError, ValidationError, ConflictError } from "../utils/Error.js";
 
 export default class VariantService {
