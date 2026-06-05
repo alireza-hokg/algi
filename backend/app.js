@@ -10,29 +10,40 @@ import UserRoutes from "./routes/users.js";
 import { createData } from "./seeders/seed.js";
 import { responseFormatter } from "./middlewares/responseFormatter.js";
 
+/** Default server port (can be overridden by environment variable) */
 const { SERVER_PORT = 9000 } = process.env;
+
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use(cors());
-app.use(responseFormatter);
+// ============= Middlewares =============
+app.use(express.json()); // Parse json request bodies
+app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies (for form submissions)
+app.use(cors()); // Enable CORS for all routes
+app.use(responseFormatter); // Custom response formatter middleware
 
-app.use("/api/v1/", productsRoutes)
-app.use("/api/v1/", VariantsRoutes)
-app.use("/api/v1", UserRoutes)
+// ============ API Routes ============
+app.use("/api/v1/", productsRoutes) // Product management routes
+app.use("/api/v1/", VariantsRoutes) // Product variants routes
+app.use("/api/v1", UserRoutes)      // User management routes
 
+/**
+ * Initializes and starts the Express server
+ * @async
+ * @returns {Promise<void>}
+ * @throws {Error} if database connection or server startup fails
+ */
 async function startServer() {
     try {
+        // Disable foreign key checks to avoid conflicts when dropping/recreating tables
         await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
-        // Start syncing database
+        // Sync all models with database (force: true drops existing tables)
         await sequelize.sync({ force: true });
         console.log("Database connected successfully");
         createData();
 
-        // Start listening to port 9000
+        // Start HTTP server on configured port
         app.listen(SERVER_PORT, (req, res) => {
-            console.log("Server is listening to port "+SERVER_PORT)
+            console.log(`Server is listening to port ${SERVER_PORT}`)
         })
     } catch(err) {
         console.log("Unable to start server ", err.message);
