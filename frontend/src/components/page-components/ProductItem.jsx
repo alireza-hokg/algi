@@ -6,11 +6,13 @@ const ProductItem = ({ product }) => {
     return( 
         <li>
             <figure>
-                <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
-                    <img
-                        className="w-full inline-block"
-                        src={Sylvanas}/>
-                </div>
+                <Link to={`/products/${product.slug}/product-variants`}>
+                    <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
+                        <img
+                            className="w-full inline-block"
+                            src={Sylvanas}/>
+                    </div>
+                </Link>
                 <div>
                     <figcaption>
                         <div className="space-y-4">

@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Product from "../pages/Product";
+import Admin from "../pages/Admin";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -15,10 +16,13 @@ const AppRoutes = () => {
                 path="/auth"
                 element={<Auth />}
             />
-            
             <Route
                 path="/products/:slug/product-variants"
                 element={<Product />}
+            />
+            <Route
+                path="/admin/"
+                element={<Admin />}
             />
         </Routes>
     )
