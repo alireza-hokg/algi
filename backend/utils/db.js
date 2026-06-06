@@ -42,6 +42,17 @@ const sequelize = new Sequelize({
     logging: console.log
 })
 
+/**
+ * Attempts to authenticate the database connection
+ * 
+ * @description
+ * Tests the database connection by calling sequelize.authenticate
+ * If authenticate true the process won't stop and continues.
+ * If an error occurs, the error message is logged and the process exists.
+ * 
+ * @async
+ * @throws {Error} When database connection fails - caught and handled internally
+ */
 try {
     await sequelize.authenticate();
 } catch(err) {
