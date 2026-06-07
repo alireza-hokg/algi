@@ -17,7 +17,7 @@ const AppRoutes = () => {
                 element={<Auth />}
             />
             <Route
-                path="/products/:slug/product-variants"
+                path="/products/:slug/variants"
                 element={<Product />}
             />
             <Route
