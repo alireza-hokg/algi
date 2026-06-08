@@ -6,6 +6,7 @@ import Sylvanas from "../assets/images/download.jpg";
 import Screenshot from "../assets/images/screenshot.png";
 import Pants from "../components/page-components/Pants";
 import Loading from "../components/layout/Loading";
+import ErrorDisplay from "../components/layout/ErrorDisplay";
 
 const Product = () => {
     const { slug } = useParams();
@@ -21,38 +22,41 @@ const Product = () => {
     const [error, setError] = useState(null);
     // image state
     const [selectedImage, setSelectedImage] = useState(0);
+    const [images, setImaged] = useState([]);
+    
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const { data: variantsData } = await get(`/products/${slug}/variants`);
+            const product_id = variantsData.body[0]?.product_id;
+            const { data: productData } = await get(`/products/${product_id}`);
+            const variants = variantsData.body || [];
+            const product = productData.body || [];
+            const uniqueColors = [...new Set(variants.map(product => product.color))];
+            const uniqueSizes = [...new Set(variants.map(product => product.size))];
+            const uniqueWidth = [...new Set(variants.map(product => product.width))];
+            const uniqueHeight = [...new Set(variants.map(product => product.height))];
 
+            setProducts(variants);
+            setVariantColor(uniqueColors);
+            setVariantSize(uniqueSizes);
+            setVariantWidth(uniqueWidth);
+            setVariantHeight(uniqueHeight);
+            setProduct(product);
+        } catch (err) {
+            console.log(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const { data: variantsData } = await get(`/products/${slug}/variants`);
-                const product_id = variantsData.body[0]?.product_id;
-                const { data: productData } = await get(`/products/${product_id}`);
-                const variants = variantsData.body || [];
-                const product = productData.body || [];
-                const uniqueColors = [...new Set(variants.map(product => product.color))];
-                const uniqueSizes = [...new Set(variants.map(product => product.size))];
-                const uniqueWidth = [...new Set(variants.map(product => product.width))];
-                const uniqueHeight = [...new Set(variants.map(product => product.height))];
-
-                setProducts(variants);
-                setVariantColor(uniqueColors);
-                setVariantSize(uniqueSizes);
-                setVariantWidth(uniqueWidth);
-                setVariantHeight(uniqueHeight);
-                setProduct(product);
-            } catch (err) {
-                console.log(err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
         fetchData();
     }, [slug]);
 
+    {/* ////////// LOADING //////////// */}
     if (loading) {
         return (
             <Loading 
@@ -63,23 +67,20 @@ const Product = () => {
         );
     }
     
+    {/* ///////////// ERROR ///////////// */}
     if (error) {
         return (
-            <div className="flex justify-center items-center min-h-screen bg-red-50">
-                <div className="text-center p-8 bg-white rounded-xl shadow-lg">
-                    <p className="text-red-600 font-bold text-lg">خطا در بارگذاری</p>
-                    <p className="text-gray-600 mt-2">{error}</p>
-                    <button 
-                        onClick={() => window.location.reload()}
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                    >
-                        تلاش مجدد
-                    </button>
-                </div>
-            </div>
+            <ErrorDisplay 
+                error={error}
+                onRetry={()=> {
+                    fetchData()
+                }}
+                showDetails={true}
+            /> 
         );
     }
     
+    {/* ////////// Product page //////////// */}
     return (
         <div className="min-h-screen bg-gray-50">
             <Header />

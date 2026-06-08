@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ProductItem from "./ProductItem.jsx";
 import { useEffect, useState } from "react";
 import { get } from "../../services/api.js";
-import ErrorBoundary from "../layout/ErrorDisplay.jsx";
 import ErrorDisplay from "../layout/ErrorDisplay.jsx";
 import Loading from "../layout/Loading.jsx";
 
@@ -12,20 +11,20 @@ const ProductList = () => {
     const [error, setError] = useState(null);
     const [products, setProducts] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const { data: productsData } = await get("/products");
+            setProducts(productsData);
+        } catch(err) {
+            setError(err.message)
+        } finally {
+            setLoading(false);
+        }
+    }
     // Fetch products
     useEffect(()=> {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const { data: productsData } = await get("/products");
-                setProducts(productsData);
-            } catch(err) {
-                setError(err.message)
-            } finally {
-                setLoading(false);
-            }
-        }
         fetchData();
     }, [])
     if (loading) {
@@ -33,9 +32,15 @@ const ProductList = () => {
             <Loading />
         )
     }
-    if (!error) {
+    if (error) {
         return (
-            <ErrorDisplay />
+            <ErrorDisplay 
+                error={error}
+                onRetry={()=> {
+                    fetchData()
+                }}
+                showDetails={true}
+            /> 
         )
     }
     return (
