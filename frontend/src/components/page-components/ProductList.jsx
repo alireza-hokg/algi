@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import ProductItem from "./ProductItem.jsx";
 import { useEffect, useState } from "react";
 import { get } from "../../services/api.js";
+import ErrorBoundary from "../layout/ErrorDisplay.jsx";
+import ErrorDisplay from "../layout/ErrorDisplay.jsx";
+import Loading from "../layout/Loading.jsx";
 
 const ProductList = () => {
     const [loading, setLoading] = useState(false);
@@ -16,7 +19,6 @@ const ProductList = () => {
                 setLoading(true);
                 setError(null);
                 const { data: productsData } = await get("/products");
-                console.log(productsData)
                 setProducts(productsData);
             } catch(err) {
                 setError(err.message)
@@ -28,23 +30,12 @@ const ProductList = () => {
     }, [])
     if (loading) {
         return (
-            <h1>Loading ...</h1>
+            <Loading />
         )
     }
-    if (error) {
+    if (!error) {
         return (
-            <div className="text-center">
-                <div>خطا در دریافت اطلاعات</div>
-                <p>{error}</p>
-                <button
-                    className="bg-blue-500 px-4 py-2 rounded-md cursor-pointer"
-                    onClick={()=> {
-                        window.location.reload()
-                    }}
-                >
-                    تلاش مجدد
-                </button>
-            </div>
+            <ErrorDisplay />
         )
     }
     return (

@@ -1,31 +1,35 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { get } from "../services/api";
 import Header from "../components/layout/Header";
-import Sylvanas from "../assets/images/download.jpg"
+import Sylvanas from "../assets/images/download.jpg";
+import Screenshot from "../assets/images/screenshot.png";
 import Pants from "../components/page-components/Pants";
+import Loading from "../components/layout/Loading";
 
 const Product = () => {
-    // Get slug from URL
     const { slug } = useParams();
+    // Product states
     const [product, setProduct] = useState({});
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [variantColor, setVariantColor] = useState([]);
     const [variantSize, setVariantSize] = useState([]);
     const [variantWidth, setVariantWidth] = useState([]);
     const [variantHeight, setVariantHeight] = useState([]);
+    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    // image state
+    const [selectedImage, setSelectedImage] = useState(0);
 
-    // Fetch products/:slug
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const { data: variantsData} = await get(`/products/${slug}/variants`);
+                const { data: variantsData } = await get(`/products/${slug}/variants`);
                 const product_id = variantsData.body[0]?.product_id;
-                const { data: productData } = await get(`/products/${product_id}`)
+                const { data: productData } = await get(`/products/${product_id}`);
                 const variants = variantsData.body || [];
                 const product = productData.body || [];
                 const uniqueColors = [...new Set(variants.map(product => product.color))];
@@ -38,110 +42,160 @@ const Product = () => {
                 setVariantSize(uniqueSizes);
                 setVariantWidth(uniqueWidth);
                 setVariantHeight(uniqueHeight);
-                setProduct(product)
-            } catch(err) {
+                setProduct(product);
+            } catch (err) {
                 console.log(err);
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
-        }
+        };
         fetchData();
-    }, [slug])
+    }, [slug]);
 
     if (loading) {
         return (
-            <div>
-                loading...
-            </div>
-        )
+            <Loading 
+                size="large"
+                color="oklch(76.9% 0.188 70.08)"
+                fullscreen={true}
+            />
+        );
     }
+    
     if (error) {
         return (
-            <div>{error}</div>
-        )
+            <div className="flex justify-center items-center min-h-screen bg-red-50">
+                <div className="text-center p-8 bg-white rounded-xl shadow-lg">
+                    <p className="text-red-600 font-bold text-lg">خطا در بارگذاری</p>
+                    <p className="text-gray-600 mt-2">{error}</p>
+                    <button 
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        تلاش مجدد
+                    </button>
+                </div>
+            </div>
+        );
     }
-    return(
-        <div>
+    
+    return (
+        <div className="min-h-screen bg-gray-50">
             <Header />
-            <main>
-                <div className="bg-transparent px-2 mt-14">
-                    <div className="flex flex-col md:flex-row gap-8">
-                        {/* img product */}
-                        <div className="flex-1/2">
-                            <div>
-                                <img
-                                    src={Sylvanas}
-                                    className="w-full"
-                                />
+            <main className="container mx-auto px-4 py-8 mt-16">
+                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div className="flex flex-col lg:flex-row gap-8 p-6 md:p-8">
+                        {/* Product Image Section */}
+                        <div className="lg:w-1/2">
+                            <div className="sticky top-24">
+                                <div className="bg-gray-100 rounded-2xl overflow-hidden group">
+                                    <img
+                                        src={Sylvanas}
+                                        alt={product?.name}
+                                        className="w-full min-h-screen h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </div>
+                                {/* Thumbnails - اگر چندتا تصویر داری */}
+                                <div className="flex gap-2 mt-4">
+                                    {[Sylvanas, Screenshot].map((img, idx) => (
+                                        <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-amber-500 transition-all cursor-pointer">
+                                            <img src={img} alt={`thumbnail ${idx}`} className="w-full h-full object-cover" />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                        {/* details product */}
-                        <div className="flex-1/2 px-4 md:px-0 md:text-lg xl:text-xl">
-                            {/* name and code */}
-                            <h1 className="text-3xl xl:text-4xl text-gray-700 font-bold mb-6 md:mb-8
-                                space-x-4">
-                                <span>{product?.name}</span>
-                                <span>کد {product?.sku}</span>
-                            </h1>
-                            {/* List of details */}
-                            <ul className="space-y-4">
-                                <li className="text-2xl">
-                                    <span>قیمت:</span>{" "}
-                                    <span className="">{product["product.price"]?.toLocaleString("fa-IR")} تومان</span>
-                                </li>
-                                <li className="flex gap-x-2">
-                                    <span className="font-bold">سایزبندی: </span>
-                                    <div className="text-gray-700">
-                                        {variantSize.map((size, index)=> 
-                                            <span key={index}>
-                                                {size}{index < variantSize.length -1 && ", "}
+
+                        {/* Product Details Section */}
+                        <div className="lg:w-1/2">
+                            {/* Title & SKU */}
+                            <div className="border-b border-gray-200 pb-6 mb-6">
+                                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+                                    {product?.name}
+                                </h1>
+                                <div className="flex items-center gap-2 text-gray-500">
+                                    <span className="text-sm">کد محصول:</span>
+                                    <span className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                                        {product?.sku}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Price */}
+                            <div className="bg-amber-50 rounded-xl p-4 mb-6">
+                                <span className="text-gray-600">قیمت:</span>
+                                <span className="text-3xl font-bold text-amber-600 mr-2">
+                                    {product.price?.toLocaleString("fa-IR")}
+                                </span>
+                                <span className="text-gray-500 mr-1">تومان</span>
+                            </div>
+
+                            {/* Details List */}
+                            <div className="space-y-6">
+                                {/* Sizes Overview */}
+                                <div className="bg-gray-50 rounded-xl p-4">
+                                    <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایزهای موجود:</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {variantSize.map((size, index) => (
+                                            <span 
+                                                key={index}
+                                                className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-gray-700 text-sm font-medium hover:border-amber-500 hover:text-amber-600 transition-all cursor-pointer"
+                                            >
+                                                {size}
                                             </span>
-                                        )}
+                                        ))}
                                     </div>
-                                </li>
-                                <li>
-                                    <ul className="">
-                                        {products.map((product)=> (
+                                </div>
+
+                                {/* Product Variants Details */}
+                                <div className="bg-gray-50 rounded-xl p-4">
+                                    <h3 className="font-bold text-gray-800 mb-4 text-lg">📦 مشخصات دقیق:</h3>
+                                    <div className="space-y-3">
+                                        {products.map((product) => (
                                             <div 
                                                 key={product.id}
-                                                className="flex gap-x-3 mb-2 xl:mb-4">
-                                                <li>
-                                                    <span className="font-bold">سایز </span>
-                                                    <span className="text-gray-700">{product.size} :</span>
-                                                </li>
-                                                {/*  شلوار */}
-
-                                                <Pants 
-                                                    key={product.id}
-                                                    product={product} 
-                                                />
+                                                className="bg-white rounded-lg p-3 hover:shadow-md transition-shadow"
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="font-bold text-gray-700">سایز {product.size}</span>
+                                                    <span className="text-sm text-gray-500">موجود</span>
+                                                </div>
+                                                <Pants product={product} />
                                             </div>
                                         ))}
-                                    </ul>
-                                </li>
-                                <li className="flex items-start gap-2 text-sm">
-                                    <span className="font-bold text-gray-800">🎨 رنگ‌ها:</span>
-                                    <ul className="flex flex-wrap gap-2">
+                                    </div>
+                                </div>
+
+                                {/* Colors */}
+                                <div className="bg-gray-50 rounded-xl p-4">
+                                    <h3 className="font-bold text-gray-800 mb-3 text-lg">🎨 رنگ‌بندی:</h3>
+                                    <div className="flex flex-wrap gap-3">
                                         {variantColor?.map((color, index) => (
-                                            <li key={index}>
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-linear-to-r from-gray-50 to-gray-100 rounded-lg text-gray-700 text-xs border border-gray-200">
-                                                                    <span 
-                                                                        className="w-2 h-2 rounded-full" 
-                                                                        style={{ backgroundColor: color.toLowerCase() }}
-                                                                    />
+                                            <div key={index} className="group">
+                                                <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-700 text-sm hover:border-amber-500 hover:shadow-md transition-all cursor-pointer">
+                                                    <span 
+                                                        className="w-3 h-3 rounded-full shadow-inner" 
+                                                        style={{ backgroundColor: color.toLowerCase() }}
+                                                    />
                                                     {color}
                                                 </span>
-                                            </li>
+                                            </div>
                                         ))}
-                                    </ul>
-                                </li>
-                            </ul>
+                                    </div>
+                                </div>
+
+                                {/* Add to Cart Button */}
+                                <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                                    افزودن به سبد خرید
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
         </div>
-    )
-}
+    );
+};
+
 export default Product;
