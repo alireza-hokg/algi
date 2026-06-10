@@ -19,7 +19,7 @@ const Header = () => {
                         پوشاک آلگی
                         <img />
                     </h1>
-                    {/* Search bigger than medium width */}
+                    {/* Searchbar for width > md */}
                     <div className="hidden md:block flex-1">
                         <div className="hidden md:flex items-center flex-1 max-w-lg lg:max-w-xl border
                         border-gray-300 rounded-4xl
@@ -34,7 +34,7 @@ const Header = () => {
                             </i>
                         </div>
                     </div>
-                    {/* Login or sign up for bigger than medium width */}
+                    {/* Login or sign up for width > md */}
                     {isLogin ? (
                         null
                     ) : (
@@ -47,7 +47,7 @@ const Header = () => {
                             </Link>
                         </div>
                     )}
-                    {/* Search and basket icon for less than medium width */}
+                    {/* Search and basket icon for width < md */}
                     <div className="flex md:hidden space-x-2">
                         <div>
                             <Search color="#666"/>

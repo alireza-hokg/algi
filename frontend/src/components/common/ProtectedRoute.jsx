@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, redirectTo}) => {
 
     if (loading) {
         <Loading
-            fullscreen={true} 
+            fullscreen={true}
         />
     }
 

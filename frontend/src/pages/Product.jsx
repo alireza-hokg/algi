@@ -4,7 +4,7 @@ import { get } from "../services/api";
 import Header from "../components/layout/Header";
 import Sylvanas from "../assets/images/download.jpg";
 import Screenshot from "../assets/images/screenshot.png";
-import Pants from "../components/page-components/Pants";
+import Pants from "../components/product/Pants";
 import Loading from "../components/layout/Loading";
 import ErrorDisplay from "../components/layout/ErrorDisplay";
 
@@ -187,7 +187,7 @@ const Product = () => {
                                 </div>
 
                                 {/* Add to Cart Button */}
-                                <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                                <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 rounded-xl cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
                                     افزودن به سبد خرید
                                 </button>
                             </div>

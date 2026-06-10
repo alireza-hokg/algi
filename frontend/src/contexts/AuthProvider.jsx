@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext.js";
-import { post } from "../services/api.js"
+import { get, post } from "../services/api.js"
 
 const AuthProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false);
@@ -92,10 +92,28 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(()=> {
-        const handleUnauthrized = () => {
-            logout() 
+        const checkAuth = async () => {
+            try {
+                const response = await get("/auth/me");
+                if (response.data.success) {
+                    setIsLogin(true);
+                    setUser(response.data.body.user)
+                }
+            } catch(err) {
+                setIsLogin(false);
+                setError(err.message)
+            } finally {
+                setLoading(false);
+            }
         }
+        checkAuth();
         
+        const handleUnauthorized = () => {
+            logout();
+        }
+        window.addEventListener("unauthorized", handleUnauthorized);
+        return () => window.removeEventListener("unauthorized", handleUnauthorized);
+
     }, [])
 
     return (

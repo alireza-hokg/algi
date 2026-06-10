@@ -10,6 +10,16 @@ const api = axios.create({
 
 api.defaults.withCredentials = true
 
+api.interceptors.response.use(
+    response=> response,
+    error=> {
+        if (error.response?.statue === 401) {
+            window.dispatchEvent(new CustomEvent('unauthorized'));
+        }
+        return Promise.reject(error);
+    }
+)
+
 const get = (endpoint) => {
     return api(endpoint, { method: "get" })
 }

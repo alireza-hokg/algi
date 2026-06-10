@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import AuthLogin from "../components/page-components/AuthLogin.jsx"
-import AuthRegister from "../components/page-components/AuthRegister.jsx"
+import AuthLogin from "../components/auth/AuthLogin.jsx"
+import AuthRegister from "../components/auth/AuthRegister.jsx"
 
 const Auth = () => {
 
