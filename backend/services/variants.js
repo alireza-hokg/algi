@@ -14,13 +14,12 @@ export default class VariantService {
                 throw new NotFoundError('No product found by slug', 404)
             }
             const result = await this.variantRepo.getVariantsByProductId(product.id);
-            console.log(result)
             return result;
         } catch(err) {
             if (err instanceof NotFoundError) {
                 return err
             }
-            throw new DatabaseError('services/variants');
+            throw new DatabaseError(err.message);
         }
     }
     // Check if product_id, size and color is not the same
@@ -31,7 +30,7 @@ export default class VariantService {
     
     async createVariant(variantData) {
         
-        const { product_id, size, color, quantity, width, height, waist, image_url } = variantData;
+        const { product_id, size, color, quantity, width, height, waist } = variantData;
         try {
             if (!(product_id && size && color && quantity)) {
                 throw new ValidationError("product_id, size, color, quantity is required.")
@@ -47,8 +46,7 @@ export default class VariantService {
                 quantity,
                 width,
                 height,
-                waist,
-                image_url 
+                waist
             };
             const cleanFields = Object.fromEntries(
                 Object.entries(allowedFields).filter(([_, v])=> v !== undefined && v !== null)
@@ -64,7 +62,7 @@ export default class VariantService {
     }
 
     async updateVariant(updateFields, id) {
-        const { product_id, size, color, quantity, width, height, waist, image_url } = updateFields;
+        const { product_id, size, color, quantity, width, height, waist } = updateFields;
         const numericId = Number(id);
         if (Number.isNaN(numericId)) {
             throw new NotFoundError("id must be integer.")

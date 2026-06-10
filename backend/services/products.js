@@ -47,19 +47,20 @@ export default class ProductService {
     }
 
     async createProduct(product) {
-        const { name, price, sku, category_id, slug } = product;
+        const { name, price, sku, category_id, slug, images } = product;
         if (!name || !price || !sku || !slug) {
             throw new ValidationError("invalid data", 400);
         }
-        const normalizedProducts = {
+        const normalizedProduct = {
             name,
             price,
             sku,
             category_id,
-            slug
+            slug: slugify(name, { lower: true }) + `-${sku}`,
+            images
         }
         try {
-            const result = await this.productRepository.create(normalizedProducts)
+            const result = await this.productRepository.create(normalizedProduct)
             return result.dataValues
         } catch(err) {
             if (err instanceof ValidationError) {
@@ -78,8 +79,17 @@ export default class ProductService {
         if (!currentProduct) {
             throw new NotFoundError("No product found.")
         }
+        const { name, price, sku, category_id, images } = product;
+        const normalizedProduct = {
+            name,
+            price,
+            sku,
+            category_id,
+            slug: slugify(name, { lower: true }) + `-${sku}`,
+            images
+        }
         try {
-            const [isUpdated] = await this.productRepository.update(product, productId);
+            const [isUpdated] = await this.productRepository.update(normalizedProduct, productId);
             if (isUpdated) {
                 return product
             }
@@ -116,7 +126,8 @@ export default class ProductService {
             id: product.id,
             name: product.name,
             price: product.price,
-            sku: product.sku
+            sku: product.sku,
+            slug: product.slug
         }
     }
 

@@ -40,6 +40,12 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false
+    },
+    images: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue: [],
+        comment: "ارایه تصاویر محصول"
     }
 }, {
     timestamps: true,

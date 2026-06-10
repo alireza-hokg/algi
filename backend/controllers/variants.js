@@ -20,7 +20,7 @@ export default class VariantController {
 
     // Create product-variant
     async createVariant(req, res) {
-        const { product_id, size, color, quantity, width, height, waist, image_url } = req.body;
+        const { product_id, size, color, quantity, width, height, waist } = req.body;
         
         const formattedData = {
             product_id,
@@ -43,8 +43,8 @@ export default class VariantController {
     // Update product-variant by id
     async updateVariant(req, res) {
         const { id } = req.params;
-        const { product_id, size, color, quantity, width, height, waist, image_url } = req.body;
-        const formattedData = { product_id, size, color, quantity, width, height, waist, image_url };
+        const { product_id, size, color, quantity, width, height, waist } = req.body;
+        const formattedData = { product_id, size, color, quantity, width, height, waist };
         try {
             await this.variantService.updateVariant(formattedData, id);
             return res.updated(formattedData);

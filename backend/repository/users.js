@@ -31,4 +31,13 @@ export default class Users {
             raw: true
         })
     }
+
+    async findByUserId(userId) {
+        const user = await User.findByPk(userId, {
+            attributes: {
+                exclude: ["password"]
+            }
+        });
+        return user;
+    }
 }

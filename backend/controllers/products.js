@@ -32,13 +32,13 @@ export default class ProductController {
 
     async createProduct(req, res) {
         // PARAMETERS name, price, sku
-        const { name, price, sku, category_id } = req.body;
+        const { name, price, sku, category_id, images } = req.body;
         const initialData = {
             name,
             price,
             sku,
             category_id,
-            slug: slugify(name, { lower: true }) + `-${sku}`
+            images
         };
         try {
             const result = await this.productService.createProduct(initialData);
@@ -50,13 +50,13 @@ export default class ProductController {
 
     async updateProduct(req, res) {
         const { id } = req.params;
-        const { name, price, category_id, sku } = req.body;
+        const { name, price, category_id, sku, images } = req.body;
         const formattedData = {
             name,
             price,
             category_id,
             sku,
-            slug: slugify(name, { lower: true }) + `-${sku}`
+            images
         }
         try {
             const result = await this.productService.updateProduct(formattedData, id);

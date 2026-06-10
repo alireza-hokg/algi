@@ -83,14 +83,43 @@ export default class UserController {
     * @throws {400} - اطلاعات مورد نیاز را وارد کنید
     * @throws {401} - اطلاعات نادرست
     */
-   async login(req, res) {
-       try {
-           const { phoneNumber, password } = req.body;
-           const initialData = { phoneNumber, password }
-           const user = await this.userService.login(initialData);
-           res.success(user, "user login successfully", 200)
-       } catch(err) {
-           res.error(err.message, err.statusCode || 500);
-       }
-   }
+    async login(req, res) {
+        try {
+            const { phoneNumber, password } = req.body;
+            const initialData = { phoneNumber, password }
+            const response = await this.userService.login(initialData);
+            // ارسال token در کوکی
+            res.cookie('token', response.token, {
+                httpOnly: true,      // ✅ امنیت در برابر XSS
+                secure: process.env.NODE_ENV === "production",
+                sameSite: 'strict',  // ✅ امنیت در برابر CSRF  
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                path: '/'
+            });
+
+            res.success(response, "user login successfully", 200)
+        } catch(err) {
+            res.error(err.message, err.statusCode || 500);
+        }
+    }
+
+    async logout(req, res) {
+        res.cookie('token', response.token, {
+            httpOnly: true,      // ✅ امنیت در برابر XSS
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'strict',  // ✅ امنیت در برابر CSRF  
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+            path: '/'
+        });
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict'
+        })
+        res.success("token با موفقیت حذف شد.");
+    }
+
+    async isLoggedIn(req, authenticateToken, res) {
+        
+    }
 }

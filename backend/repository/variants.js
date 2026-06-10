@@ -1,3 +1,4 @@
+import Product from "../models/products.js";
 import Variant from "../models/variants.js";
 
 export default class VariantRepo {
@@ -5,7 +6,16 @@ export default class VariantRepo {
         const variants = await Variant.findAndCountAll({
             where: {
                 product_id: productId
-            }
+            },
+            include: [
+                {
+                    model: Product,
+                    attributes: ['name', 'sku'],
+                    required: true
+                }
+            ],
+            raw: true,
+            nest: false
         },
         )
         return variants

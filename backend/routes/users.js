@@ -67,4 +67,8 @@ router.post("/auth/login", userController.login.bind(userController));
  */
 router.post("/auth/register", userController.register.bind(userController));
 
+router.post("/auth/logout", userController.logout.bind(userController));
+
+router.get("/auth/me", userController.isLoggedIn.bind(userController))
+
 export default router;

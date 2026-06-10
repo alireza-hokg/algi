@@ -33,10 +33,6 @@ const Variant = sequelize.define("Variant", {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true
     },
-    image_url: {
-        type: DataTypes.TEXT,
-        allowNull: true
-    }
 }, {
     timestamps: true,
     tableName: "variants",
