@@ -8,6 +8,8 @@ const api = axios.create({
     }
 })
 
+api.defaults.withCredentials = true
+
 const get = (endpoint) => {
     return api(endpoint, { method: "get" })
 }

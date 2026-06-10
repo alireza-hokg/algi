@@ -1,7 +1,9 @@
 import { LogIn, Menu, Search, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth.js";
 
 const Header = () => {
+    const { isLogin } = useAuth();
     return (
         <header className="bg-white p-4">
             <div className="">
@@ -19,7 +21,8 @@ const Header = () => {
                     </h1>
                     {/* Search bigger than medium width */}
                     <div className="hidden md:block flex-1">
-                        <div className="hidden md:flex items-center flex-1 max-w-lg lg:max-w-xl border border-gray-300 rounded-4xl
+                        <div className="hidden md:flex items-center flex-1 max-w-lg lg:max-w-xl border
+                        border-gray-300 rounded-4xl
                             ">
                             <input
                                 type="text"
@@ -32,14 +35,18 @@ const Header = () => {
                         </div>
                     </div>
                     {/* Login or sign up for bigger than medium width */}
-                    <div className="hidden md:block">
-                        <Link
-                            to="/auth"
-                            className="flex text-white bg-orange-500 py-1 px-4 rounded-lg whitespace-nowrap">
-                            <i><LogIn /></i>
-                            <span>ورود | ثبت نام</span>
-                        </Link>
-                    </div>
+                    {isLogin ? (
+                        null
+                    ) : (
+                        <div className="hidden md:block">
+                            <Link
+                                to="/auth"
+                                className="flex text-white bg-orange-500 py-1 px-4 rounded-lg whitespace-nowrap">
+                                <i><LogIn /></i>
+                                <span>ورود | ثبت نام</span>
+                            </Link>
+                        </div>
+                    )}
                     {/* Search and basket icon for less than medium width */}
                     <div className="flex md:hidden space-x-2">
                         <div>
