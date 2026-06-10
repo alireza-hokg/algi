@@ -1,4 +1,3 @@
-
 /**
  * @class UserController
  * @description Handles HTTP requests for user-related operations
@@ -15,7 +14,6 @@ export default class UserController {
     async getAllUsers(req, res) {
         try {
             const users = await this.userService.getAll();
-            console.log(users);
             return res.success(users, "Users successfully fetched", 200);
         } catch(err) {
             return res.error(err.message, err.statusCode || 500);
@@ -116,10 +114,17 @@ export default class UserController {
             secure: true,
             sameSite: 'strict'
         })
-        res.success("token با موفقیت حذف شد.");
+        res.success(null, "با موفقیت logged out شد");
     }
 
-    async isLoggedIn(req, authenticateToken, res) {
-        
+    
+    async isLoggedIn(req, res) {
+        try {
+            const { userId } = req
+            const user = await this.userService.isLoggedIn(userId)
+            res.success(user, "توکن معتبر است")
+        } catch(err) {
+            res.error(err.message, err.statusCode || 500)
+        }
     }
 }

@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
@@ -23,6 +24,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 })); 
 
+app.use(cookieParser())
 app.use(express.json()); // Parse json request bodies
 app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies (for form submissions)
 

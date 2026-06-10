@@ -3,6 +3,7 @@ import express from "express";
 import UserRepo from "../repository/users.js";
 import UserService from "../services/users.js";
 import UserController from "../controllers/users.js";
+import { authenticateToken } from "../middlewares/authenticateToken.js";
 
 /**
  * =================================
@@ -30,7 +31,6 @@ const router = express.Router();
 
 /**
  * @route GET /auth/users
- * @controller userController.getAllUsers
  * @purpose Get all the users
  * Authentication required: Yes
  * Authorization: Admin
@@ -44,7 +44,6 @@ const router = express.Router();
 router.get("/auth/users", userController.getAllUsers.bind(userController));
 /**
  * @route POST /auth/login
- * @controller userController.login
  * @purpose Get a user by phoneNumber and password
  * @response {200} - User authorized successfully.
  * @throws {400} - PhoneNumber and password is required
@@ -55,7 +54,6 @@ router.post("/auth/login", userController.login.bind(userController));
 
 /**
  * @route POST /auth/register
- * @controller userController.register
  * @purpose Create a user
  * @body {string} phoneNumber - شماره تلفن کاربر
  * @body {string} password - رمز عبور کاربر
@@ -69,6 +67,14 @@ router.post("/auth/register", userController.register.bind(userController));
 
 router.post("/auth/logout", userController.logout.bind(userController));
 
-router.get("/auth/me", userController.isLoggedIn.bind(userController))
+/**
+ * @route GET /auth/me
+ * @purpose ایا کاربر token معتبر دارد
+ * @response {200} - token معتبر است
+ * @throws {401} - unAuthorized
+ * @throws {404} - Not found user
+ * @throw {500} - Server error
+ */
+router.get("/auth/me", authenticateToken, userController.isLoggedIn.bind(userController))
 
 export default router;

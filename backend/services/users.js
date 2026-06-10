@@ -94,6 +94,7 @@ export default class UserService {
             if (!user) {
                 throw new NotFoundError("کاربری یافت نشد.")
             }
+            return user
         } catch(err) {
             if (err instanceof NotFoundError) {
                 throw err
