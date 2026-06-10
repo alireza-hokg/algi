@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext.js";
@@ -76,10 +76,27 @@ const AuthProvider = ({ children }) => {
         setUser(userData);
     };
 
-    const logout = () => {
-        setIsLogin(false);
-        setUser(null);
+    const logout = async () => {
+        setLoading(true);
+        try {
+            await post("/auth/logout");
+        } catch(err) {
+            setError(err.message);
+            console.log('logout error', err.message)
+        } finally {
+            setIsLogin(false);
+            setUser(null);
+            setLoading(false);
+            navigate("/auth", { replace: true });
+        }
     };
+
+    useEffect(()=> {
+        const handleUnauthrized = () => {
+            logout() 
+        }
+        
+    }, [])
 
     return (
         <AuthContext.Provider value={{ phone, setPhone, password, setPassword, isLogin, user, loading,
