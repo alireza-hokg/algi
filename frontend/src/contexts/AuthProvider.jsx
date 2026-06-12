@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast, {Toaster} from "react-hot-toast";
 
 import { AuthContext } from "./AuthContext.js";
 import { get, post } from "../services/api.js"
@@ -7,23 +8,16 @@ import { get, post } from "../services/api.js"
 const AuthProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState(null);
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
-    const [step, setStep] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const clearError = () => setError(null);
-    const resetPhone = () => {
-        setPhone("");
-        setPassword("");
-        setError(null);
-    }
 
     /** /////////// LOGIN //////////// */
-    const handleLogin = async () => {
+    const handleLogin = async (phone, password) => {
         setLoading(true);
         clearError();
         try {
@@ -37,11 +31,14 @@ const AuthProvider = ({ children }) => {
                 const { user } = response.data.body;
                 // استفاده از تابع login از Context
                 login(user);
-                
-                navigate("/");
+
+                toast.success("با موفقیت وارد شدید!");
+                setTimeout(() => {
+                    navigate("/", { replace: true });
+                }, 1000);
             }
         } catch(err) {
-            console.log(err.message)
+            toast.error(err.message || "خطا در ورود")
             setError(err.message);
         } finally {
             setLoading(false);
@@ -49,7 +46,7 @@ const AuthProvider = ({ children }) => {
     }
 
     /** ///////// REGISTER ///////// */
-    const handleRegister = async () => {
+    const handleRegister = async (phone, password) => {
         setLoading(true);
         clearError();
         try {
@@ -58,13 +55,14 @@ const AuthProvider = ({ children }) => {
                 password
             });
             if (response.data.success) {
-                setStep("login");
-                setPhone("")
-                setPassword("");
+                toast.success("با موفقیت ثبت نام شدید!", {
+                    duration: 2000, // مدت زمان نمایش
+                    position: "top-center",
+                });
             }
         } catch(err) {
             setError(err.message);
-            console.log(err.message)
+            toast.error(err.message || "خطا")
         } finally {
             setLoading(false);
         }
@@ -93,11 +91,15 @@ const AuthProvider = ({ children }) => {
 
     useEffect(()=> {
         const checkAuth = async () => {
+            setLoading(true);
             try {
                 const response = await get("/auth/me");
-                if (response.data.success) {
+                if (response.data && response.data.success === true) {
                     setIsLogin(true);
-                    setUser(response.data.body.user)
+                    setUser(response.data.body);
+                } else {
+                    setIsLogin(false);
+                    setUser(null);
                 }
             } catch(err) {
                 setIsLogin(false);
@@ -114,11 +116,11 @@ const AuthProvider = ({ children }) => {
         window.addEventListener("unauthorized", handleUnauthorized);
         return () => window.removeEventListener("unauthorized", handleUnauthorized);
 
-    }, [])
+    }, [location.pathname])
 
     return (
-        <AuthContext.Provider value={{ phone, setPhone, password, setPassword, isLogin, user, loading,
-        login, logout, handleLogin, handleRegister}}>
+        <AuthContext.Provider value={{ isLogin, user, loading, login, logout, handleLogin, 
+        handleRegister}}>
             {children}
         </AuthContext.Provider>
     );

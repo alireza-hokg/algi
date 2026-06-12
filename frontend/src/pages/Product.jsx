@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { get } from "../services/api";
-import Header from "../components/layout/Header";
+
 import Sylvanas from "../assets/images/download.jpg";
 import Screenshot from "../assets/images/screenshot.png";
-import Pants from "../components/product/Pants";
-import Loading from "../components/layout/Loading";
-import ErrorDisplay from "../components/layout/ErrorDisplay";
+import Pants from "../components/Product/Pants.jsx";
+import Loading from "../components/common/Loading.jsx";
+import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
 
 const Product = () => {
     const { slug } = useParams();
@@ -22,7 +22,7 @@ const Product = () => {
     const [error, setError] = useState(null);
     // image state
     const [selectedImage, setSelectedImage] = useState(0);
-    const [images, setImaged] = useState([]);
+    const [images, setImages] = useState([]);
     
     const fetchData = async () => {
         setLoading(true);
@@ -52,7 +52,7 @@ const Product = () => {
         }
     };
     useEffect(() => {
-        
+        setImages([Sylvanas, Screenshot])
         fetchData();
     }, [slug]);
 
@@ -82,26 +82,34 @@ const Product = () => {
     
     {/* ////////// Product page //////////// */}
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Header />
+        <>
             <main className="container mx-auto px-4 py-8 mt-16">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div className="flex flex-col lg:flex-row gap-8 p-6 md:p-8">
                         {/* Product Image Section */}
                         <div className="lg:w-1/2">
-                            <div className="sticky top-24">
+                            <div className="mt-16">
                                 <div className="bg-gray-100 rounded-2xl overflow-hidden group">
                                     <img
-                                        src={Sylvanas}
+                                        src={images[selectedImage]}
                                         alt={product?.name}
-                                        className="w-full min-h-screen h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                                        className="w-full min-h-screen object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                 </div>
                                 {/* Thumbnails - اگر چندتا تصویر داری */}
                                 <div className="flex gap-2 mt-4">
                                     {[Sylvanas, Screenshot].map((img, idx) => (
-                                        <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-amber-500 transition-all cursor-pointer">
-                                            <img src={img} alt={`thumbnail ${idx}`} className="w-full h-full object-cover" />
+                                        <div 
+                                            key={idx} 
+                                            onClick={()=> {
+                                                setSelectedImage(idx)
+                                            }}
+                                            className="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-amber-500 transition-all cursor-pointer">
+                                            <img 
+                                                src={img} 
+                                                alt={`thumbnail ${idx}`} 
+                                                className="w-full h-full object-cover" 
+                                            />
                                         </div>
                                     ))}
                                 </div>
@@ -195,7 +203,7 @@ const Product = () => {
                     </div>
                 </div>
             </main>
-        </div>
+        </>
     );
 };
 

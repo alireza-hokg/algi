@@ -1,27 +1,23 @@
+
+import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/useAuth.js";
+import { isValidPhone } from "../../utils/authPhone.js";
 
 const AuthLogin = ({
+    phone,
+    password,
+    onChangePhone,
+    onChangePassword,
     loading,
-    error,
     onToggle
 }) => {
-    const { phone, setPhone, password, setPassword, handleLogin } = useAuth();
-    // Phone input accepts just numbers and less than 12 digits
-    const onChangePhone = e => {
-        let value = e.target.value;
-        if (/^\d{0,11}$/.test(value)) {
-            setPhone(value)
-        }
-    }
-
-    const onChangePassword = e => {
-        let value = e.target.value;
-        setPassword(value);
-    }
+    const { handleLogin } = useAuth();
     
     const handleSubmit = () => {
-        if (phone.length===11) {
-            handleLogin(phone);
+        if (isValidPhone(phone)) {
+            handleLogin(phone, password);
+        } else {
+            toast.error("شماره موبایل باید با 09 شروع شود و 11 رقم باشد")
         }
     }
     

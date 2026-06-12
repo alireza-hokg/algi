@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import ProductItem from "./ProductItem.jsx";
 import { useEffect, useState } from "react";
 import { get } from "../../services/api.js";
-import ErrorDisplay from "../layout/ErrorDisplay.jsx";
-import Loading from "../layout/Loading.jsx";
+import ErrorDisplay from "../common/ErrorDisplay.jsx";
+import Loading from "../common/Loading.jsx";
 
 const ProductList = () => {
     const [loading, setLoading] = useState(false);

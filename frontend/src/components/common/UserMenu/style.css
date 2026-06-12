@@ -1,0 +1,10 @@
+.user-container::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    transform: translateX(100%);
+    border-width: 0 .5em .5em .5em;
+    border-color: transparent transparent #f3f4f6  transparent;
+    border-style: solid;
+}

@@ -1,14 +1,12 @@
-import Header from "../components/layout/Header";
-import HeroSection from "../components/home/HeroSection";
-import ProductList from "../components/home/ProductList";
+import HeroSection from "../components/Home/HeroSection.jsx";
+import ProductList from "../components/Home/ProductList.jsx";
 
 const Home = () => {
     return (
-        <div>
-            <Header />
+        <>
             <HeroSection />
             <ProductList />
-        </div>
+        </>
     )
 }
 export default Home;

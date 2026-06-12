@@ -1,31 +1,25 @@
+import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/useAuth.js";
+import { isValidPhone } from "../../utils/authPhone.js";
 
 const AuthRegister = ({
-    error,
+    phone,
+    password,
+    onChangePhone,
+    onChangePassword,
     loading,
     onToggle
- }) => {
-    const { phone, setPhone, password, setPassword, handleRegister } = useAuth();
-// Phone input accepts just numbers and less than 12 digits
-    const onChangePhone = e => {
-        let value = e.target.value;
-
-        if (/^\d{0,11}$/.test(value)) {
-            setPhone(value)
-        }
-    }
-
-    const onChangePassword = e => {
-        let value = e.target.value;
-
-        setPassword(value);
-    }
+}) => {
+    const { handleRegister } = useAuth();
     
     const handleSubmit = () => {
-        if (phone.length===11) {
-            handleRegister(phone);
+        if (isValidPhone(phone)) {
+            handleRegister(phone, password);
+        } else {
+            toast.error("شماره موبایل باید با 09 شروع شود و 11 رقم باشد")
         }
     }
+
     return (
         <div className="bg-white py-16 px-8 rounded-xl max-w-sm sm:max-w-md mx-auto">
             <h3
@@ -60,7 +54,9 @@ const AuthRegister = ({
                 className="block w-full text-center text-lg py-2 rounded-md text-white bg-amber-500/80 
                 cursor-pointer hover:bg-amber-500 duration-300 transition-color"
                 type="button"
-                onClick={() => handleSubmit(phone, password)}
+                onClick={()=> {
+                    handleSubmit()
+                }}
             >
             ثبت نام
             </button>
