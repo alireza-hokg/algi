@@ -89,7 +89,7 @@ export default class UserController {
             // ارسال token در کوکی
             res.cookie('token', response.token, {
                 httpOnly: true,      // ✅ امنیت در برابر XSS
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.NODE_ENV === "production" ? true : false,
                 sameSite: 'strict',  // ✅ امنیت در برابر CSRF  
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 path: '/'
@@ -97,18 +97,13 @@ export default class UserController {
 
             res.success(response, "user login successfully", 200)
         } catch(err) {
+            console.log(err)
             res.error(err.message, err.statusCode || 500);
         }
     }
 
     async logout(req, res) {
-        res.cookie('token', response.token, {
-            httpOnly: true,      // ✅ امنیت در برابر XSS
-            secure: process.env.NODE_ENV === "production",
-            sameSite: 'strict',  // ✅ امنیت در برابر CSRF  
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-            path: '/'
-        });
+        
         res.clearCookie('token', {
             httpOnly: true,
             secure: true,

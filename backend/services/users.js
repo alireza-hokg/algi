@@ -84,7 +84,7 @@ export default class UserService {
             if (err instanceof ValidationError || err instanceof NotFoundError) {
                 throw err;
             }
-            throw new DatabaseError("خطای سرور")
+            throw new DatabaseError(err.message || "خطای سرور")
         }
     }
 

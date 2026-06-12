@@ -9,10 +9,12 @@ export const authenticateToken = (req, res, next) => {
         }
         const verified = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.userId = verified.userId;
+        req.userRole = verified.role;
         next();
     } catch(err) {
         if (err instanceof UnauthorizedError) {
             throw err
         }
+        throw err
     }
 }
