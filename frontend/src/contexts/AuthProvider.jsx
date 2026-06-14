@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
                 }, 1000);
             }
         } catch(err) {
-            toast.error(err.message || "خطا در ورود")
+            toast.error(err.response.data.message || "خطا در ورود")
             setError(err.message);
         } finally {
             setLoading(false);

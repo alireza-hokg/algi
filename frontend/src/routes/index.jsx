@@ -5,6 +5,8 @@ import Product from "../pages/Product";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import GuestRoute from "../components/common/GuestRoute";
 import CustomerLayout from "../components/layout/CustomerLayout.jsx";
+import Dashboard from "../pages/admin/Dashboard.jsx";
+import Layout from "../components/layout/admin/Layout.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -30,11 +32,8 @@ const AppRoutes = () => {
                 />
             </Route>
             {/* ADMIN */}
-            <Route path="/admin" element={
-                <ProtectedRoute>
-                    
-                </ProtectedRoute>
-            }>
+            <Route path="/admin" element={<Layout />}>
+                <Route index element={<Dashboard />} />
                 
             </Route>
             <Route path="*" element={<div 
