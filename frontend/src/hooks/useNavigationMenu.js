@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useAuth } from "./useAuth"
+import { Home,  } from "lucide-react";
 
 export const useNavigationMenu = () => {
 
@@ -7,14 +8,14 @@ export const useNavigationMenu = () => {
 
     const customerMenu = useMemo(()=> isLogin ? [
         { path: "/orders", text: "لیست سفارشات", icon: "ShoppingBag" },
-        { path: "/profile", text: "اطلاعات کاربر", icon: "User" },
+        { path: "/profile", text: "پروفایل", icon: "User" },
         { path: "/wishlist", text: "علاقه‌مندی‌ها", icon: "Heart" },
         { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])
 
     const adminMenu = useMemo(()=> isLogin ? [
         { path: "/orders", text: "لیست سفارشات", icon: "ShoppingBag" },
-        { path: "/profile", text: "اطلاعات کاربر", icon: "User" },
+        { path: "/profile", text: "پروفایل", icon: "User" },
         { path: "/wishlist", text: "علاقه‌مندی‌ها", icon: "Heart" },
         { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])
@@ -30,23 +31,21 @@ export const useNavigationMenu = () => {
         { path: "/auth", text: "ثبت نام / ورود", icon: "logIn", highlight: true }
     ] : [], [isLogin])
 
-    const allMenu = useMemo(()=> {
-        return [...mainMenu, ...customerMenu, ...guestMenu]
-    }, [mainMenu, customerMenu, guestMenu, adminMenu])
+    // const allMenu = useMemo(()=> {
+    //     return [...mainMenu, ...customerMenu, ...guestMenu]
+    // }, [mainMenu, customerMenu, guestMenu, adminMenu])
 
-    const categorizedMenu = useMemo(()=> ({
-        main: mainMenu,
-        user: customerMenu,
-        guest: guestMenu,
-        admin: adminMenu
-    }), [mainMenu, customerMenu, guestMenu, adminMenu]);
+    // const categorizedMenu = useMemo(()=> ({
+    //     main: mainMenu,
+    //     user: customerMenu,
+    //     guest: guestMenu,
+    //     admin: adminMenu
+    // }), [mainMenu, customerMenu, guestMenu, adminMenu]);
 
     return {
         mainMenu,
         adminMenu,
         customerMenu,
         guestMenu,
-        allMenu,
-        categorizedMenu
     }
 }

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import * as Icons from "lucide-react";
 import { useNavigationMenu } from "../../hooks/useNavigationMenu.js";
 import { useAuth } from "../../hooks/useAuth.js";
+import React from "react";
 
 const NavigationMenu = ({
     variant = "sidebar",
@@ -15,8 +16,8 @@ const NavigationMenu = ({
 
     const getIcon = (iconName) => {
         if (!showIcons || !iconName) return null;
-        const iconComponent = Icons[iconName];
-        return iconComponent ? <iconComponent size={18} /> : null
+        const IconComponent = Icons[iconName];
+        return React.createElement(IconComponent, { size: 18 });
     }
 
     const styles = {
@@ -56,7 +57,7 @@ const NavigationMenu = ({
                 <div className="border-b border-b-amber-200 my-3 py-1">منو دسترسی ها</div>
             ) : null}
             <ul className={`${currentStyle.list}`}>
-                
+
                 {mainMenu.map((item, idx) =>
                     {
                         return (<li key={idx}>
@@ -76,7 +77,6 @@ const NavigationMenu = ({
                     }
                 )}
             </ul>
-                
 
             {variant==="sidebar" ? (
                 <>
