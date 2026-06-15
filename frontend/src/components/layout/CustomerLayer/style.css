@@ -1,0 +1,11 @@
+.overLayer::after {
+    content: " ";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1b1b1b;
+    opacity: .7;
+    z-index: 10;
+}

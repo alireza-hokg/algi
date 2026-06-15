@@ -83,7 +83,7 @@ const Product = () => {
     {/* ////////// Product page //////////// */}
     return (
         <>
-            <main className="container mx-auto px-4 py-8 mt-16">
+            <div className="px-6 py-8 mt-16">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div className="flex flex-col lg:flex-row gap-8 p-6 md:p-8">
                         {/* Product Image Section */}
@@ -202,7 +202,7 @@ const Product = () => {
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </>
     );
 };

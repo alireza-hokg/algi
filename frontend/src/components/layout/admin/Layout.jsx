@@ -12,7 +12,7 @@ const Layout = () => {
     }
 
     return(
-        <div className="flex-1 flex flex-col">
+        <div className={`flex-1 flex flex-col`}>
             <Sidebar
                 onClose={()=> setIsSidebarOpen(false)}
                 isSidebarOpen={isSidebarOpen}

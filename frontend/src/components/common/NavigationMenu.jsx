@@ -17,7 +17,7 @@ const NavigationMenu = ({
 
     const styles = {
         sidebar: {
-            container: "space-y-6",
+            container: "space-y-6 py-6",
             sectionTitle: "text-amber-500 py-2 border-b border-b-amber-200 font-bold",
             list: "space-y-1",
             link: "flex items-center gap-2 py-2 hover:text-amber-500 duration-300 text-sm",
@@ -36,7 +36,7 @@ const NavigationMenu = ({
             grow: "flex-1",
             container: "hidden md:flex gap-4 flex-wrap justify-center",
             sectionTitle: "hidden",
-            list: "flex gap-4",
+            list: "flex gap-6",
             link: "text-gray-600 hover:text-amber-500 text-sm duration-300",
             dangerLink: "text-red-600 hover:text-red-700 text-sm",
             highlightLink: "text-amber-600 hover:text-amber-700 text-sm font-medium"
@@ -46,7 +46,7 @@ const NavigationMenu = ({
     const currentStyle = styles[variant] || styles.sidebar;
 
     return (
-        <nav className={`py-8 flex-1 ${currentStyle.container}`}>
+        <nav className={`flex-1 ${currentStyle.container}`}>
             
             {variant==="sidebar" ? (
                 <div className="border-b border-b-amber-200 my-3 py-1">منو دسترسی ها</div>
@@ -75,32 +75,43 @@ const NavigationMenu = ({
                     }
                 )}
             </ul>
+                
 
             {variant==="sidebar" ? (
                 <div className="border-b border-b-amber-200 my-3 py-1">اطلاعات کاربر</div>
             ) : null}
             <ul className={`${currentStyle.list}`}>
-            {userMenu.map((item, idx) =>
-                {
-                    return (<li key={idx}>
-                        <Link
-                            to={item.path}
+            {userMenu.length > 0 ? 
+                userMenu.map((item, idx) =>
+                    {
+                        return (<li key={idx}>
+                            <Link
+                                to={item.path}
+                                className={
+                                    currentStyle.link
+                                }
+                                onClick={() => {
+                                    if (item.path === "/logout") {
+                                        // handle logout
+                                    }
+                                    onItemClick?.();
+                                }}
+                            >
+                                {getIcon(item.icon)}
+                                {item.text}
+                            </Link>
+                        </li>)
+                    }
+                ) : (
+                    <div className={`${currentStyle.list}`}>
+                        <Link 
                             className={
                                 currentStyle.link
                             }
-                            onClick={() => {
-                                if (item.path === "/logout") {
-                                    // handle logout
-                                }
-                                onItemClick?.();
-                            }}
-                        >
-                            {getIcon(item.icon)}
-                            {item.text}
-                        </Link>
-                    </li>)
-                }
-            )}
+                            to={"/auth"}>ثبت نام / ورود</Link>
+                    </div>
+                )
+            }
             </ul>
         </nav>
     )

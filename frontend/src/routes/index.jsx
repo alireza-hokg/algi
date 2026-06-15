@@ -2,9 +2,8 @@ import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Product from "../pages/Product";
-import ProtectedRoute from "../components/common/ProtectedRoute";
 import GuestRoute from "../components/common/GuestRoute";
-import CustomerLayout from "../components/layout/CustomerLayout.jsx";
+import CustomerLayout from "../components/layout/CustomerLayer/index.jsx";
 import Dashboard from "../pages/admin/Dashboard.jsx";
 import Layout from "../components/layout/admin/Layout.jsx";
 
