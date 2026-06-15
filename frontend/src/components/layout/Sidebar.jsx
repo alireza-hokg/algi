@@ -1,12 +1,13 @@
 import { X } from "lucide-react";
 import NavigationMenu from "../common/NavigationMenu";
 import { useEffect, useRef } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 const Sidebar = ({
     onClose,
     isSidebarOpen
 }) => {
-
+    const { user } = useAuth();
     const sidebarRef = useRef();
 
     useEffect(()=> {
@@ -42,7 +43,9 @@ const Sidebar = ({
             ease-in-out`}
         >
             <div className="flex justify-between border-b pb-2">
-                <h1 className="text-2xl">آلگی</h1>
+                <h1 className="text-2xl">
+                    {user?.role === "customer" ? "الگی" : "پنل ادمین"}
+                </h1>
                 <button
                     className="cursor-pointer bg-gray-100 p-2 rounded-full"
                     onClick={onClose}
@@ -51,7 +54,10 @@ const Sidebar = ({
                 </button>
             </div>
             
-            <NavigationMenu />
+            <NavigationMenu
+                userRole = {user?.role}
+                onItemClick={onClose}
+            />
         </aside>
     )
 }

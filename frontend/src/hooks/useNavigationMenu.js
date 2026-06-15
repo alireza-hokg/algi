@@ -5,11 +5,18 @@ export const useNavigationMenu = () => {
 
     const {isLogin} = useAuth();
 
-    const userMenu = useMemo(()=> isLogin ? [
+    const customerMenu = useMemo(()=> isLogin ? [
         { path: "/orders", text: "لیست سفارشات", icon: "ShoppingBag" },
         { path: "/profile", text: "اطلاعات کاربر", icon: "User" },
         { path: "/wishlist", text: "علاقه‌مندی‌ها", icon: "Heart" },
-        { path: "/logout", text: "خروج", icon: "LogOut", danger: true },
+        { path: null, text: "خروج", icon: "LogOut", danger: true },
+    ] : [], [isLogin])
+
+    const adminMenu = useMemo(()=> isLogin ? [
+        { path: "/orders", text: "لیست سفارشات", icon: "ShoppingBag" },
+        { path: "/profile", text: "اطلاعات کاربر", icon: "User" },
+        { path: "/wishlist", text: "علاقه‌مندی‌ها", icon: "Heart" },
+        { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])
 
     const mainMenu = useMemo(()=> [
@@ -24,18 +31,20 @@ export const useNavigationMenu = () => {
     ] : [], [isLogin])
 
     const allMenu = useMemo(()=> {
-        return [...mainMenu, ...userMenu, ...guestMenu]
-    }, [mainMenu, userMenu, guestMenu])
+        return [...mainMenu, ...customerMenu, ...guestMenu]
+    }, [mainMenu, customerMenu, guestMenu, adminMenu])
 
     const categorizedMenu = useMemo(()=> ({
         main: mainMenu,
-        user: userMenu,
-        guest: guestMenu
-    }), [mainMenu, userMenu, guestMenu]);
+        user: customerMenu,
+        guest: guestMenu,
+        admin: adminMenu
+    }), [mainMenu, customerMenu, guestMenu, adminMenu]);
 
     return {
         mainMenu,
-        userMenu,
+        adminMenu,
+        customerMenu,
         guestMenu,
         allMenu,
         categorizedMenu

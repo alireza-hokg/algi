@@ -44,7 +44,7 @@ const ProductList = () => {
         )
     }
     return (
-        <div className="my-10 px-2">
+        <div className="my-10 p-6 ">
             {/* Title for products */}
             <div className="flex items-center justify-between space-x-4 mb-6">
                 <div className="flex flex-1 wrapper-title">
@@ -66,7 +66,7 @@ const ProductList = () => {
                     <div>محصولی وجود ندارد</div>
                 ) : (
                     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-12
-                        gap-x-4"
+                        gap-x-4 px-4 py-6 shadow-md rounded-md"
                     >
                         {products?.body?.map(product=> (
                             <ProductItem

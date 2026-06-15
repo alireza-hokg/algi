@@ -17,16 +17,16 @@ const Header = ({
 
     return (
         <header className="py-8 px-6">
-            <div className="flex justify-between items-center space-x-4">
+            <div className="flex justify-between items-center gap-x-6">
                 {/* Menu icon */}
                 <button 
                     onClick={toggleSidebar}
-                    className="md:hidden bg-orange-500 rounded-full p-2 text-white"
+                    className="md:hidden rounded-full p-2 hover:cursor-pointer"
                 >
-                    <Menu size={16}/>
+                    <Menu size={24}/>
                 </button>
                 {/* Brand of the site */}
-                <div className="flex-1 flex items-center gap-x-8">
+                <div className="flex-1 flex items-center justify-center gap-x-8">
                     <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
                         پوشاک آلگی
                         <img />

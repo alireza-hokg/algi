@@ -15,16 +15,25 @@ const CustomerLayout = () => {
     }
 
     useEffect(()=> {
+        
+        const handleBodyAuto = () => {
+            document.body.style.height = "auto"
+            document.body.style.overflow = "auto"
+        }
+
         const handleSidebarScroll = () => {
             if (isSidebarOpen) {
                 document.body.style.height = "100vh"
                 document.body.style.overflow = "hidden"
             } else {
-                document.body.style.height = "auto"
-                document.body.style.overflow = "auto"
+                handleBodyAuto()
             }
         }
         handleSidebarScroll();
+
+        return () => {
+            handleBodyAuto();
+        }
     }, [isSidebarOpen])
     
     return (

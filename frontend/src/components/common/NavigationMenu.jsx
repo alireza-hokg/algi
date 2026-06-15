@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom"
 import * as Icons from "lucide-react";
 import { useNavigationMenu } from "../../hooks/useNavigationMenu.js";
+import { useAuth } from "../../hooks/useAuth.js";
 
 const NavigationMenu = ({
     variant = "sidebar",
     onItemClick = null,
-    showIcons = true
+    showIcons = true,
+    userRole=null
 }) => {
-    const { mainMenu, userMenu } = useNavigationMenu();
+
+    const { mainMenu, customerMenu, adminMenu } = useNavigationMenu();
+    const { logout } = useAuth();
 
     const getIcon = (iconName) => {
         if (!showIcons || !iconName) return null;
@@ -61,10 +65,7 @@ const NavigationMenu = ({
                                 className={
                                     currentStyle.link
                                 }
-                                onClick={() => {
-                                    if (item.path === "/logout") {
-                                        // handle logout
-                                    }
+                                onClick={()=> {
                                     onItemClick?.();
                                 }}
                             >
@@ -78,41 +79,70 @@ const NavigationMenu = ({
                 
 
             {variant==="sidebar" ? (
-                <div className="border-b border-b-amber-200 my-3 py-1">اطلاعات کاربر</div>
-            ) : null}
-            <ul className={`${currentStyle.list}`}>
-            {userMenu.length > 0 ? 
-                userMenu.map((item, idx) =>
-                    {
-                        return (<li key={idx}>
-                            <Link
-                                to={item.path}
-                                className={
-                                    currentStyle.link
-                                }
-                                onClick={() => {
-                                    if (item.path === "/logout") {
-                                        // handle logout
+                <>
+                    <div className="border-b border-b-amber-200 my-3 py-1">اطلاعات کاربر</div>
+                    <ul className={`${currentStyle.list}`}>
+                        {userRole === null ? (
+                            <div className={`${currentStyle.list}`}>
+                                <Link 
+                                    className={
+                                        currentStyle.link
                                     }
-                                    onItemClick?.();
-                                }}
-                            >
-                                {getIcon(item.icon)}
-                                {item.text}
-                            </Link>
-                        </li>)
-                    }
-                ) : (
-                    <div className={`${currentStyle.list}`}>
-                        <Link 
-                            className={
-                                currentStyle.link
-                            }
-                            to={"/auth"}>ثبت نام / ورود</Link>
-                    </div>
-                )
-            }
-            </ul>
+                                    to={"/auth"}>ثبت نام / ورود</Link>
+                            </div>
+                        ) : userRole === "customer" ?
+                            customerMenu.map((item, idx) =>
+                                {
+                                    return (<li key={idx}>
+                                        <Link
+                                            to={item.path}
+                                            className={
+                                                item.text === "خروج" ?
+                                                currentStyle.dangerLink :
+                                                currentStyle.link
+                                            }
+                                            onClick={() => {
+                                                onItemClick?.();
+                                                if (item.path === null) {
+                                                    logout();
+                                                }
+                                            }}
+                                        >
+                                            {getIcon(item.icon)}
+                                            {item.text}
+                                        </Link>
+                                    </li>)
+                                }
+                            ) : userRole === "admin" &&
+                            adminMenu?.map((item, idx) =>
+                                {
+                                    return (<li key={idx}>
+                                        <Link
+                                            to={item.path}
+                                            className={
+                                                item.text === "خروج" ?
+                                                currentStyle.dangerLink :
+                                                currentStyle.link
+                                            }
+                                            onClick={() => {
+                                                onItemClick?.();
+                                                if (item.path === null) {
+                                                    logout();
+                                                }
+                                            }}
+                                        >
+                                            {getIcon(item.icon)}
+                                            {item.text}
+                                        </Link>
+                                    </li>)
+                                }
+                            )
+                        }
+                        
+                    </ul>
+                </>
+            ) : null}
+            
         </nav>
     )
 }
