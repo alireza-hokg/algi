@@ -1,4 +1,6 @@
-import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
+import { UniqueConstraintError } from "@sequelize/core";
+
+import { ConflictError, DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
 
 export default class ProductImageService {
     constructor(productImageRepo, productService) {
@@ -11,6 +13,22 @@ export default class ProductImageService {
             const productImages = await this.productImageRepo.getAll();
             return productImages
         } catch(err) {
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    async getImage(imageId) {
+        const numericImageId = Number(imageId)
+        try {
+            const image = await this.productImageRepo.get(numericImageId)
+            if (!image) {
+                throw new NotFoundError("عکس پیدا نشد.")
+            }
+            return image;
+        } catch(err) {
+            if (err instanceof NotFoundError) {
+                throw err
+            }
             throw new DatabaseError(err.message)
         }
     }
@@ -30,9 +48,26 @@ export default class ProductImageService {
             const result = await this.productImageRepo.create(initialImageData);
             return result
         } catch(err) {
-            if (err instanceof ValidationError) {
+            if (err.name === "SequelizeUniqueConstraintError") {
+                throw new ConflictError("این url قبلا ثبت شده است")
+            }
+            if (err instanceof ValidationError && err instanceof NotFoundError) {
                 throw err
             }
+            throw new DatabaseError(err)
+        }
+    }
+
+    async deleteImage(imageId) {
+        const NumericImageId = Number(imageId)
+
+        await this.getImage(NumericImageId);
+
+        try {
+            const image = await this.productImageRepo.remove(NumericImageId);
+            return image;
+        } catch(err) {
+            console.log(err)
             throw new DatabaseError(err.message)
         }
     }

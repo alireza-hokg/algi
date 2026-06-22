@@ -15,6 +15,16 @@ export default class ProductImageController {
         }
     }
 
+    async getImage(req, res) {
+        const { id } = req.params;
+        try {
+            const result = await this.productImageService.getImage(id)
+            res.success(result, "عکس با موفقیت گرفته شد.")
+        } catch(err) {
+            res.error(err.message)
+        }
+    }
+
     async createImage(req, res) {
         try {
             const { product_id, image_url, image_text, is_main, size, mime_type } = req.body;
@@ -29,8 +39,18 @@ export default class ProductImageController {
             const result = await this.productImageService.createImage(initialImageData);
             return res.created(result, 201)
         } catch(err) {
-            console.log(err);
             res.error(err.message);
+        }
+    }
+
+    async deleteImage(req, res) {
+        const {id} = req.params;
+        try {
+            const result = await this.productImageService.deleteImage(id);
+            console.log(result)
+            res.deleted(result, "عکس با موفقیت حذف شد.");
+        } catch(err) {
+            res.error(err.message)
         }
     }
 }
