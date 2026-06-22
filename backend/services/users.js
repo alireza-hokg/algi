@@ -71,7 +71,7 @@ export default class UserService {
                     role: user.role
                 }, // payload
                 process.env.JWT_SECRET_KEY,
-                { expiresIn: "7d" } // 7 روز انقضا
+                { expiresIn: "7d" }
             )
             const { password: _, ...userWithoutPassword } = user;
             return {

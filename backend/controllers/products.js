@@ -42,7 +42,7 @@ export default class ProductController {
         };
         try {
             const result = await this.productService.createProduct(initialData);
-            return res.success(result, 201);
+            return res.created(result, 201);
         } catch(err) {
             res.error(err.message, err.statusCode || 500);
         }

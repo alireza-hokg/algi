@@ -5,8 +5,9 @@ import "dotenv/config";
 
 import sequelize from "./utils/db.js";
 import productsRoutes from "./routes/products.js";
-import VariantsRoutes from "./routes/variants.js";
-import UserRoutes from "./routes/users.js";
+import variantsRoutes from "./routes/variants.js";
+import userRoutes from "./routes/users.js";
+import productImagesRoute from "./routes/product-images.js"
 
 import { createData } from "./seeders/seed.js";
 import { responseFormatter } from "./middlewares/responseFormatter.js";
@@ -31,9 +32,10 @@ app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies (for
 app.use(responseFormatter); // Custom response formatter middleware
 
 // ============ API Routes ============
-app.use("/api/v1/", productsRoutes) // Product management routes
-app.use("/api/v1/", VariantsRoutes) // Product variants routes
-app.use("/api/v1", UserRoutes)      // User management routes
+app.use("/api/v1/", productsRoutes)
+app.use("/api/v1/", variantsRoutes)
+app.use("/api/v1", userRoutes)
+app.use("/api/v1", productImagesRoute)
 
 /**
  * Initializes and starts the Express server

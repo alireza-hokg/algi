@@ -1,5 +1,6 @@
 import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
+import ProductImages from "./product-images.js";
 
 const Product = sequelize.define('Product', {
     id: {
@@ -41,12 +42,6 @@ const Product = sequelize.define('Product', {
         unique: true,
         allowNull: false
     },
-    images: {
-        type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: [],
-        comment: "ارایه تصاویر محصول"
-    }
 }, {
     timestamps: true,
     tableName: "products",
@@ -55,6 +50,15 @@ const Product = sequelize.define('Product', {
             product.updatedAt = new Date();
         },
     }
+})
+
+Product.hasMany(ProductImages, {
+    foreignKey: {
+        name: "product_id",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    },
+    sourceKey: "id",
 })
 
 export default Product;
