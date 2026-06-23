@@ -5,5 +5,11 @@ export default class OrderItemRepo {
         return await OrderItem.findAll();
     }
 
-    
+    async get(id) {
+        return await OrderItem.findByPk(id);
+    }
+
+    async create(orderItemsData) {
+        return await OrderItem.bulkCreate(orderItemsData);
+    }
 }

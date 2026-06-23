@@ -1,4 +1,5 @@
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
+import Joi from "joi";
 
 export default class OrderService {
     constructor(orderRepo, userService) {
@@ -30,17 +31,23 @@ export default class OrderService {
         }
     }
 
-    async createOrder(initialOrderData) {
-        const { user_id, total_price, status, address, phone } = initialOrderData;
-        const orderData = { user_id, total_price, status, address, phone };
-
+    async createOrder(body) {
         // Check if user exists
+        const { user_id } = body;
         await this.userService.getUser(user_id);
         try {
-            if (!user_id || !total_price || !status || !address) {
-                throw new ValidationError("اطلاعات مورد نیاز را وارد کنید")
+            const orderValidationSchema = Joi.object().keys({
+                user_id: Joi.number().required(),
+                total_price: Joi.number().required(),
+                status: Joi.string().required(),
+                address: Joi.string().required(),
+                phone: Joi.string().required()
+            })
+            const { value, error } = orderValidationSchema.validate(body)
+            if (error) {
+                throw new ValidationError(err.message);
             }
-            const result = await this.orderRepo.create(orderData)
+            const result = await this.orderRepo.create(value)
             return result;
         } catch(err) {
             if (err instanceof ValidationError) {

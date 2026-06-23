@@ -11,4 +11,23 @@ export default class OrderItemController {
             res.error(err.message)
         }
     }
+
+    async get(req, res) {
+        const { id } = req.params;
+        try {
+            const result = await this.orderItemService.get(id);
+            res.success(result, "محصول سفارش داده شده گرفته شد.")
+        } catch(err) {
+            res.error(err.message);
+        }
+    }
+
+    async create(req, res) {
+        
+        try {
+
+        } catch(err) {
+            res.error(err.message);
+        }
+    }
 }

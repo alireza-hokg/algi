@@ -1,4 +1,5 @@
-import { NotFoundError } from "../utils/Error.js";
+import { NotFoundError, ValidationError } from "../utils/Error.js";
+import Joi from "joi";
 
 export default class OrderController {
     constructor(orderService) {
@@ -26,12 +27,12 @@ export default class OrderController {
     }
 
     async createOrder(req, res) {
-        const orderData = req.body;
+        const { body } = req;
         try {
-            const result = await this.orderService.createOrder(orderData)
+            const result = await this.orderService.createOrder(body)
             res.created(result);
         } catch(err) {
-            res.error(err.message)
+            res.error(err)
         }
     }
 }
