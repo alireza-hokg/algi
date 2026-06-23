@@ -1,7 +1,6 @@
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../utils/Error.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/users.js";
 
 export default class UserService {
     constructor(userRepo) {
@@ -13,6 +12,19 @@ export default class UserService {
         }
         catch(err) {
             throw new DatabaseError("Database cant fetch users")
+        }
+    }
+
+    async getUser(userId) {
+        const numericUserId = Number(userId);
+        try {
+            const user = await this.userRepo.get(numericUserId);
+            if (!user) {
+                throw new NotFoundError("کاربر یافت نشد.")
+            }
+            return user;
+        } catch(err) {
+            throw new DatabaseError(err.message)
         }
     }
 

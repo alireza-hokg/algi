@@ -1,10 +1,11 @@
 import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
 import ProductImages from "./product-images.js";
+import OrderItem from "./order-items.js";
 
 const Product = sequelize.define('Product', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
@@ -55,10 +56,19 @@ const Product = sequelize.define('Product', {
 Product.hasMany(ProductImages, {
     foreignKey: {
         name: "product_id",
-        onDelete: "CASCADE",
+        onDelete: "RESTRICT",
         onUpdate: "CASCADE",
     },
     sourceKey: "id",
+})
+
+Product.hasMany(OrderItem, {
+    foreignKey: {
+        name: "product_id",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    },
+    sourceKey: "id"
 })
 
 export default Product;

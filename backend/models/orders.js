@@ -1,19 +1,20 @@
 import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
 import User from "./users.js";
+import OrderItem from "./order-items.js";
 
 const Order = sequelize.define("Orders", {
     id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
-        allowNull: true
-    },
-    order_data: {
-        type: DataTypes.DATE,
+        autoIncrement: true,
         allowNull: false,
-        defaultValue: DataTypes.NOW
     },
-    total_amount: {
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    total_price: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -29,19 +30,17 @@ const Order = sequelize.define("Orders", {
         defaultValue: 'pending',
         allowNull: false
     },
-    payment_status: {
-        type: DataTypes.ENUM(
-            'pending',
-            'paid',
-            'failed',
-            'refunded',
-        ),
-        defaultValue: 'pending',
+    address: {
+        type: DataTypes.TEXT,
         allowNull: false
     },
-
+    phone: {
+        type: DataTypes.STRING(20),
+        allowNull: false
+    },
 }, {
     timestamps: true,
+    tableName: "orders",
     hooks: {
         beforeUpdate: user => {
             user.updatedAt = new Date();
@@ -49,14 +48,14 @@ const Order = sequelize.define("Orders", {
     }
 })
 
-User.hasOne(Order, {
+Order.hasMany(OrderItem, {
     foreignKey: {
-        name: "fk_user_id_idx",
+        name: "order_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         allowNull: false
     },
     sourceKey: "id"
-});
+})
 
 export default Order;

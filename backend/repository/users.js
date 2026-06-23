@@ -1,11 +1,15 @@
 import User from "../models/users.js";
 
-export default class Users {
+export default class UserRepo {
     async getAll() {
         const users = await User.findAll({
             raw: true
         });
         return users
+    }
+
+    async get(id) {
+        return await User.findByPk(id);
     }
 
     /**

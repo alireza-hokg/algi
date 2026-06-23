@@ -8,7 +8,7 @@ const ProductImage = sequelize.define("ProductImage", {
         autoIncrement: true
     },
     product_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         references: {
             tableName: "products",
             key: "id"

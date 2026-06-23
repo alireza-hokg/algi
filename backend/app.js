@@ -8,6 +8,8 @@ import productsRoutes from "./routes/products.js";
 import variantsRoutes from "./routes/variants.js";
 import userRoutes from "./routes/users.js";
 import productImagesRoute from "./routes/product-images.js"
+import ordersRoute from "./routes/orders.js"
+import orderItemsRoute from "./routes/order-items.js"
 
 import { createData } from "./seeders/seed.js";
 import { responseFormatter } from "./middlewares/responseFormatter.js";
@@ -32,10 +34,12 @@ app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies (for
 app.use(responseFormatter); // Custom response formatter middleware
 
 // ============ API Routes ============
-app.use("/api/v1/", productsRoutes)
-app.use("/api/v1/", variantsRoutes)
+app.use("/api/v1", productsRoutes)
+app.use("/api/v1", variantsRoutes)
 app.use("/api/v1", userRoutes)
 app.use("/api/v1", productImagesRoute)
+app.use("/api/v1", ordersRoute)
+app.use("/api/v1", orderItemsRoute)
 
 /**
  * Initializes and starts the Express server
