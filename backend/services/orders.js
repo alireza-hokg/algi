@@ -35,6 +35,7 @@ export default class OrderService {
         // Check if user exists
         const { user_id } = body;
         await this.userService.getUser(user_id);
+        
         try {
             const orderValidationSchema = Joi.object().keys({
                 user_id: Joi.number().required(),

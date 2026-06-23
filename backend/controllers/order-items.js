@@ -23,9 +23,10 @@ export default class OrderItemController {
     }
 
     async create(req, res) {
-        
+        const { body } = req;
         try {
-
+            const result = await this.orderItemService.createMany(body);
+            res.created(result);
         } catch(err) {
             res.error(err.message);
         }

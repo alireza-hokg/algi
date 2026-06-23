@@ -1,4 +1,6 @@
-import { DatabaseError, NotFoundError } from "../utils/Error.js"
+import Joi from "joi";
+
+import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
 
 export default class orderItemService {
     constructor(orderItemRepo) {
@@ -28,7 +30,26 @@ export default class orderItemService {
         }
     }
 
-    async create(orderItemsData) {
-        
+    async createMany(orderItemsBody) {
+        const validationSchema = Joi.object().keys({
+            order_id: Joi.number().required(),
+            product_id: Joi.number().required(),
+            quantity: Joi.number().required(),
+            price: Joi.number().required()
+        })
+        let result;
+        let values = [];
+        try {
+            orderItemsBody.forEach(item=> {
+                result = validationSchema.validate(item);
+                if (result.error) {
+                    throw new ValidationError(result.error.message)
+                }
+                values.push(result.value)
+            })
+            return await this.orderItemRepo.createMany(values);
+        } catch(err) {
+            throw new DatabaseError(err.message)
+        }
     }
 }

@@ -9,7 +9,7 @@ export default class OrderItemRepo {
         return await OrderItem.findByPk(id);
     }
 
-    async create(orderItemsData) {
+    async createMany(orderItemsData) {
         return await OrderItem.bulkCreate(orderItemsData);
     }
 }
