@@ -1,10 +1,13 @@
+import { TransactionNestMode } from "@sequelize/core";
+import sequelize from "../utils/db.js";
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
 import Joi from "joi";
 
 export default class OrderService {
-    constructor(orderRepo, userService) {
+    constructor(orderRepo, userService, orderItemService) {
         this.orderRepo = orderRepo
         this.userService = userService;
+        this.orderItemService = orderItemService
     }
 
     async getAllOrders() {
@@ -35,20 +38,45 @@ export default class OrderService {
         // Check if user exists
         const { user_id } = body;
         await this.userService.getUser(user_id);
-        
+
         try {
-            const orderValidationSchema = Joi.object().keys({
-                user_id: Joi.number().required(),
-                total_price: Joi.number().required(),
-                status: Joi.string().required(),
-                address: Joi.string().required(),
-                phone: Joi.string().required()
+            const result = await sequelize.transaction(async (parentTransaction) => {
+                const orderBody = {
+                    user_id: body.user_id,
+                    total_price: body.total_price,
+                    status: body.status,
+                    address: body.address,
+                    phone: body.phone
+                }
+                const orderValidationSchema = Joi.object().keys({
+                    user_id: Joi.number().required(),
+                    total_price: Joi.number().required(),
+                    status: Joi.string().required(),
+                    address: Joi.string().required(),
+                    phone: Joi.string().required()
+                })
+                const { value, error } = orderValidationSchema.validate(orderBody);
+                if (error) {
+                    throw new ValidationError(error.message);
+                }
+                
+                const orderResult = await this.orderRepo.create(value)
+                const orderResultRaw = orderResult.dataValues;
+                const orderItemsResult = await sequelize.transaction({
+                    nestMode: TransactionNestMode.savepoint,
+                    transaction: parentTransaction
+                },
+                async () => {
+                    const orderItemsBody = body.orderItems
+                    const itemData = await this.orderItemService.createMany(orderItemsBody,orderResultRaw.id);
+                    return itemData
+                })
+
+                return {
+                    ...orderResultRaw,
+                    orderItemsResult
+                }
             })
-            const { value, error } = orderValidationSchema.validate(body)
-            if (error) {
-                throw new ValidationError(err.message);
-            }
-            const result = await this.orderRepo.create(value)
             return result;
         } catch(err) {
             if (err instanceof ValidationError) {

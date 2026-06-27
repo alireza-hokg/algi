@@ -30,25 +30,28 @@ export default class orderItemService {
         }
     }
 
-    async createMany(orderItemsBody) {
+    async createMany(orderItemsBody, orderId) {
         const validationSchema = Joi.object().keys({
-            order_id: Joi.number().required(),
             product_id: Joi.number().required(),
             quantity: Joi.number().required(),
             price: Joi.number().required()
         })
-        let result;
         let values = [];
         try {
             orderItemsBody.forEach(item=> {
-                result = validationSchema.validate(item);
-                if (result.error) {
-                    throw new ValidationError(result.error.message)
+                const {value, error} = validationSchema.validate(item);
+                value.order_id = orderId
+                if (error) {
+                    console.log('vaval', error.message)
+                    throw new ValidationError(error.message)
                 }
-                values.push(result.value)
+                values.push(value)
             })
             return await this.orderItemRepo.createMany(values);
         } catch(err) {
+            if (err instanceof ValidationError) {
+                throw err
+            }
             throw new DatabaseError(err.message)
         }
     }

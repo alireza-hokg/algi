@@ -32,7 +32,7 @@ export default class OrderController {
             const result = await this.orderService.createOrder(body)
             res.created(result);
         } catch(err) {
-            res.error(err)
+            res.error(err.message)
         }
     }
 }

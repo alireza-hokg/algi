@@ -28,7 +28,7 @@ export default class OrderItemController {
             const result = await this.orderItemService.createMany(body);
             res.created(result);
         } catch(err) {
-            res.error(err.message);
+            res.error(err);
         }
     }
 }
