@@ -37,44 +37,47 @@ export default class OrderService {
 
     async createOrder(body) {
         // Check if user exists
-        const { user_id } = body;
+        const { user_id, orderItems, ...orderData } = body;
         await this.userService.getUser(user_id);
 
+        const orderValidationSchema = Joi.object().keys({
+            user_id: Joi.number().required(),
+            total_price: Joi.number().required(),
+            status: Joi.string().required(),
+            address: Joi.string().required(),
+            phone: Joi.string().required()
+        })
+        const { value: validateOrder, error: orderError } = orderValidationSchema.validate({
+            user_id,
+            total_price: body.total_price,
+            status: body.status,
+            address: body.address,
+            phone: body.phone
+        });
+
+        if (orderError) {
+            throw new ValidationError(error.message);
+        }
+
+        if (!orderItems && Array.isArray(orderItems) && orderItems.length === 0) {
+            throw new ValidationError("حداقل باید شامل یک ایتم سفارش باشد")
+        }
+
         try {
-            const result = await sequelize.transaction(async (parentTransaction) => {
-                const orderBody = {
-                    user_id: body.user_id,
-                    total_price: body.total_price,
-                    status: body.status,
-                    address: body.address,
-                    phone: body.phone
-                }
-                const orderValidationSchema = Joi.object().keys({
-                    user_id: Joi.number().required(),
-                    total_price: Joi.number().required(),
-                    status: Joi.string().required(),
-                    address: Joi.string().required(),
-                    phone: Joi.string().required()
-                })
-                const { value, error } = orderValidationSchema.validate(orderBody);
-                if (error) {
-                    throw new ValidationError(error.message);
-                }
+            await this.userService.getUser(user_id);
+
+            const result = await sequelize.transaction(async (transaction) => {
                 
-                const orderResult = await this.orderRepo.create(value)
-                const orderResultRaw = orderResult.dataValues;
-                const orderItemsResult = await sequelize.transaction({
-                    nestMode: TransactionNestMode.savepoint,
-                    transaction: parentTransaction
-                },
-                async () => {
-                    const orderItemsBody = body.orderItems
-                    const itemData = await this.orderItemService.createMany(orderItemsBody,orderResultRaw.id);
-                    return itemData
-                })
+                const orderResult = await this.orderRepo.create(validateOrder, transaction)
+
+                const orderItemsResult = await this.orderItemService.createMany(
+                    orderItems,
+                    orderResult.id,
+                    transaction
+                );
 
                 return {
-                    ...orderResultRaw,
+                    ...orderResult.toJSON(),
                     orderItemsResult
                 }
             })
@@ -87,12 +90,11 @@ export default class OrderService {
         }
     }
 
-    async remove(orderId) {
+    async remove(orderId, transaction) {
         await this.getOrder(orderId);
         try {
-            const deleted = await this.orderRepo.remove(orderId);
-            console.log(deleted)
-            return deleted
+            const deletedOrder = await this.orderRepo.remove(orderId, transaction);
+            return deletedOrder
         } catch(err) {
             throw new DatabaseError(err.message)
         }

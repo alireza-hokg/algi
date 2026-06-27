@@ -10,6 +10,7 @@ export default class OrderItemRepo {
     }
 
     async getAllByOrderId(orderId) {
+        
         return await OrderItem.findAll({
             where: {
                 order_id: orderId
@@ -17,15 +18,18 @@ export default class OrderItemRepo {
         })
     }
 
-    async createMany(orderItemsData) {
-        return await OrderItem.bulkCreate(orderItemsData);
+    async createMany(orderItemsData, transaction) {
+        const options = transaction ? { transaction } : {}
+        return await OrderItem.bulkCreate(orderItemsData, options);
     }
 
-    async remove(id) {
+    async remove(id, transaction) {
+        const options = transaction ? { transaction } : {}
         return await OrderItem.destroy({
             where: {
                 id
-            }
+            },
+            transaction: options.transaction
         })
     }
 }

@@ -56,7 +56,6 @@ export default class orderItemService {
                 const {value, error} = validationSchema.validate(item);
                 value.order_id = orderId
                 if (error) {
-                    console.log('vaval', error.message)
                     throw new ValidationError(error.message)
                 }
                 values.push(value)
@@ -74,20 +73,15 @@ export default class orderItemService {
     async remove(orderItemId) {
         // Check if orderItem exists
         const orderItem = await this.get(orderItemId);
+
         const orderItemList = await this.getAllByOrderId(orderItemId);
-        console.log(orderItemList.length)
+        
         try {
-            const result = await sequelize.transaction(async (parentTransaction) => {
-                const orderItemDeleted = await this.orderItemRepo.remove(orderItemId);
+            const result = await sequelize.transaction(async (transaction) => {
+                const orderItemDeleted = await this.orderItemRepo.remove(orderItemId, transaction);
                 // If there is only one orderItem then remove the order
                 if (orderItemList.length === 1) {
-                    await sequelize.transaction({
-                        nestMode: TransactionNestMode.savepoint,
-                        transaction: parentTransaction
-                    }, async () => {
-                        const result = await this.orderService.remove(orderItem.order_id)
-                        return result
-                    })
+                    await this.orderService.remove(orderItem.order_id, transaction)
                 }
                 return orderItemDeleted;
             })

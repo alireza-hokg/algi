@@ -9,15 +9,18 @@ export default class OrderRepo {
         return await Order.findByPk(orderId);
     }
 
-    async create(orderData) {
-        return await Order.create(orderData)
+    async create(orderData, transaction = null) {
+        const options = transaction ? { transaction } : {}
+        return await Order.create(orderData, options)
     }
 
-    async remove(id) {
+    async remove(id, transaction = null) {
+        const options = transaction ? { transaction } : {}
         return await Order.destroy({
             where: {
                 id
-            }
+            },
+            transaction: options.transaction
         })
     }
 }
