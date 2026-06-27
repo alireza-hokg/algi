@@ -70,7 +70,9 @@ const NavigationMenu = ({
                                     onItemClick?.();
                                 }}
                             >
-                                {getIcon(item.icon)}
+                                {variant==="sidebar" ?
+                                    getIcon(item.icon) : null
+                                }
                                 {item.text}
                             </Link>
                         </li>)

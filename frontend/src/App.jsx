@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-          <div className="min-h-screen flex flex-col">
+          {/* <div className="min-h-screen flex flex-col"> */}
             <Toaster
               position="top-center"
               toastOptions={{
@@ -29,7 +29,7 @@ function App() {
               }}
             />
             <AppRoutes />
-          </div>
+          {/* </div> */}
       </AuthProvider>
     </BrowserRouter>
   )

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useAuth } from "./useAuth"
-import { Home,  } from "lucide-react";
 
 export const useNavigationMenu = () => {
 
@@ -14,9 +13,11 @@ export const useNavigationMenu = () => {
     ] : [], [isLogin])
 
     const adminMenu = useMemo(()=> isLogin ? [
-        { path: "/orders", text: "لیست سفارشات", icon: "ShoppingBag" },
+        { path: "/products", text: "محصولات", icon: "Shirt" },
         { path: "/profile", text: "پروفایل", icon: "User" },
-        { path: "/wishlist", text: "علاقه‌مندی‌ها", icon: "Heart" },
+        { path: "/customers", text: "مشتریان", icon: "BookUser" },
+        { path: "/orders", text: "سفارشات", icon: "Handbag"},
+        { path: "/transactions", text: "تراکنش ها", icon: "Wallet"},
         { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])
 
@@ -30,17 +31,6 @@ export const useNavigationMenu = () => {
     const guestMenu = useMemo(()=> !isLogin ? [
         { path: "/auth", text: "ثبت نام / ورود", icon: "logIn", highlight: true }
     ] : [], [isLogin])
-
-    // const allMenu = useMemo(()=> {
-    //     return [...mainMenu, ...customerMenu, ...guestMenu]
-    // }, [mainMenu, customerMenu, guestMenu, adminMenu])
-
-    // const categorizedMenu = useMemo(()=> ({
-    //     main: mainMenu,
-    //     user: customerMenu,
-    //     guest: guestMenu,
-    //     admin: adminMenu
-    // }), [mainMenu, customerMenu, guestMenu, adminMenu]);
 
     return {
         mainMenu,
