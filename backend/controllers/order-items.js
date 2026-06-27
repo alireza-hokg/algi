@@ -28,7 +28,17 @@ export default class OrderItemController {
             const result = await this.orderItemService.createMany(body);
             res.created(result);
         } catch(err) {
-            res.error(err);
+            res.error(err.message);
+        }
+    }
+
+    async remove(req, res) {
+        const { id } = req.params;
+        try {
+            const result = await this.orderItemService.remove(id);
+            res.deleted(result, 'سفارش حذف شد.');
+        } catch(err) {
+            res.error(err.message)
         }
     }
 }

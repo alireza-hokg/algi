@@ -19,13 +19,14 @@ export default class OrderService {
         }
     }
 
-    async getOrder(orderId) {
-        const NumericOrderId = Number(orderId);
+    async getOrder(id) {
+        const numericId = Number(id);
         try {
-            const order = await this.orderRepo.get(NumericOrderId)
+            const order = await this.orderRepo.get(numericId)
             if (!order) {
                 throw new NotFoundError("سفارشی پیدا نشد.")
             }
+            return order.dataValues;
         } catch(err) {
             if (err instanceof NotFoundError) {
                 throw err
@@ -82,6 +83,17 @@ export default class OrderService {
             if (err instanceof ValidationError) {
                 throw err
             }
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    async remove(orderId) {
+        await this.getOrder(orderId);
+        try {
+            const deleted = await this.orderRepo.remove(orderId);
+            console.log(deleted)
+            return deleted
+        } catch(err) {
             throw new DatabaseError(err.message)
         }
     }

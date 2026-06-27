@@ -1,10 +1,13 @@
 import Joi from "joi";
 
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
+import sequelize from "../utils/db.js";
+import { TransactionNestMode } from "@sequelize/core";
 
 export default class orderItemService {
-    constructor(orderItemRepo) {
+    constructor(orderItemRepo, orderService) {
         this.orderItemRepo = orderItemRepo
+        this.orderService = orderService;
     }
 
     async getAll() {
@@ -15,6 +18,16 @@ export default class orderItemService {
         }
     }
 
+    async getAllByOrderId(orderId) {
+        const numericOrderId = Number(orderId)
+        try {
+            const orderItems = await this.orderItemRepo.getAllByOrderId(numericOrderId);
+            return orderItems
+        } catch(err) {
+            throw new DatabaseError(err)
+        }
+    }
+
     async get(orderItemId) {
         const numericOrderItemId = Number(orderItemId);
         try {
@@ -22,6 +35,7 @@ export default class orderItemService {
             if (!orderItem) {
                 throw new NotFoundError("ایتم سفارش داده شده پیدا نشد.")
             }
+            return orderItem.dataValues;
         } catch(err) {
             if (err instanceof NotFoundError) {
                 throw err
@@ -52,6 +66,33 @@ export default class orderItemService {
             if (err instanceof ValidationError) {
                 throw err
             }
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    // Remove order-item and if order has one order-item remove the order too
+    async remove(orderItemId) {
+        // Check if orderItem exists
+        const orderItem = await this.get(orderItemId);
+        const orderItemList = await this.getAllByOrderId(orderItemId);
+        console.log(orderItemList.length)
+        try {
+            const result = await sequelize.transaction(async (parentTransaction) => {
+                const orderItemDeleted = await this.orderItemRepo.remove(orderItemId);
+                // If there is only one orderItem then remove the order
+                if (orderItemList.length === 1) {
+                    await sequelize.transaction({
+                        nestMode: TransactionNestMode.savepoint,
+                        transaction: parentTransaction
+                    }, async () => {
+                        const result = await this.orderService.remove(orderItem.order_id)
+                        return result
+                    })
+                }
+                return orderItemDeleted;
+            })
+            return result
+        } catch(err) {
             throw new DatabaseError(err.message)
         }
     }

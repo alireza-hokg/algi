@@ -9,7 +9,23 @@ export default class OrderItemRepo {
         return await OrderItem.findByPk(id);
     }
 
+    async getAllByOrderId(orderId) {
+        return await OrderItem.findAll({
+            where: {
+                order_id: orderId
+            }
+        })
+    }
+
     async createMany(orderItemsData) {
         return await OrderItem.bulkCreate(orderItemsData);
+    }
+
+    async remove(id) {
+        return await OrderItem.destroy({
+            where: {
+                id
+            }
+        })
     }
 }

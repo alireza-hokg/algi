@@ -12,4 +12,12 @@ export default class OrderRepo {
     async create(orderData) {
         return await Order.create(orderData)
     }
+
+    async remove(id) {
+        return await Order.destroy({
+            where: {
+                id
+            }
+        })
+    }
 }
