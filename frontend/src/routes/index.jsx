@@ -3,14 +3,18 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Product from "../pages/Product";
 import GuestRoute from "../components/common/GuestRoute";
-import CustomerLayout from "../components/layout/CustomerLayer/index.jsx";
 import Dashboard from "../pages/admin/Dashboard.jsx";
-import Layout from "../components/layout/admin/Layout.jsx";
+import Layout from "../components/layout/main/";
+import Products from "../pages/admin/Products.jsx";
+import Orders from "../pages/admin/Orders.jsx";
+import Transactions from "../pages/admin/Transactions.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
     return (
         <Routes location={location} key={location.pathname}>
+            {/** If user isLogin = false then can not access /auth
+            */}
             <Route
                 path="/auth"
                 element={
@@ -20,9 +24,9 @@ const AppRoutes = () => {
                 }
             />
             {/* CUTSOMER */}
-            <Route path="/" element={<CustomerLayout />}>
+            <Route path="/" element={<Layout />}>
                 <Route
-                    path="/" 
+                    path="/"
                     element={<Home />}
                 />
                 <Route
@@ -33,9 +37,11 @@ const AppRoutes = () => {
             {/* ADMIN */}
             <Route path="/admin" element={<Layout />}>
                 <Route index element={<Dashboard />} />
-                
+                <Route path="products" element={<Products />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="transactions" element={<Transactions />} />
             </Route>
-            <Route path="*" element={<div 
+            <Route path="/*" element={<div 
                 className="flex justify-center items-center min-h-screen">404</div>}
             />
         </Routes>

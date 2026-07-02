@@ -4,9 +4,11 @@ import { get } from "../services/api";
 
 import Sylvanas from "../assets/images/download.jpg";
 import Screenshot from "../assets/images/screenshot.png";
-import Pants from "../components/Product/Pants.jsx";
+import Specification from "../components/Product/Specification.jsx";
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import DetailsTab from "../components/product/DetailsTab.jsx";
 
 const Product = () => {
     const { slug } = useParams();
@@ -23,6 +25,20 @@ const Product = () => {
     // image state
     const [selectedImage, setSelectedImage] = useState(0);
     const [images, setImages] = useState([]);
+
+    const [count, setCount] = useState(0);
+
+    const decreaseCount = () => {
+        setCount(count=> count-1)
+    }
+
+    const increaseCount = () => {
+        setCount(count=> count+1)
+    }
+
+    const onChangeCount = (e) => {
+        setCount(e.target.value)
+    }
     
     const fetchData = async () => {
         setLoading(true);
@@ -83,9 +99,9 @@ const Product = () => {
     {/* ////////// Product page //////////// */}
     return (
         <>
-            <div className="px-6 py-8 mt-16">
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div className="flex flex-col lg:flex-row gap-8 p-6 md:p-8">
+            <div className="px-6 py-8">
+                <div className="bg-white overflow-hidden">
+                    <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b-2 border-b-gray-400 mb-10">
                         {/* Product Image Section */}
                         <div className="lg:w-1/2">
                             <div className="mt-16">
@@ -117,13 +133,14 @@ const Product = () => {
                         </div>
 
                         {/* Product Details Section */}
-                        <div className="lg:w-1/2">
+                        <div className="lg:w-1/2 text-center inset-ring inset-ring-gray-100 px-6 py-10 
+                        rounded-md">
                             {/* Title & SKU */}
                             <div className="border-b border-gray-200 pb-6 mb-6">
                                 <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
                                     {product?.name}
                                 </h1>
-                                <div className="flex items-center gap-2 text-gray-500">
+                                <div className="flex items-center justify-center gap-2 text-gray-500">
                                     <span className="text-sm">کد محصول:</span>
                                     <span className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
                                         {product?.sku}
@@ -133,11 +150,14 @@ const Product = () => {
 
                             {/* Price */}
                             <div className="bg-amber-50 rounded-xl p-4 mb-6">
-                                <span className="text-gray-600">قیمت:</span>
-                                <span className="text-3xl font-bold text-amber-600 mr-2">
-                                    {product.price?.toLocaleString("fa-IR")}
-                                </span>
-                                <span className="text-gray-500 mr-1">تومان</span>
+                                <div className="flex justify-center gap-x-4">
+                                    <span className="line-through decoration-2 text-xl">
+                                        {(3000)?.toLocaleString("fa-IR")} تومان
+                                    </span>
+                                    <span className="text-3xl font-bold text-amber-600 mr-2">
+                                        {product.price?.toLocaleString("fa-IR")}{" "}تومان
+                                    </span>
+                                </div>
                             </div>
 
                             {/* Details List */}
@@ -145,33 +165,15 @@ const Product = () => {
                                 {/* Sizes Overview */}
                                 <div className="bg-gray-50 rounded-xl p-4">
                                     <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایزهای موجود:</h3>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex justify-center flex-wrap gap-2">
                                         {variantSize.map((size, index) => (
                                             <span 
                                                 key={index}
-                                                className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-gray-700 text-sm font-medium hover:border-amber-500 hover:text-amber-600 transition-all cursor-pointer"
+                                                className="px-3 py-1.5 bg-white border border-gray-300 
+                                                rounded-lg text-gray-700 text-sm font-medium"
                                             >
                                                 {size}
                                             </span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Product Variants Details */}
-                                <div className="bg-gray-50 rounded-xl p-4">
-                                    <h3 className="font-bold text-gray-800 mb-4 text-lg">📦 مشخصات دقیق:</h3>
-                                    <div className="space-y-3">
-                                        {products.map((product) => (
-                                            <div 
-                                                key={product.id}
-                                                className="bg-white rounded-lg p-3 hover:shadow-md transition-shadow"
-                                            >
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <span className="font-bold text-gray-700">سایز {product.size}</span>
-                                                    <span className="text-sm text-gray-500">موجود</span>
-                                                </div>
-                                                <Pants product={product} />
-                                            </div>
                                         ))}
                                     </div>
                                 </div>
@@ -195,11 +197,39 @@ const Product = () => {
                                 </div>
 
                                 {/* Add to Cart Button */}
-                                <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 rounded-xl cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
-                                    افزودن به سبد خرید
-                                </button>
+                                <div className="flex items-center gap-x-4">
+                                    <div className="flex-0 flex text-2xl">
+                                        <button 
+                                            className="p-2 rounded-2xl border-2 border-gray-200 hover:bg-amber-500
+                                            hover:border-amber-500 hover:text-white cursor-pointer"
+                                            onClick={decreaseCount}
+                                        >-</button>
+                                        <input
+                                            type="number"
+                                            value={count}
+                                            onChange={onChangeCount}
+                                            className="focus:outline-0 border-y max-w-20 min-w-12 text-center"
+                                        />
+                                        <button
+                                            className="p-2 rounded-2xl border-2 border-gray-200 hover:bg-amber-500
+                                            hover:border-amber-500 hover:text-white cursor-pointer"
+                                            onClick={increaseCount}
+                                        >+</button>
+                                    </div>
+                                    <button className="flex-1 bg-amber-500 hover:bg-black 
+                                    text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
+                                    duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                                    >
+                                        افزودن به سبد خرید
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    {/* Product Variants Details */}
+                    <div className="">
+                        <DetailsTab />
+                        <Specification products={products} />
                     </div>
                 </div>
             </div>

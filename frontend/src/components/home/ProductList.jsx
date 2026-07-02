@@ -44,7 +44,7 @@ const ProductList = () => {
         )
     }
     return (
-        <div className="my-10 p-6 ">
+        <div className="my-10">
             {/* Title for products */}
             <div className="flex items-center justify-between space-x-4 mb-6">
                 <div className="flex flex-1 wrapper-title">

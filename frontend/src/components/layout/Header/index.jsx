@@ -16,8 +16,8 @@ const Header = ({
     const { isLogin } = useAuth();
 
     return (
-        <header className="py-8 px-6">
-            <div className="flex justify-between items-center gap-x-6">
+        <header className="py-8 px-4 bg-black text-white">
+            <div className="container mx-auto flex justify-between items-center gap-x-6">
                 {/* Menu icon */}
                 <button 
                     onClick={toggleSidebar}
@@ -31,11 +31,9 @@ const Header = ({
                         پوشاک آلگی
                         <img />
                     </h1>
-                    {/* <div className="hidden md:block"> */}
-                        <NavigationMenu
-                            variant="horizontal"
-                        />
-                    {/* </div> */}
+                    <NavigationMenu
+                        variant="horizontal"
+                    />
                 </div>
                 
                 

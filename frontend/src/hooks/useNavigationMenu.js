@@ -13,19 +13,22 @@ export const useNavigationMenu = () => {
     ] : [], [isLogin])
 
     const adminMenu = useMemo(()=> isLogin ? [
-        { path: "/products", text: "محصولات", icon: "Shirt" },
-        { path: "/profile", text: "پروفایل", icon: "User" },
-        { path: "/customers", text: "مشتریان", icon: "BookUser" },
-        { path: "/orders", text: "سفارشات", icon: "Handbag"},
-        { path: "/transactions", text: "تراکنش ها", icon: "Wallet"},
+        { path: "/admin/products", text: "مدیریت محصولات", icon: "Box" },
+        { path: "/admin/profile", text: "پروفایل", icon: "User" },
+        { path: "/admin/customers", text: "مشتریان", icon: "BookUser" },
+        { path: "/admin/orders", text: "مدیریت سفارشات", icon: "ShoppingBag"},
+        { path: "/admin/transactions", text: "مدیریت تراکنش ها", icon: "Wallet"},
+        { path: "/admin", text: "داشبورد", icon: "UserStar"},
         { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])
 
     const mainMenu = useMemo(()=> [
         { path: "/", text: "صفحه اصلی", icon: "Home" },
+        { path: "/products", text: "محصولات", icon: "Box"},
         { path: "/today-discount", text: "تخفیفات روزانه", icon: "Tag" },
-        { path: "/contact-us", text: "تماس با ما", icon: "Phone" },
+        { path: "/contact-us", text: "ارتباط با ما", icon: "Phone" },
         { path: "/about-us", text: "درباره ما", icon: "Info" },
+        { path: "/follow-up-order", text: "پیگیری سفارش", icon: "PackageSearch"}
     ], [])
 
     const guestMenu = useMemo(()=> !isLogin ? [

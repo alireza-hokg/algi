@@ -37,21 +37,21 @@ const CustomerLayout = () => {
     }, [isSidebarOpen])
     
     return (
-        <div className={`min-h-screen bg-gray-50 flex ${isSidebarOpen ? "overLayer"
+        <div className={`min-h-screen bg-white ${isSidebarOpen ? "overLayer"
         : ""}`}>
             <Sidebar 
                 onClose={()=> setIsSidebarOpen(false)}
                 isSidebarOpen={isSidebarOpen}
             />
-            <div className="flex-1 flex flex-col">
-                <Header
-                    toggleSidebar={toggleSidebar}
-                />
+            <Header
+                toggleSidebar={toggleSidebar}
+            />
+            <div className="container mx-auto flex-1 flex flex-col px-4">
                 <main>
                     <Outlet />
                 </main>
-                <Footer />
             </div>
+            <Footer />
         </div>
     )
 }

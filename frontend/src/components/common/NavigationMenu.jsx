@@ -23,19 +23,11 @@ const NavigationMenu = ({
     const styles = {
         sidebar: {
             container: "space-y-6 py-6",
-            sectionTitle: "text-amber-500 py-2 border-b border-b-amber-200 font-bold",
+            sectionTitle: "text-amber-600 py-2 border-b border-b-white font-bold",
             list: "space-y-1",
             link: "flex items-center gap-2 py-2 hover:text-amber-500 duration-300 text-sm",
             dangerLink: "flex items-center gap-2 py-2 hover:text-red-500 duration-300 text-sm text-red-600",
             highlightLink: "flex items-center gap-2 py-2 bg-amber-50 text-amber-600 rounded-lg px-3 hover:bg-amber-100"
-        },
-        footer: {
-            container: "space-y-3",
-            sectionTitle: "text-white font-bold mb-2 text-sm",
-            list: "space-y-1",
-            link: "block text-gray-300 hover:text-white text-sm duration-300",
-            dangerLink: "block text-red-400 hover:text-red-300 text-sm",
-            highlightLink: "block text-amber-400 hover:text-amber-300 text-sm"
         },
         horizontal: {
             grow: "flex-1",
@@ -54,7 +46,7 @@ const NavigationMenu = ({
         <nav className={`flex-1 ${currentStyle.container}`}>
             
             {variant==="sidebar" ? (
-                <div className="border-b border-b-amber-200 my-3 py-1">منو دسترسی ها</div>
+                <div className={`${currentStyle.sectionTitle}`}>منو دسترسی ها</div>
             ) : null}
             <ul className={`${currentStyle.list}`}>
 
@@ -82,7 +74,7 @@ const NavigationMenu = ({
 
             {variant==="sidebar" ? (
                 <>
-                    <div className="border-b border-b-amber-200 my-3 py-1">اطلاعات کاربر</div>
+                    <div className={`${currentStyle.sectionTitle}`}>اطلاعات کاربر</div>
                     <ul className={`${currentStyle.list}`}>
                         {userRole === null ? (
                             <div className={`${currentStyle.list}`}>
