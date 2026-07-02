@@ -4,10 +4,8 @@ import { get } from "../services/api";
 
 import Sylvanas from "../assets/images/download.jpg";
 import Screenshot from "../assets/images/screenshot.png";
-import Specification from "../components/Product/Specification.jsx";
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import DetailsTab from "../components/product/DetailsTab.jsx";
 
 const Product = () => {
@@ -101,7 +99,7 @@ const Product = () => {
         <>
             <div className="px-6 py-8">
                 <div className="bg-white overflow-hidden">
-                    <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b-2 border-b-gray-400 mb-10">
+                    <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b border-b-gray-300">
                         {/* Product Image Section */}
                         <div className="lg:w-1/2">
                             <div className="mt-16">
@@ -228,8 +226,7 @@ const Product = () => {
                     </div>
                     {/* Product Variants Details */}
                     <div className="">
-                        <DetailsTab />
-                        <Specification products={products} />
+                        <DetailsTab products={products} />
                     </div>
                 </div>
             </div>
