@@ -56,7 +56,7 @@ const Sidebar = ({
             
             <NavigationMenu
                 userRole = {user?.role}
-                onItemClick={onClose}
+                onClose={onClose}
             />
         </aside>
     )

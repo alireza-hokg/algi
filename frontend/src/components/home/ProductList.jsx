@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import ProductItem from "./ProductItem.jsx";
+import ProductItem from "../common/ProductItem.jsx";
 import { useEffect, useState } from "react";
 import { get } from "../../services/api.js";
 import ErrorDisplay from "../common/ErrorDisplay.jsx";

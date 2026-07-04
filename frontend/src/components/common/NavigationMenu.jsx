@@ -5,9 +5,7 @@ import { useAuth } from "../../hooks/useAuth.js";
 import React from "react";
 
 const NavigationMenu = ({
-    variant = "sidebar",
-    onItemClick = null,
-    showIcons = true,
+    onClose=null,
     userRole=null
 }) => {
 
@@ -15,56 +13,30 @@ const NavigationMenu = ({
     const { logout } = useAuth();
 
     const getIcon = (iconName) => {
-        if (!showIcons || !iconName) return null;
+        if (!iconName) return null;
         const IconComponent = Icons[iconName];
         return React.createElement(IconComponent, { size: 18 });
     }
 
-    const styles = {
-        sidebar: {
-            container: "space-y-6 py-6",
-            sectionTitle: "text-amber-600 py-2 border-b border-b-white font-bold",
-            list: "space-y-1",
-            link: "flex items-center gap-2 py-2 hover:text-amber-500 duration-300 text-sm",
-            dangerLink: "flex items-center gap-2 py-2 hover:text-red-500 duration-300 text-sm text-red-600",
-            highlightLink: "flex items-center gap-2 py-2 bg-amber-50 text-amber-600 rounded-lg px-3 hover:bg-amber-100"
-        },
-        horizontal: {
-            grow: "flex-1",
-            container: "hidden md:flex gap-4 flex-wrap justify-center",
-            sectionTitle: "hidden",
-            list: "flex gap-6",
-            link: "text-gray-600 hover:text-amber-500 text-sm duration-300",
-            dangerLink: "text-red-600 hover:text-red-700 text-sm",
-            highlightLink: "text-amber-600 hover:text-amber-700 text-sm font-medium"
-        }
-    };
-
-    const currentStyle = styles[variant] || styles.sidebar;
-
     return (
-        <nav className={`flex-1 ${currentStyle.container}`}>
+        <nav className="flex-1 space-y-6 py-6">
             
-            {variant==="sidebar" ? (
-                <div className={`${currentStyle.sectionTitle}`}>منو دسترسی ها</div>
-            ) : null}
-            <ul className={`${currentStyle.list}`}>
+            <div className="text-amber-600 py-2 border-b border-b-white font-bold">منو دسترسی ها</div>
+            
+            <ul className="space-y-1">
 
                 {mainMenu.map((item, idx) =>
                     {
                         return (<li key={idx}>
                             <Link
                                 to={item.path}
-                                className={
-                                    currentStyle.link
-                                }
+                                className="flex items-center gap-2 py-2 hover:text-amber-500 duration-300
+                                text-sm"
                                 onClick={()=> {
-                                    onItemClick?.();
+                                    onClose?.();
                                 }}
                             >
-                                {variant==="sidebar" ?
-                                    getIcon(item.icon) : null
-                                }
+                                {getIcon(item.icon)}
                                 {item.text}
                             </Link>
                         </li>)
@@ -72,71 +44,61 @@ const NavigationMenu = ({
                 )}
             </ul>
 
-            {variant==="sidebar" ? (
-                <>
-                    <div className={`${currentStyle.sectionTitle}`}>اطلاعات کاربر</div>
-                    <ul className={`${currentStyle.list}`}>
-                        {userRole === null ? (
-                            <div className={`${currentStyle.list}`}>
-                                <Link 
-                                    className={
-                                        currentStyle.link
-                                    }
-                                    to={"/auth"}>ثبت نام / ورود</Link>
-                            </div>
-                        ) : userRole === "customer" ?
-                            customerMenu.map((item, idx) =>
-                                {
-                                    return (<li key={idx}>
-                                        <Link
-                                            to={item.path}
-                                            className={
-                                                item.text === "خروج" ?
-                                                currentStyle.dangerLink :
-                                                currentStyle.link
+            <>
+                <div className="text-amber-600 py-2 border-b border-b-white font-bold">اطلاعات کاربر</div>
+                <ul className="space-y-1">
+                    {userRole === null ? (
+                        <div className="space-y-1">
+                            <Link 
+                                className="flex items-center gap-2 py-2 hover:text-amber-500 duration-300 
+                                text-sm"
+                                to={"/auth"}>ثبت نام / ورود</Link>
+                        </div>
+                    ) : userRole === "customer" ?
+                        customerMenu.map((item, idx) =>
+                            {
+                                return (<li key={idx}>
+                                    <Link
+                                        to={item.path}
+                                        className="flex items-center gap-2 py-2 hover:text-amber-500
+                                        duration-300 text-sm"
+                                        onClick={() => {
+                                            onClose?.();
+                                            if (item.path === null) {
+                                                logout();
                                             }
-                                            onClick={() => {
-                                                onItemClick?.();
-                                                if (item.path === null) {
-                                                    logout();
-                                                }
-                                            }}
-                                        >
-                                            {getIcon(item.icon)}
-                                            {item.text}
-                                        </Link>
-                                    </li>)
-                                }
-                            ) : userRole === "admin" &&
-                            adminMenu?.map((item, idx) =>
-                                {
-                                    return (<li key={idx}>
-                                        <Link
-                                            to={item.path}
-                                            className={
-                                                item.text === "خروج" ?
-                                                currentStyle.dangerLink :
-                                                currentStyle.link
+                                        }}
+                                    >
+                                        {getIcon(item.icon)}
+                                        {item.text}
+                                    </Link>
+                                </li>)
+                            }
+                        ) : userRole === "admin" &&
+                        adminMenu?.map((item, idx) =>
+                            {
+                                return (<li key={idx}>
+                                    <Link
+                                        to={item.path}
+                                        className="flex items-center gap-2 py-2 hover:text-amber-500 duration-300
+                                        text-sm"
+                                        onClick={() => {
+                                            onClose?.();
+                                            if (item.path === null) {
+                                                logout();
                                             }
-                                            onClick={() => {
-                                                onItemClick?.();
-                                                if (item.path === null) {
-                                                    logout();
-                                                }
-                                            }}
-                                        >
-                                            {getIcon(item.icon)}
-                                            {item.text}
-                                        </Link>
-                                    </li>)
-                                }
-                            )
-                        }
-                        
-                    </ul>
-                </>
-            ) : null}
-            
+                                        }}
+                                    >
+                                        {getIcon(item.icon)}
+                                        {item.text}
+                                    </Link>
+                                </li>)
+                            }
+                        )
+                    }
+                    
+                </ul>
+            </>
         </nav>
     )
 }

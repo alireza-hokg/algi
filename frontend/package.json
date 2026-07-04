@@ -18,7 +18,8 @@
     "react-hot-toast": "^2.6.0",
     "react-loading-indicators": "^1.0.1",
     "react-router-dom": "^7.14.2",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

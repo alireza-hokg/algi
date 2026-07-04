@@ -27,15 +27,23 @@ const Product = () => {
     const [count, setCount] = useState(0);
 
     const decreaseCount = () => {
+        if (count<=0) {
+            return 0
+        }
         setCount(count=> count-1)
     }
 
     const increaseCount = () => {
-        setCount(count=> count+1)
+        setCount(count=> +count+1)
     }
 
     const onChangeCount = (e) => {
-        setCount(e.target.value)
+        const value = e.target.value;
+        if (isNaN(value) || value<0) {
+            setCount(0)
+            return
+        }
+        setCount(value)
     }
     
     const fetchData = async () => {
@@ -98,16 +106,17 @@ const Product = () => {
     return (
         <>
             <div className="px-6 py-8">
-                <div className="bg-white overflow-hidden">
-                    <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b border-b-gray-300">
+                <div className="bg-white">
+                    <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
+                    border-b-gray-300">
                         {/* Product Image Section */}
-                        <div className="lg:w-1/2">
-                            <div className="mt-16">
-                                <div className="bg-gray-100 rounded-2xl overflow-hidden group">
+                        <div className="lg:w-1/2 lg:relative">
+                            <div className="lg:sticky lg:top-8">
+                                <div className="bg-gray-100 rounded-2xl overflow-hidden group max-h-8/12">
                                     <img
                                         src={images[selectedImage]}
                                         alt={product?.name}
-                                        className="w-full min-h-screen object-cover transition-transform duration-500 group-hover:scale-105"
+                                        className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                 </div>
                                 {/* Thumbnails - اگر چندتا تصویر داری */}
@@ -131,7 +140,7 @@ const Product = () => {
                         </div>
 
                         {/* Product Details Section */}
-                        <div className="lg:w-1/2 text-center inset-ring inset-ring-gray-100 px-6 py-10 
+                        <div className="lg:w-1/2 text-center inset-ring inset-ring-gray-100 px-6 py-10
                         rounded-md">
                             {/* Title & SKU */}
                             <div className="border-b border-gray-200 pb-6 mb-6">
@@ -198,13 +207,16 @@ const Product = () => {
                                 <div className="flex items-center gap-x-4">
                                     <div className="flex-0 flex text-2xl">
                                         <button 
-                                            className="p-2 rounded-2xl border-2 border-gray-200 hover:bg-amber-500
-                                            hover:border-amber-500 hover:text-white cursor-pointer"
+                                            className={`p-2 rounded-2xl border-2 border-gray-200 hover:bg-amber-500
+                                            hover:border-amber-500 hover:text-white cursor-pointer
+                                            ${count===0 ? "opacity-50 cursor-grab hover:border-gray-200" : null}`}
                                             onClick={decreaseCount}
+                                            disabled={count===0 ? true : false}
                                         >-</button>
                                         <input
                                             type="number"
                                             value={count}
+                                            // min={1}
                                             onChange={onChangeCount}
                                             className="focus:outline-0 border-y max-w-20 min-w-12 text-center"
                                         />

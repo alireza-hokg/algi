@@ -57,9 +57,11 @@ const DetailsTab = ({products}) => {
                         <li key={tab.id}>
                             <button
                                 onClick={()=> toggleTab(tab.id)}
-                                className={`relative tabs flex items-center py-6 font-bold text-gray-500 mb-4
-                                hover:text-amber-500 duration-150 ease-in-out cursor-pointer
-                                ${activeTab === tab.id ? "border-t-amber-500 border-t-4 selected" : null}`}>
+                                className={`relative ${activeTab === tab.id ? "" : "tabs"} flex items-center 
+                                py-6 font-bold text-gray-500 mb-4 hover:text-amber-500 
+                                cursor-pointer border-t-4 border-transparent
+                                ${activeTab == tab.id ? "border-t-amber-500 selected" : null}
+                                duration-150 ease-in-out`}>
                                 <ChevronDown color="#ccc" className="lg:hidden"/>
                                 {tab.label}
                             </button>

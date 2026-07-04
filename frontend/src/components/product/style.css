@@ -4,10 +4,9 @@
         position: absolute;
         left: 0;
         right: 0;
-        top: 0;
+        top: -4px;
+        height: 4px;
         background-color: oklch(76.9% 0.188 70.08);
-        height: 2px;
-        border-radius: 2px;
         transform: scaleX(0);
         transition: all .3s ease-in-out;
         transform-origin: right;

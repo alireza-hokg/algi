@@ -16,14 +16,17 @@ const ProductItem = ({ product }) => {
                 <div>
                     <figcaption>
                         <div className="space-y-4">
-                            <div className="flex flex-col mx-4 space-y-1">
+                            <div className="flex flex-col mx-4 space-y-1 items-center">
                                 <h3 className="text-[#555]">ست پوما Q45406</h3>
-                                <span className="font-bold text-sm">376,000 تومان</span>
+                                <div className="space-x-1">
+                                    <span className="text-sm line-through decoration-1 decoration-gray-500
+                                    text-gray-500">{(376000).toLocaleString("fa-IR")}</span>{" "}
+                                    <span className="text-amber-500 font-extrabold">{(300000).toLocaleString("fa-IR")} تومان</span>
+                                </div>
                             </div>
-                            <div>
+                            <div className="text-center">
                                 <Link
-                                    className="block text-center py-2 px-4 rounded-md bg-orange-500 text-white 
-                                    scale-x-95 hover:scale-x-100 opacity-80 hover:opacity-100 transition-all duration-300"
+                                    className=""
                                     to={`/products/${product.slug}/variants`}>انتخاب گزینه ها
                                 </Link>
                             </div>

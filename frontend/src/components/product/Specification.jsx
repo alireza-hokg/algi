@@ -27,12 +27,12 @@ const Specification = ({products, activeTab}) => {
                             return product[key] ? (
                                 <li
                                     key={key}
-                                    className={`flex-1 flex items-center justify-between px-3 py-2
+                                    className={`flex-1 flex items-center justify-between py-3
                                     ${product[key] ? "border-b-gray-200 border-b" : null} text-sm`}
                                 >
                                     {product[key] ? (
                                         <>
-                                            <span className="font-semibold text-gray-800">{label}</span>
+                                            <span className="font-bold text-gray-800 ">{label}</span>
                                             <span className="text-gray-400">{product[key]}{" "}{unit}</span>
                                         </>
                                     ) : null}

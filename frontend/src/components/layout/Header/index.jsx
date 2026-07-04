@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import UserMenu from "../../common/UserMenu/index.jsx";
 
 import "./style.css"
-import NavigationMenu from "../../common/NavigationMenu.jsx";
 
 const Header = ({
     toggleSidebar={toggleSidebar}
@@ -21,7 +20,7 @@ const Header = ({
                 {/* Menu icon */}
                 <button 
                     onClick={toggleSidebar}
-                    className="md:hidden rounded-full p-2 hover:cursor-pointer"
+                    className="rounded-full p-2 hover:cursor-pointer"
                 >
                     <Menu size={24}/>
                 </button>
@@ -31,9 +30,6 @@ const Header = ({
                         پوشاک آلگی
                         <img />
                     </h1>
-                    <NavigationMenu
-                        variant="horizontal"
-                    />
                 </div>
                 
                 
@@ -57,7 +53,7 @@ const Header = ({
                     )}
                 </div>
                 {/* Search and basket icon for width < md */}
-                <div className="flex md:hidden space-x-2">
+                <div className="flex space-x-2">
                     <div>
                         <Search color="#666"/>
                     </div>
