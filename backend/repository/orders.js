@@ -5,8 +5,16 @@ export default class OrderRepo {
         return await Order.findAll();
     }
 
-    async get(orderId) {
+    async getById(orderId) {
         return await Order.findByPk(orderId);
+    }
+
+    async getByUserId(userId) {
+        return await Order.findAll({
+            where: {
+                userId
+            }
+        })
     }
 
     async create(orderData, transaction = null) {

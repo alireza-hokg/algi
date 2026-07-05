@@ -19,10 +19,10 @@ export default class OrderService {
         }
     }
 
-    async getOrder(id) {
+    async getById(id) {
         const numericId = Number(id);
         try {
-            const order = await this.orderRepo.get(numericId)
+            const order = await this.orderRepo.getById(numericId)
             if (!order) {
                 throw new NotFoundError("سفارشی پیدا نشد.")
             }
@@ -31,6 +31,18 @@ export default class OrderService {
             if (err instanceof NotFoundError) {
                 throw err
             }
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    async getOrdersByUserId(userId) {
+        const numericUserId = Number(userId);
+        try {
+            const orders = await this.orderRepo.getByUserId(numericUserId);
+            return orders
+        }
+        catch(err) {
+            
             throw new DatabaseError(err.message)
         }
     }

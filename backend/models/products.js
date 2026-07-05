@@ -2,6 +2,7 @@ import sequelize from "../utils/db.js";
 import { DataTypes } from "@sequelize/core";
 import ProductImages from "./product-images.js";
 import OrderItem from "./order-items.js";
+import Cart from "./carts.js";
 
 const Product = sequelize.define('Product', {
     id: {
@@ -64,7 +65,14 @@ Product.hasMany(ProductImages, {
 
 Product.hasMany(OrderItem, {
     foreignKey: {
-        name: "product_id",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    },
+    sourceKey: "id"
+})
+
+Product.hasMany(Cart, {
+    foreignKey: {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     },
