@@ -48,7 +48,7 @@ const UserMenu = ({ buttonRef, isUserDropdown, setIsUserDropdown }) => {
     <div className="relative">
       <button
         ref={buttonRef}
-        className="flex p-2 hover:bg-amber-100 rounded-md cursor-pointer"
+        className="flex p-2 hover:bg-amber-500 rounded-md cursor-pointer"
         onClick={() => {
           toggleDropDown();
         }}
@@ -58,19 +58,19 @@ const UserMenu = ({ buttonRef, isUserDropdown, setIsUserDropdown }) => {
       </button>
       <ul
         ref={dropDownRef}
-        className={`user-container absolute top-full bg-gray-50 min-w-30 py-4 p-2 rounded-md ${
+        className={`user-container absolute top-full bg-[#1b1b1b] min-w-30 py-4 p-2 rounded-md ${
           isUserDropdown ? "flex" : "hidden"
         } flex-col gap-y-4 transform translate-x-6/12 translate-y-1/12`}
       >
-        <li>
-          <Link className="block text-center p-2 rounded-b-sm hover:bg-gray-100">
+        <li className="border-b border-b-white">
+          <Link className="block text-center p-2 rounded-b-sm hover:bg-[#1b1b1b]">
             09371036096
           </Link>
         </li>
         {user?.role === "admin" ? (
             <li>
                 <Link
-                    className="block text-center p-2 rounded-b-sm hover:bg-gray-100"
+                    className="block text-center p-2 rounded-b-sm hover:bg-[#1b1b1b]"
                     to={"/admin"}
                 >
                     داشبورد
@@ -80,7 +80,7 @@ const UserMenu = ({ buttonRef, isUserDropdown, setIsUserDropdown }) => {
         <li>
           <button
             className="w-full text-center p-2 rounded-b-sm bg-red-400 hover:bg-red-500 
-                    cursor-pointer transition-colors duration-300 ease-in-out"
+            cursor-pointer transition-colors duration-300 ease-in-out"
             onClick={() => {
               handleLogout();
             }}
