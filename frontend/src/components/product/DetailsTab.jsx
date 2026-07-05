@@ -3,7 +3,7 @@ import "./style.css";
 import Specification from "./Specification.jsx";
 import { useState } from "react";
 
-const DetailsTab = ({products}) => {
+const DetailsTab = ({variants}) => {
 
     const [activeTab, setActiveTab] = useState(1);
 
@@ -11,17 +11,17 @@ const DetailsTab = ({products}) => {
         {
             id: 1,
             label: "مشخصات بیشتر",
-            content: <Specification products={products} activeTab={activeTab} />
+            content: <Specification variants={variants} activeTab={activeTab} />
         },
         {
             id: 2,
             label: "توضیحات",
-            content: <Specification products={products} activeTab={activeTab} />
+            content: <Specification variants={variants} activeTab={activeTab} />
         },
         {
             id: 3,
             label: "نظرات",
-            content: <Specification products={products} activeTab={activeTab} />
+            content: <Specification variants={variants} activeTab={activeTab} />
         },
     ]
 

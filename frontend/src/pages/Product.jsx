@@ -7,12 +7,16 @@ import Screenshot from "../assets/images/screenshot.png";
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
 import DetailsTab from "../components/product/DetailsTab.jsx";
+import { useCart } from "../hooks/useCart.js";
 
 const Product = () => {
     const { slug } = useParams();
+
+    const {addToCart} = useCart();
+
     // Product states
     const [product, setProduct] = useState({});
-    const [products, setProducts] = useState([]);
+    const [variants, setVariants] = useState([]);
     const [variantColor, setVariantColor] = useState([]);
     const [variantSize, setVariantSize] = useState([]);
     const [variantWidth, setVariantWidth] = useState([]);
@@ -45,13 +49,25 @@ const Product = () => {
         }
         setCount(value)
     }
+
+    // اضافه کردن به سبد خرید
+    const handleAddToCart = (product, count) => {
+        try {
+            console.log(product)
+            addToCart(product, count)
+        } catch(err) {
+            console.log(err.message)
+        }
+    }
     
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
+            // ویژگی های محصول مثل طول و سایز 
             const { data: variantsData } = await get(`/products/${slug}/variants`);
             const product_id = variantsData.body[0]?.product_id;
+            // خود محصول مثلا قیمت
             const { data: productData } = await get(`/products/${product_id}`);
             const variants = variantsData.body || [];
             const product = productData.body || [];
@@ -60,7 +76,7 @@ const Product = () => {
             const uniqueWidth = [...new Set(variants.map(product => product.width))];
             const uniqueHeight = [...new Set(variants.map(product => product.height))];
 
-            setProducts(variants);
+            setVariants(variants);
             setVariantColor(uniqueColors);
             setVariantSize(uniqueSizes);
             setVariantWidth(uniqueWidth);
@@ -73,6 +89,7 @@ const Product = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         setImages([Sylvanas, Screenshot])
         fetchData();
@@ -226,9 +243,13 @@ const Product = () => {
                                             onClick={increaseCount}
                                         >+</button>
                                     </div>
-                                    <button className="flex-1 bg-amber-500 hover:bg-black 
-                                    text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
-                                    duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                                    <button
+                                        onClick={
+                                            ()=> handleAddToCart(product, count)
+                                        }
+                                        className="flex-1 bg-amber-500 hover:bg-black 
+                                        text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
+                                        duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                                     >
                                         افزودن به سبد خرید
                                     </button>
@@ -238,7 +259,7 @@ const Product = () => {
                     </div>
                     {/* Product Variants Details */}
                     <div className="">
-                        <DetailsTab products={products} />
+                        <DetailsTab variants={variants} />
                     </div>
                 </div>
             </div>

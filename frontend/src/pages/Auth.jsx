@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import AuthLogin from "../components/auth/AuthLogin.jsx";
-import AuthRegister from "../components/Auth/AuthRegister.jsx";
+import Login from "../components/Auth/Login.jsx";
+import Register from "../components/Auth/Register.jsx";
 import { Link } from "react-router-dom";
 import AuthHeader from "../components/layout/AuthHeader.jsx";
 
@@ -50,7 +50,7 @@ const Auth = () => {
                         </div>
 
                         {step === "login" ? (
-                            <AuthLogin
+                            <Login
                                 phone={phone}
                                 password={password}
                                 onChangePhone={onChangePhone}
@@ -60,7 +60,7 @@ const Auth = () => {
                                 onToggle={toggleStep}
                             />
                         ) : (
-                            <AuthRegister
+                            <Register
                                 phone={phone}
                                 password={password}
                                 onChangePhone={onChangePhone}

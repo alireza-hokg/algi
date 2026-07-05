@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { AuthContext } from "./AuthContext.js";
 import { get, post } from "../services/api.js"
