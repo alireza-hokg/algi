@@ -10,6 +10,7 @@ import userRoutes from "./routes/users.js";
 import productImagesRoute from "./routes/product-images.js"
 import ordersRoute from "./routes/orders.js"
 import orderItemsRoute from "./routes/order-items.js"
+import cartsRoute from "./routes/carts.js";
 
 import { createData } from "./seeders/seed.js";
 import { responseFormatter } from "./middlewares/responseFormatter.js";
@@ -40,6 +41,7 @@ app.use("/api/v1", userRoutes)
 app.use("/api/v1", productImagesRoute)
 app.use("/api/v1", ordersRoute)
 app.use("/api/v1", orderItemsRoute)
+app.use("/api/v1", cartsRoute)
 
 /**
  * Initializes and starts the Express server
