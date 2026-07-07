@@ -1,3 +1,4 @@
+import Joi from "joi";
 import { DatabaseError, ValidationError } from "../utils/Error.js"
 
 export default class CartService {
@@ -25,6 +26,21 @@ export default class CartService {
         }
         catch(err) {
             throw new DatabaseError(err.message);
+        }
+    }
+
+    async add(body) {
+        const cartValidationSchema = Joi.object().keys({
+            user_id: Joi.number().required(),
+            product_id: Joi.number().required(),
+            quantity: Joi.number().required(),
+            price: Joi.number().required(),
+        })
+        try {
+
+        }
+        catch(err) {
+            throw new DatabaseError(err.message)
         }
     }
 }

@@ -42,6 +42,7 @@ const User = sequelize.define("User", {
 
 User.hasMany(Order, {
     foreignKey: {
+        name: "user_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         allowNull: false
@@ -51,6 +52,7 @@ User.hasMany(Order, {
 
 User.hasMany(Cart, {
     foreignKey: {
+        name: "user_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         allowNull: false

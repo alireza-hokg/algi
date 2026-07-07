@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export default class CartController {
     constructor(cartService) {
         this.cartService = cartService;
@@ -16,13 +18,24 @@ export default class CartController {
 
     // تمام کالاهای یک مشتری
     async getAllByUserId(req, res) {
-        const { userId } = req.params;
+        const token = req.cookies.token;
+        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
         try {
-            const cart = await this.cartService.getAllByUserId(userId);
+            const cart = await this.cartService.getAllByUserId(user.userId);
             res.success(cart, "سبد خرید با موفقیت بارگذاری شد.")
         }
         catch(err) {
             res.error(err.message);
+        }
+    }
+
+    async add(req, res) {
+        const {body} = req
+        try {
+            return await this.cartService.add(body);
+        }
+        catch(err) {
+            res.error(err.message)
         }
     }
 }

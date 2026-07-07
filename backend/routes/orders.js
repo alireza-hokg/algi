@@ -19,7 +19,7 @@ const orderService = new OrderService(orderRepo, userService, orderItemService);
 const orderController = new OrderController(orderService)
 
 router.get("/orders", orderController.getAllOrders.bind(orderController))
-router.get("/orders/:id", orderController.getOrder.bind(orderController))
+router.get("/orders/:id", orderController.getById.bind(orderController))
 router.post("/orders", orderController.createOrder.bind(orderController))
 
 export default router;

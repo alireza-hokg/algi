@@ -9,11 +9,11 @@ const Cart = sequelize.define(
             autoIncrement: true,
             primaryKey: true
         },
-        userId: {
+        user_id: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         },
-        productId: {
+        product_id: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         },
@@ -27,7 +27,15 @@ const Cart = sequelize.define(
             allowNull: false
         }
     }, {
-        timestamps: true
+        timestamps: true,
+        indexes: [
+            {
+                fields: ["product_id"]
+            },
+            {
+                fields: ["user_id"]
+            }
+        ]
     }
 )
 

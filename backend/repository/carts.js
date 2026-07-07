@@ -7,11 +7,15 @@ export default class CartRepo {
     }
     
     async getAllByUserId(userId) {
+        console.log(userId)
         return await Cart.findAll({
             where: {
-                userId
+                user_id: userId
             }
         })
-        
+    }
+
+    async add(cartData) {
+        return await Cart.create(cartData)
     }
 }

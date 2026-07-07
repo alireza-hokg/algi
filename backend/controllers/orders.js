@@ -16,10 +16,10 @@ export default class OrderController {
         }
     }
 
-    async getOrder(req, res) {
+    async getById(req, res) {
         const { id } = req.params
         try {
-            const result = await this.orderService.getOrderById(id);
+            const result = await this.orderService.getById(id);
             res.success(result);
         } catch(err) {
             res.error(err.message);

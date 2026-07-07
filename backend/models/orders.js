@@ -10,7 +10,7 @@ const Order = sequelize.define("Orders", {
         allowNull: false,
     },
     user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
     },
     total_price: {
@@ -49,7 +49,6 @@ const Order = sequelize.define("Orders", {
 
 Order.hasMany(OrderItem, {
     foreignKey: {
-        name: "order_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         allowNull: false

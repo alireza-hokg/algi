@@ -73,6 +73,7 @@ Product.hasMany(OrderItem, {
 
 Product.hasMany(Cart, {
     foreignKey: {
+        name: "product_id",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     },
