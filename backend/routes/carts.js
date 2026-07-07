@@ -14,8 +14,11 @@ const userService = new UserService(userRepo);
 const cartService = new CartService(cartRepo, userService);
 const cartController = new CartController(cartService);
 
-router.get("/carts", cartController.getAll.bind(cartController));
-router.get("/carts/me", cartController.getAllByUserId.bind(cartController));
-router.post("/carts", cartController.add.bind(cartController));
+// تمام سبد های خرید یک کاربر توسط userId and status
+router.get("/carts", cartController.getCartsByUserAndStatus.bind(cartController));
+// گرفتن سبد خرید با id
+router.get("/carts/:id", cartController.getCartById.bind(cartController));
+// اضافه کردن کالا به سبد خرید
+router.post("/carts", cartController.addToCart.bind(cartController));
 
 export default router

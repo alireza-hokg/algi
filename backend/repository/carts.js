@@ -1,21 +1,47 @@
+import { Op, where } from "@sequelize/core";
 import Cart from "../models/carts.js";
 
 export default class CartRepo {
-    async getAll() {
-        const carts = await Cart.findAll();
-        return carts;
+    async findById(id) {
+        return await Cart.findByPk(id);
     }
-    
-    async getAllByUserId(userId) {
-        return await Cart.findAll({
+
+    async findOneByUserAndStatus(cartBody) {
+        return await Cart.findOne({
             where: {
-                user_id: userId
+                [Op.and]: [
+                    { user_id: cartBody.user_id },
+                    { status: cartBody.status },
+                    { product_id: cartBody.product_id}
+                ]
             }
         })
     }
 
-    async add(cartData) {
+    // تمام سبد ها بر اساس وضعیت
+    async findCartsByUserAndStatus(cartBody) {
+        const carts = await Cart.findAll({
+            where: {
+                [Op.and]: [
+                    { user_id: cartBody.user_id }, 
+                    { status: cartBody.status }
+                ]
+            }
+        });
+        return carts;
+    }
+    
+    async create(cartData) {
         return await Cart.create(cartData)
-        
+    }
+
+    async update(cartData) {
+        return await Cart.update(
+            cartData, {
+                where: {
+                    id: cartData.id
+                }
+            }
+        )
     }
 }

@@ -25,6 +25,10 @@ const Cart = sequelize.define(
         price: {
             type: DataTypes.DECIMAL(10,2),
             allowNull: false
+        },
+        status: {
+            type: DataTypes.ENUM("active", "purchased", "removed"),
+            defaultValue: "active"
         }
     }, {
         timestamps: true,
@@ -33,7 +37,10 @@ const Cart = sequelize.define(
                 fields: ["product_id"]
             },
             {
-                fields: ["user_id"]
+                fields: ["user_id", "status"]
+            },
+            {
+                fields: ["user_id", "product_id", "status"],
             }
         ]
     }
