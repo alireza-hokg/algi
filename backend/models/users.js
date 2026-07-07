@@ -1,5 +1,5 @@
 import { DataTypes } from "@sequelize/core";
-import sequelize from "../utils/db.js";
+import sequelize from "../config/db.js";
 import Order from "./orders.js";
 import Cart from "./carts.js";
 

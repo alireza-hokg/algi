@@ -16,6 +16,6 @@ const cartController = new CartController(cartService);
 
 router.get("/carts", cartController.getAll.bind(cartController));
 router.get("/carts/me", cartController.getAllByUserId.bind(cartController));
-// router.post("/carts", cartController.add.bind(cartController));
+router.post("/carts", cartController.add.bind(cartController));
 
 export default router

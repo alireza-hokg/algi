@@ -36,8 +36,19 @@ export default class CartService {
             quantity: Joi.number().required(),
             price: Joi.number().required(),
         })
+        const {value: validateCart, error: cartError} = cartValidationSchema.validate({
+            user_id: body.user_id,
+            product_id: body.product_id,
+            quantity: body.quantity,
+            price: body.price
+        })
+        
+        if (cartError) {
+            throw new ValidationError(cartError?.message)
+        }
         try {
-
+            const result = await this.cartRepo.add(validateCart);
+            return result.dataValues;
         }
         catch(err) {
             throw new DatabaseError(err.message)

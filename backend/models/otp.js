@@ -1,5 +1,5 @@
 import { DataTypes } from "@sequelize/core";
-import sequelize from "../utils/db.js";
+import sequelize from "../config/db.js";
 
 const otpSchema = sequelize.define(
     "otp",

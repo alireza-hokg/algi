@@ -7,7 +7,6 @@ export default class CartRepo {
     }
     
     async getAllByUserId(userId) {
-        console.log(userId)
         return await Cart.findAll({
             where: {
                 user_id: userId
@@ -17,5 +16,6 @@ export default class CartRepo {
 
     async add(cartData) {
         return await Cart.create(cartData)
+        
     }
 }

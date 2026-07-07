@@ -1,4 +1,4 @@
-import sequelize from "../utils/db.js";
+import sequelize from "../config/db.js";
 import { DataTypes } from "@sequelize/core";
 import OrderItem from "./order-items.js";
 

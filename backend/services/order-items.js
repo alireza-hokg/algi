@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
-import sequelize from "../utils/db.js";
+import sequelize from "../config/db.js";
 
 export default class orderItemService {
     constructor(orderItemRepo, orderService) {

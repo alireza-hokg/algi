@@ -18,7 +18,7 @@ export default class CartController {
 
     // تمام کالاهای یک مشتری
     async getAllByUserId(req, res) {
-        const token = req.cookies.token;
+        const {token} = req.cookies;
         const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
         try {
             const cart = await this.cartService.getAllByUserId(user.userId);
@@ -30,9 +30,13 @@ export default class CartController {
     }
 
     async add(req, res) {
-        const {body} = req
+        const {token} = req.cookies;
+        const {userId} = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const {body} = req;
+        body.user_id = userId;
         try {
-            return await this.cartService.add(body);
+            const result = await this.cartService.add(body);
+            res.created(result, "کالا به سبد خرید اضافه شد.");
         }
         catch(err) {
             res.error(err.message)
