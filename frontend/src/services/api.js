@@ -36,4 +36,8 @@ const del = (endpoint) => {
     return api(endpoint, { method: "delete" })
 }
 
-export { get, post, put, del }
+const patch = (endpoint) => {
+    return api(endpoint, { method: "patch" })
+}
+
+export { get, post, put, del, patch }

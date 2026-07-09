@@ -15,13 +15,13 @@ const Header = ({
     const [isUserDropdown, setIsUserDropdown] = useState(false);
     const buttonRef = useRef(null);
     const { isLogin } = useAuth();
-    const { cartCount, cartTotal } = useCart();
+    const { cartCount, cartTotal } = useCart()
 
     return (
-        <header className="py-8 px-4 bg-black text-white">
-            <div className="container mx-auto flex justify-between items-center gap-x-6">
+        <header className="bg-black text-white">
+            <div className="flex justify-between items-center gap-x-6 py-8 px-4">
                 {/* Menu icon */}
-                <button 
+                <button
                     onClick={toggleSidebar}
                     className="rounded-full p-2 hover:cursor-pointer"
                 >
@@ -61,11 +61,11 @@ const Header = ({
                         <Search color="#666"/>
                     </div>
                     <Link
-                        to={`/orders`}
-                        className="flex gap-x-2 relative text-[#666] hover:text-white cursor-pointer duration-150
+                        to={`/carts`}
+                        className="flex gap-x-2 text-[#666] hover:text-white cursor-pointer duration-150
                         ease-in-out"
                     >
-                        <div className="">
+                        <div className="relative">
                             {cartCount === 0 ? null : (
                                 <div
                                     className="flex justify-center items-center absolute bottom-8/12 right-8/12
@@ -78,7 +78,7 @@ const Header = ({
                             )}
                             <ShoppingBag />
                         </div>
-                        <span>{(cartTotal).toLocaleString("fa-IR")}{" "}تومان</span>
+                        <span className="text-[13px]">{(cartTotal).toLocaleString("fa-IR")}{" "}تومان</span>
                     </Link>
                 </div>
             </div>

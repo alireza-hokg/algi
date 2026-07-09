@@ -7,12 +7,14 @@ import Screenshot from "../assets/images/screenshot.png";
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
 import DetailsTab from "../components/product/DetailsTab.jsx";
+import { useAuth } from "../hooks/useAuth.js";
 import { useCart } from "../hooks/useCart.js";
 
 const Product = () => {
     const { slug } = useParams();
 
-    const {addToCart} = useCart();
+    const { user } = useAuth();
+    const { addToCart } = useCart();
 
     // Product states
     const [product, setProduct] = useState({});
@@ -50,16 +52,15 @@ const Product = () => {
         setCount(value)
     }
 
-    // اضافه کردن به سبد خرید
-    const handleAddToCart = (product, count) => {
-        try {
-            console.log(product)
-            addToCart(product, count)
-        } catch(err) {
-            console.log(err.message)
+    const handleAddToCart = () => {
+        if (count===0) {
+            return
         }
+        const userId = user?.id
+        const isAdded = addToCart(userId, product, count);
+        isAdded ? setCount(0) : null
     }
-    
+
     const fetchData = async () => {
         setLoading(true);
         setError(null);
@@ -244,9 +245,7 @@ const Product = () => {
                                         >+</button>
                                     </div>
                                     <button
-                                        onClick={
-                                            ()=> handleAddToCart(product, count)
-                                        }
+                                        onClick={handleAddToCart}
                                         className="flex-1 bg-amber-500 hover:bg-black 
                                         text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
                                         duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"

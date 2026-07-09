@@ -1,89 +1,93 @@
 import { useEffect, useState } from "react";
 import { CartContext } from "./CartContext.js";
 import toast from "react-hot-toast";
-const CartProvider = ({children}) => {
+import { patch, post } from "../services/api.js";
+import { useNavigate } from "react-router-dom";
 
-    const [cartItems, setCartItems] = useState(()=> {
-        const saved = localStorage.getItem("cart");
-        return saved ? JSON.parse(saved) : []
-    });
+const CartProvider = ({children}) => {
+    const navigate = useNavigate()
+    const [cartItems, setCartItems] = useState([]);
     const [cartTotal, setCartTotal] = useState(0);
     const [cartCount, setCartCount] = useState(0);
 
-    // بروزرسانی cartItems وقتی cartItems تغییر میکنه
     useEffect(()=> {
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-        const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const fetchData = async () => {
+            const { data: cartsData } = await post("/carts", {
+                status: "active"
+            });
+            const items = cartsData?.body || []
+            setCartItems(items);
 
-        const total = savedCart.reduce((sum, item)=> sum + (item.price * item.quantity), 0);
-        const count = savedCart.reduce((sum, item)=> sum + item.quantity, 0);
+            const newCount = items.reduce((sum, item) => item.quantity + sum, 0);
+            setCartCount(newCount)
 
-        setCartTotal(total);
-        setCartCount(count);
+            const newTotal = items.reduce((sum, item) => (item.price * item.quantity) + sum, 0)
+            setCartTotal(newTotal);
+        }
+        fetchData();
+    }, [])
 
-    }, [cartItems])
-
-    const addToCart = (product, quantity = 1) => {
-        setCartItems(prevItems=> {
-            const existingItemIndex = prevItems.findIndex(item=> item.id === product.id)
-            
-            if (existingItemIndex >= 0) {
-                const updatedItems = [...prevItems]
-                updatedItems[existingItemIndex].quantity += quantity;
-                toast.success(`تعداد ${product.name} به روز شد.`)
-                return updatedItems;
-            } else {
-                toast.success("کالا با موفقیت اضافه شد.");
-                return [...prevItems, { ...product, quantity}];
-            }
-        })
-    }
-
-    const removeFromCart = (productId) => {
-        setCartItems(prevItems=> {
-            const updatedItems = prevItems.filter(item=> item.id !== productId);
-            toast.success("کالا با موفقیت حذف شد.")
-            return updatedItems
-        })
-    }
-
-    const increaseQuantity = (productId) => {
-        setCartItems(prevItems=> {
-            prevItems.map(item=>
-                item.id === productId ? 
-                    item.quantity +1 :
-                    item
-            )
-        })
-    }
-
-    const decreaseQuantity = (productId) => {
-        setCartItems(prevItems=> {
-            const existingItem = prevItems.find(item=> item.id === productId);
-            if (existingItem && existingItem.quantity > 1) {
-                return prevItems.map(item=> 
-                    item.id === productId ?
-                        { ...item, quantity: item.quantity -1}: 
+    // add some product to a user's cart
+    const addToCart = async (userId, product, count) => {
+        // اگر ثبت نام نکرده
+        if (!userId) {
+            navigate("/auth");
+            toast.custom(
+                <div
+                    className="bg-linear-to-r from-black to-[#1b1b1b] text-white py-3 px-6 rounded-2xl
+                    flex items-center gap-3 text-base font-medium font-sans"
+                >
+                    <span className="text-xl">🔔</span>
+                        لطفا ثبت نام کنید.
+                    <span className="text-xl">📝</span>
+                </div>,
+                {
+                    duration: 4000,
+                    position: "top-center",
+                }
+            );
+            return
+        }
+        const cartData = {
+            user_id: userId,
+            product_id: product.id,
+            price: product.price,
+            quantity: count,
+            status: "active"
+        }
+        try {
+            const { data: createdCart } = await post("/carts/add", cartData)
+            if (createdCart.success) {
+                setCartItems(prevCartItems => {
+                    return prevCartItems.map(item =>
+                        item.id === createdCart?.body?.id ? 
+                        {...item, quantity: createdCart?.body?.quantity} :
                         item
-                )
-            } else {
-                return prevItems.filter(item=> item.id !== productId)
+                    )
+                });
+                
+                setCartCount(prev => prev + count)
+                setCartTotal(prev => (product.price * count) + prev)
+                toast.success(createdCart.message);
+                return createdCart.success
             }
-        })
+        } 
+        catch(err) {
+            console.log(err.message)
+        }
     }
 
-    const clearCart = () => {
-        setCartCount([]);
-        toast.success("سبد خرید با موفقیت خالی شد.")
-    }
-    
-    const isInCart = (productId) => {
-        return cartItems.some(item=> productId === item.id)
-    }
-
-    const getItemQuantity = (productId) => {
-        const item = cartItems.find(item=> item.id === productId)
-        return item ? item.quantity : 0
+    const removeFromCart = async (id) => {
+        try {
+            const isRemoved = await patch(`/carts/${id}`);
+            if (isRemoved) {
+                toast.success("کالا با موفقیت حذف شد.")
+            }
+        }
+        catch(err) {
+            console.log(err.message)
+            toast.error(err.message)
+        }
     }
 
     return (
@@ -93,14 +97,8 @@ const CartProvider = ({children}) => {
                 cartCount,
                 cartTotal,
                 addToCart,
-                removeFromCart,
-                increaseQuantity,
-                decreaseQuantity,
-                clearCart,
-                isInCart,
-                getItemQuantity,
+                removeFromCart
             }}
-            
         >
             {children}
         </CartContext.Provider>

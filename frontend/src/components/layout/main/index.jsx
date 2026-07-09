@@ -46,7 +46,7 @@ const CustomerLayout = () => {
             <Header
                 toggleSidebar={toggleSidebar}
             />
-            <div className="container mx-auto flex-1 flex flex-col px-4">
+            <div className="flex-1 flex flex-col">
                 <main>
                     <Outlet />
                 </main>
