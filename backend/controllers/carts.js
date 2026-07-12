@@ -34,11 +34,19 @@ export default class CartController {
     }
 
     // اضافه کردن به سبد خرید
-    async addToCart(req, res) {
+    /**
+     * @param {body.user_id} req
+     * @param {body.product_id} req 
+     * @param {body.quantity} req
+     * @param {body.price} req
+     * @param {body.status} req
+     * 
+     */
+    async upsertCart(req, res) {
         const {token} = req.cookies;
         const {userId} = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const {body} = req;
-        body.user_id = userId;
+        body.userId = userId;
         try {
             const result = await this.cartService.upsertCart(body);
             res.created(result, "کالا به سبد خرید اضافه شد.");
@@ -48,7 +56,24 @@ export default class CartController {
         }
     }
 
-    async removeFromCart(req, res) {
+    async adjustCartQuantity(req, res) {
+        try {
+            const result = await this.cartService.adjustCartQuantity(req.body)
+            res.updated(result)
+        }
+        catch(err) {
+            res.error(err.message)
+        }
+    }
 
+    async removeFromCart(req, res) {
+        const { id } = req.params;
+        try {
+            const deletedCart = await this.cartService.removeFromCart(id);
+            res.deleted(deletedCart, "سبد خرید با موفقیت حذف شد.")
+        }
+        catch(err) {
+            res.error(err.message);
+        }
     }
 }

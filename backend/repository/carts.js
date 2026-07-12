@@ -1,5 +1,6 @@
-import { Op, where } from "@sequelize/core";
+import { Op } from "@sequelize/core";
 import Cart from "../models/carts.js";
+import Product from "../models/products.js";
 
 export default class CartRepo {
     async findById(id) {
@@ -26,6 +27,11 @@ export default class CartRepo {
                     { user_id: cartBody.user_id }, 
                     { status: cartBody.status }
                 ]
+            },
+            include: {
+                model: Product,
+                attributes: ["name", "price"],
+                nested: false
             }
         });
         return carts;

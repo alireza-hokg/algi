@@ -27,7 +27,7 @@ const Cart = sequelize.define(
             allowNull: false
         },
         status: {
-            type: DataTypes.ENUM("active", "purchased", "removed"),
+            type: DataTypes.ENUM("active", "purchased"),
             defaultValue: "active"
         }
     }, {

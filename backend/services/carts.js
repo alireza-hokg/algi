@@ -8,7 +8,7 @@ export default class CartService {
     }
 
     async getCartById(id) {
-        const numericId = Number(id);
+        const numericId = Number(id)
         try {
             const cart = await this.cartRepo.findById(numericId);
             if (!cart) {
@@ -44,7 +44,13 @@ export default class CartService {
         }
     }
 
-    // گرفتن یک سبد خرید فعال
+    /**
+     * گرفتن سبد خرید کاربر با status 
+     * @param {string} body.string
+     * @param {number} body.productId
+     * @param {number} body.userId
+     * @returns {Promise<Object>}
+     */
     async getActiveCartByUserAndStatus(body) {
         try {
             return await this.cartRepo.findOneByUserAndStatus(body);
@@ -53,7 +59,8 @@ export default class CartService {
             throw new DatabaseError(err.message);
         }
     }
-
+    
+    // اگر کالا در سبد خرید وجود نداشت اضافه کن
     async addToCart(body) {
         
         try {
@@ -65,18 +72,33 @@ export default class CartService {
         }
     }
 
-    async updateCart(body, id) {
-        const cart = await this.getCartById(id);
+    /**
+     * بروزرسانی تعداد محصول در سبد خرید اگر محصول وجود داشت
+     * 
+     * @param {Object} body 
+     * @param {number} body.quantity تعداد برای اضافه یا کم کردن
+     * @param {*} id - id سبد خرید برای بروزرسانی
+     * @returns {Promise<Object|boolean>} Returns updated cart data or false if operation fails
+     */
+    async updateCart(validateCart, activeCart) {
+        console.log(validateCart)
+        console.log(activeCart)
         try {
-            cart.quantity += body.quantity
-            cart.save();
-            return cart.dataValues
+            if (validateCart.quantity > 0) {
+                activeCart.quantity += validateCart.quantity
+            }
+            else if (validateCart.quantity < 0 && Math.abs(validateCart.quantity) < activeCart.quantity) {
+                activeCart.quantity += validateCart.quantity
+            }
+            activeCart.save();
+            return activeCart.dataValues
         }
         catch(err) {
             throw new DatabaseError(err.message)
         }
     }
 
+    // استفاده از addToCart و updateCart برای اضافه کردن محصول به سبد خرید
     async upsertCart(body) {
         const cartValidationSchema = Joi.object().keys({
             user_id: Joi.number().required(),
@@ -105,10 +127,54 @@ export default class CartService {
         // اگر کالا در سبد خرید وجود نداشت یکی بساز
         try {
             if (activeCart?.id) {
-                return await this.updateCart(validateCart, activeCart.id);
+                return await this.updateCart(validateCart, activeCart);
             } else {
                 return await this.addToCart(validateCart);
             }
+        }
+        catch(err) {
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    async adjustCartQuantity(body) {
+        const adjustValidationSchema = Joi.object().keys({
+            cartId: Joi.string().required(),
+            quantity: Joi.number().required()
+        })
+        const { value: validateCart, error: errorCart } = adjustValidationSchema.validate({
+            cartId: body.cartId,
+            quantity: body.quantity
+        })
+
+        if (errorCart) {
+            throw new ValidationError(errorCart.message)
+        }
+        const cart = await this.getCartById(validateCart.cartId);
+        console.log(cart.dataValues)
+        try {
+            if (cart.quantity > 0) {
+                cart.quantity = validateCart.quantity;
+            } else {
+                return
+            }
+            cart.save();
+            return true
+        }
+        catch(err) {
+            if (err instanceof ValidationError) {
+                throw err
+            }
+            throw new DatabaseError(err.message)
+        }
+    }
+
+    // حذف محصول از سبد خرید
+    async removeFromCart(id) {
+        const cart = await this.getCartById(id);
+        try {
+            await cart.destroy();
+            return true
         }
         catch(err) {
             throw new DatabaseError(err.message)
