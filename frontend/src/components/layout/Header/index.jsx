@@ -11,6 +11,7 @@ import { useCart } from "../../../hooks/useCart.js";
 const Header = ({
     toggleSidebar={toggleSidebar}
 }) => {
+    const { user } = useAuth();
 
     const [isUserDropdown, setIsUserDropdown] = useState(false);
     const buttonRef = useRef(null);
@@ -60,26 +61,32 @@ const Header = ({
                     <div>
                         <Search color="#666"/>
                     </div>
-                    <Link
-                        to={`/carts`}
-                        className="flex gap-x-2 text-[#666] hover:text-white cursor-pointer duration-150
-                        ease-in-out"
-                    >
-                        <div className="relative">
-                            {cartCount === 0 ? null : (
-                                <div
-                                    className="flex justify-center items-center absolute bottom-8/12 right-8/12
-                                    bg-amber-500 rounded-full py-0.5 px-1.5 text-white"
-                                >
-                                        <span className="text-[10px] font-bold">
-                                            {cartCount}
-                                        </span>
-                                </div>
-                            )}
-                            <ShoppingBag />
-                        </div>
-                        <span className="text-[13px]">{(cartTotal).toLocaleString("fa-IR")}{" "}تومان</span>
-                    </Link>
+                    {user ? (
+                        <Link
+                            to={`/carts`}
+                            className="flex gap-x-2 text-[#666] hover:text-white cursor-pointer duration-150
+                            ease-in-out"
+                        >
+                            <div className="relative">
+                                {cartCount === 0 ? null : (
+                                    <div
+                                        className="flex justify-center items-center absolute bottom-8/12 right-8/12
+                                        bg-amber-500 rounded-full py-0.5 px-1.5 text-white"
+                                    >
+                                            <span className="text-[10px] font-bold">
+                                                {cartCount}
+                                            </span>
+                                    </div>
+                                )}
+                                <ShoppingBag />
+                            </div>
+                            
+                            <span className="hidden lg:inline-block text-[13px]">
+                                {(cartTotal).toLocaleString("fa-IR")}{" "}تومان
+                            </span>
+                        </Link>
+                    ) : null}
+                    
                 </div>
             </div>
         </header>

@@ -3,6 +3,7 @@ import { CartContext } from "./CartContext.js";
 import toast from "react-hot-toast";
 import { patch, post } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth.js";
 
 const CartProvider = ({children}) => {
     const navigate = useNavigate()
@@ -10,13 +11,22 @@ const CartProvider = ({children}) => {
     const [cartTotal, setCartTotal] = useState(0);
     const [cartCount, setCartCount] = useState(0);
 
+    const { user } = useAuth();
+
     useEffect(()=> {
         const fetchData = async () => {
-            const { data: cartsData } = await post("/carts", {
-                status: "active"
-            });
-            const items = cartsData?.body || []
-            setCartItems(items);
+            let items;
+            if (!user) {
+                items = []
+                setCartItems(items)
+            }
+            else {
+                const { data: cartsData } = await post("/carts", {
+                    status: "active"
+                });
+                items = cartsData?.body || []
+                setCartItems(items);
+            }
 
             const newCount = items.reduce((sum, item) => item.quantity + sum, 0);
             setCartCount(newCount)
@@ -25,17 +35,18 @@ const CartProvider = ({children}) => {
             setCartTotal(newTotal);
         }
         fetchData();
-    }, [])
+    }, [user])
 
     // add some product to a user's cart
-    const addToCart = async (userId, product, count) => {
+    const addToCart = async (product, count) => {
         // اگر ثبت نام نکرده
-        if (!userId) {
+        if (!user) {
             navigate("/auth");
             toast.custom(
                 <div
-                    className="bg-linear-to-r from-black to-[#1b1b1b] text-white py-3 px-6 rounded-2xl
-                    flex items-center gap-3 text-base font-medium font-sans"
+                    className="bg-black/60 backdrop-blur-3xl text-white py-3 px-6 rounded-2xl
+                    flex items-center gap-3 text-base font-medium font-sans border border-blue-500/90
+                    shadow-md shadow-blue-500/20"
                 >
                     <span className="text-xl">🔔</span>
                         لطفا ثبت نام کنید.
@@ -46,10 +57,11 @@ const CartProvider = ({children}) => {
                     position: "top-center",
                 }
             );
-            return
+            return false;
         }
+        // user رو از userProvider میگیریم
         const cartData = {
-            user_id: userId,
+            user_id: user.id,
             product_id: product.id,
             price: product.price,
             quantity: count,
@@ -69,7 +81,7 @@ const CartProvider = ({children}) => {
                 setCartCount(prev => prev + count)
                 setCartTotal(prev => (product.price * count) + prev)
                 toast.success(createdCart.message);
-                return createdCart.success
+                return createdCart
             }
         } 
         catch(err) {
