@@ -2,21 +2,15 @@ import { X } from "lucide-react";
 
 import Sylvanas from "../../assets/images/download.jpg";
 import { post, put } from "../../services/api";
-import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { useCart } from "../../hooks/useCart";
 
 const CartItem = ({ cart }) => {
     const { user } = useAuth();
-    const [count, setCount] = useState(cart?.quantity || 0);
+    const { cartCount, cartTotal, setCartCount, setCartTotal } = useCart();
 
     const updateQuantity = async (count) => {
-        // اعتبارسنجی ورودی
-        if (count < 0) {
-            console.warn("quantity can't be negative")
-            return false;
-        }
-
         const cartData = {
             user_id: user.id,
             product_id: cart?.product_id,
@@ -26,7 +20,13 @@ const CartItem = ({ cart }) => {
         }
         try {
             const { data: createdCart } = await post("/carts/add", cartData)
-            return createdCart.success
+            if (createdCart.success) {
+                const createdCartData = createdCart.body;
+                const newTotal = (Number(createdCartData.quantity) * createdCartData.price).toLocaleString("fa-IR")
+                setCartTotal(newTotal)
+                toast.success("کالا با موفقیت تغییر شد.")
+                return createdCart.success
+            }
         }
         catch(err) {
             console.log(err.message)
@@ -45,7 +45,11 @@ const CartItem = ({ cart }) => {
         }
         try {
             const { data: adjustedCart } = await put("/carts/adjust", cartData);
-            return adjustedCart
+            if (adjustedCart.success) {
+                setCartTotal(adjustedCart.body.quantity)
+                toast.success("کالا با موفقیت تغییر شد.")
+                return adjustedCart
+            }
         }
         catch(err) {
             console.log(err.message)
@@ -54,17 +58,17 @@ const CartItem = ({ cart }) => {
 
     const onChangeQuantity = (e) => {
         const target = e.target;
-        setCount(target.value);
+        setCartCount(target.value);
         adjustQuantity(target.value)
     }
 
     const handleIncreaseQuantity = () => {
-        setCount(prev => prev+1);
+        setCartCount(prev => prev+1);
         updateQuantity(1)
     }
 
     const handleDecreaseQuantity = () => {
-        setCount(prev => prev-1)
+        setCartCount(prev => prev-1)
         updateQuantity(-1)
     }
 
@@ -116,7 +120,7 @@ const CartItem = ({ cart }) => {
                         >-</button>
                         <input
                             type="number"
-                            value={count}
+                            value={cartCount}
                             onChange={onChangeQuantity}
                             className="focus:outline-0 border-y max-w-16 min-w-12 text-center"
                         />

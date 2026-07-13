@@ -108,6 +108,8 @@ const CartProvider = ({children}) => {
                 cartItems,
                 cartCount,
                 cartTotal,
+                setCartCount,
+                setCartTotal,
                 addToCart,
                 removeFromCart
             }}
