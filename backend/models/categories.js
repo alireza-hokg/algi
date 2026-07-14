@@ -1,4 +1,4 @@
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 import Product from "./products.js";
 
@@ -23,13 +23,14 @@ const Category = sequelize.define(
 );
 
 
-Category.hasMany(Product, {
-    foreignKey: {
-        name: "category_id",
-        onDelete: "SET NULL",
-        onUpdate: "CASCADE"
-    },
-    sourceKey: "id"
-})
+// Category.hasMany(Product, {
+//     foreignKey: {
+//         name: "category_id",
+//         onDelete: "SET NULL",
+//         onUpdate: "CASCADE"
+//     },
+//     sourceKey: "id"
+// })
+// Product.belongTo(Category)
 
-export default Category;
+export default Category

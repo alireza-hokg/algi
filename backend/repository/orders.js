@@ -1,4 +1,4 @@
-import Order from "../models/orders.js"
+import {Order} from "../models/index.js"
 
 export default class OrderRepo {
     async getAll() {

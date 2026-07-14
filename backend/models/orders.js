@@ -1,5 +1,5 @@
+import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import { DataTypes } from "@sequelize/core";
 import OrderItem from "./order-items.js";
 
 const Order = sequelize.define("Orders", {
@@ -47,13 +47,17 @@ const Order = sequelize.define("Orders", {
     }
 })
 
-Order.hasMany(OrderItem, {
-    foreignKey: {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-        allowNull: false
-    },
-    sourceKey: "id"
-})
+// Order.hasMany(OrderItem, {
+//     foreignKey: {
+//         name: "order_id",
+//         onDelete: "CASCADE",
+//         onUpdate: "CASCADE",
+//         allowNull: false
+//     },
+//     sourceKey: "id"
+// })
+// OrderItem.belongsTo(Order, {
+//     foreignKey: "order_id"
+// })
 
 export default Order;

@@ -1,5 +1,4 @@
-import Product from "../models/products.js";
-import Variant from "../models/variants.js";
+import {Product, Variant} from "../models/index.js";
 
 export default class VariantRepo {
     async getVariantsByProductId(productId) {

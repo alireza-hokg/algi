@@ -1,4 +1,3 @@
-import { TransactionNestMode } from "@sequelize/core";
 import sequelize from "../config/db.js";
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
 import Joi from "joi";

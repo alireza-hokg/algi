@@ -1,4 +1,4 @@
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 import Order from "./orders.js";
 import Cart from "./carts.js";
@@ -40,24 +40,24 @@ const User = sequelize.define("User", {
     }
 })
 
-User.hasMany(Order, {
-    foreignKey: {
-        name: "user_id",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-        allowNull: false
-    },
-    sourceKey: "id"
-});
+// User.hasMany(Order, {
+//     foreignKey: {
+//         name: "user_id",
+//         onDelete: "CASCADE",
+//         onUpdate: "CASCADE",
+//         allowNull: false
+//     },
+//     sourceKey: "id"
+// });
 
-User.hasMany(Cart, {
-    foreignKey: {
-        name: "user_id",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-        allowNull: false
-    },
-    sourceKey: "id"
-})
+// User.hasMany(Cart, {
+//     foreignKey: {
+//         name: "user_id",
+//         onDelete: "CASCADE",
+//         onUpdate: "CASCADE",
+//         allowNull: false
+//     },
+//     sourceKey: "id"
+// })
 
 export default User;

@@ -1,6 +1,5 @@
-import { Op } from "@sequelize/core";
-import Cart from "../models/carts.js";
-import Product from "../models/products.js";
+import { Op } from "sequelize";
+import { Cart, Product } from "../models/index.js";
 
 export default class CartRepo {
     async findById(id) {

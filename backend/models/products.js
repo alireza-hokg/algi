@@ -1,8 +1,9 @@
-import sequelize from "../config/db.js";
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 import ProductImages from "./product-images.js";
 import OrderItem from "./order-items.js";
+import sequelize from "../config/db.js";
 import Cart from "./carts.js";
+import CartItems from "./cart-items.js";
 
 const Product = sequelize.define('Product', {
     id: {
@@ -53,30 +54,28 @@ const Product = sequelize.define('Product', {
     }
 })
 
-Product.hasMany(ProductImages, {
-    foreignKey: {
-        name: "product_id",
-        onDelete: "RESTRICT",
-        onUpdate: "CASCADE",
-    },
-    sourceKey: "id",
-})
+// Product.hasMany(ProductImages, {
+//     foreignKey: {
+//         name: "product_id",
+//         onDelete: "RESTRICT",
+//         onUpdate: "CASCADE",
+//     },
+//     sourceKey: "id",
+// })
+// ProductImages.belongsTo(Product)
 
-Product.hasMany(OrderItem, {
-    foreignKey: {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-    },
-    sourceKey: "id"
-})
+// Product.hasMany(OrderItem, {
+//     foreignKey: {
+//         name: "product_id",
+//         onDelete: "CASCADE",
+//         onUpdate: "CASCADE",
+//     },
+//     sourceKey: "id"
+// })
+// OrderItem.belongsTo(Product)
 
-Product.hasMany(Cart, {
-    foreignKey: {
-        name: "product_id",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-    },
-    sourceKey: "id"
-})
+// Product.belongsToMany(Cart, {
+//     through: CartItems
+// })
 
 export default Product;

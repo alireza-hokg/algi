@@ -1,5 +1,5 @@
 import sequelize from "../config/db.js";
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
 const OrderItem = sequelize.define('OrderItem', {
     id: {
@@ -51,6 +51,5 @@ const OrderItem = sequelize.define('OrderItem', {
         },
     ]
 });
-
 
 export default OrderItem;

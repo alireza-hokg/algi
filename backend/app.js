@@ -50,13 +50,20 @@ app.use("/api/v1", cartsRoute)
  * @throws {Error} if database connection or server startup fails
  */
 async function startServer() {
+    const isProduction = process.env.NODE_ENV === "production";
+
     try {
-        // Disable foreign key checks to avoid conflicts when dropping/recreating tables
-        await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
-        // Sync all models with database (force: true drops existing tables)
-        await sequelize.sync({ force: true });
-        console.log("Database connected successfully");
-        createData();
+        if (isProduction) {
+            await sequelize.authenticate();
+            console.log("Database connection verified")
+        } else {
+            // Disable foreign key checks to avoid conflicts when dropping/recreating tables
+            await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
+            // Sync all models with database (force: true drops existing tables)
+            await sequelize.sync({ force: true });
+            console.log("Database connected successfully");
+            createData();
+        }
 
         // Start HTTP server on configured port
         app.listen(SERVER_PORT, (req, res) => {

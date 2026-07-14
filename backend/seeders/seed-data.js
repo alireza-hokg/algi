@@ -106,11 +106,4 @@ export const usersData = [
     }
 ]
 
-export const otpsData = [
-    {
-        phoneNumber: "09127361268",
-        code: "123456",
-        expiresAt: new Date(Date.now()+1000*60*2)
-    }
-]
 

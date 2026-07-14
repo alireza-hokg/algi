@@ -1,5 +1,5 @@
 import sequelize from "../config/db.js";
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 import Product from "./products.js";
 
 const Variant = sequelize.define("Variant", {
@@ -53,4 +53,4 @@ Product.hasMany(Variant, {
     sourceKey: "id",
 })
 
-export default Variant;
+export default Variant

@@ -1,4 +1,4 @@
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
 const ProductImage = sequelize.define("ProductImage", {
@@ -40,4 +40,5 @@ const ProductImage = sequelize.define("ProductImage", {
 }, {
     tableName: "product_images"
 })
-export default ProductImage
+
+export default ProductImage;

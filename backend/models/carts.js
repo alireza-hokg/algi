@@ -1,5 +1,8 @@
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
+
 import sequelize from "../config/db.js";
+import CartItems from "./cart-items.js";
+import Product from "./products.js";
 
 const Cart = sequelize.define(
     "Cart", {
@@ -11,27 +14,33 @@ const Cart = sequelize.define(
         },
         user_id: {
             type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isInt: true,
+                min: 1
+            }
         },
         product_id: {
             type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false
-        },
-        quantity: {
-            type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 1
+            validate: {
+                isInt: true,
+                min: 1
+            }
         },
-        price: {
-            type: DataTypes.DECIMAL(10,2),
-            allowNull: false
-        },
+        
         status: {
             type: DataTypes.ENUM("active", "purchased"),
-            defaultValue: "active"
+            defaultValue: "active",
+            validate: {
+                isIn: [["active", "purchased"]]
+            }
         }
     }, {
         timestamps: true,
+        tableName: "carts",
+        freezeTableName: false,
+        paranoid: false,
         indexes: [
             {
                 fields: ["product_id"]
@@ -46,4 +55,18 @@ const Cart = sequelize.define(
     }
 )
 
-export default Cart;
+// Cart.belongsToMany(Product, {
+//     through: CartItems,
+// })
+
+// Cart.hasMany(CartItems, {
+//     foreignKey: {
+//         name: "cart_id",
+//         onDelete: "CASCADE",
+//         onUpdate: "CASCADE"
+//     }
+// })
+// CartItems.belongsTo(Cart);
+
+
+export default Cart

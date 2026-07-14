@@ -1,4 +1,3 @@
-import { UniqueConstraintError } from "@sequelize/core";
 
 import { ConflictError, DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
 

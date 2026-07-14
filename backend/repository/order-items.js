@@ -1,4 +1,4 @@
-import OrderItem from "../models/order-items.js";
+import { OrderItem } from "../models/index.js";
 
 export default class OrderItemRepo {
     async getAll() {
