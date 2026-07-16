@@ -1,8 +1,11 @@
-import sequelize from "../config/db.js";
-import { DataTypes } from "sequelize";
-import Product from "./products.js";
+import { Model } from "sequelize";
 
-const Variant = sequelize.define("Variant", {
+export default (sequelize, DataTypes) => {
+  class Variants extends Model {
+    
+  }
+
+  Variants.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -33,15 +36,10 @@ const Variant = sequelize.define("Variant", {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true
     },
-}, {
+  }, {
     timestamps: true,
-    tableName: "variants",
-    hooks: {
-        beforeUpdate: user => {
-            user.updatedAt = new Date()
-        }
-    }
-})
-
-
-export default Variant
+    sequelize,
+    modelName: "Variant"
+  })
+  return Variants
+}
