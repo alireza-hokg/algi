@@ -29,7 +29,7 @@ const Product = sequelize.define('Product', {
         allowNull: false
     },
     category_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
     },
     sku: {
         type: DataTypes.STRING,
@@ -43,11 +43,6 @@ const Product = sequelize.define('Product', {
 }, {
     timestamps: true,
     tableName: "products",
-    hooks: {
-        beforeUpdate: product => {
-            product.updatedAt = new Date();
-        },
-    }
 })
 
 export default Product;

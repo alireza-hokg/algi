@@ -1,4 +1,4 @@
-import {Order} from "../models/index.cjs"
+import {Order} from "../modeltest/index.cjs"
 
 export default class OrderRepo {
     async getAll() {

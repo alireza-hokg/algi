@@ -1,4 +1,4 @@
-import {User} from "../models/index.cjs";
+import {User} from "../modeltest/index.cjs";
 
 export default class UserRepo {
     async getAll() {

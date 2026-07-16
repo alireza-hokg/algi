@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Cart, Product } from "../models/index.cjs";
+import { Cart, Product } from "../modeltest/index.cjs";
 
 export default class CartRepo {
     async findById(id) {

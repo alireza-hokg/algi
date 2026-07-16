@@ -1,27 +1,53 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from "sequelize";
+
+export default (sequelize, DataTypes) => {
   class Product extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+    
   }
+
   Product.init({
-    name: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    category_id: DataTypes.INTEGER,
-    sku: DataTypes.STRING,
-    slug: DataTypes.STRING
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING(70),
+      allowNull: false,
+      validate: {
+        isShort(value) {
+          if (value.length < 3) {
+              throw new Error("value can't have less than 3 characters.")
+          }
+        },
+        isLong(value) {
+          if (value.length > 70) {
+              throw new Error("value can't have more than 70 characters")
+          }
+        }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
+    },
+    sku: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    slug: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
   }, {
+    timestamps: true,
     sequelize,
-    modelName: 'Product',
-  });
-  return Product;
-};
+    modelName: "Product"
+  })
+  return Product
+}

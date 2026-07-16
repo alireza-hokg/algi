@@ -1,4 +1,4 @@
-import {Product} from "../models/index.cjs";
+import {Product} from "../modeltest/index.cjs";
 
 export default class ProductRepository {
     async getAllProducts() {
