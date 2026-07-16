@@ -1,7 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Order from "./orders.js";
-import Cart from "./carts.js";
 
 const User = sequelize.define("User", {
     id: {
@@ -33,31 +31,6 @@ const User = sequelize.define("User", {
     }
 }, {
     timestamps: true,
-    hooks: {
-        beforeUpdate: (user) => {
-            user.updatedAt = new Date();
-        }
-    }
 })
-
-// User.hasMany(Order, {
-//     foreignKey: {
-//         name: "user_id",
-//         onDelete: "CASCADE",
-//         onUpdate: "CASCADE",
-//         allowNull: false
-//     },
-//     sourceKey: "id"
-// });
-
-// User.hasMany(Cart, {
-//     foreignKey: {
-//         name: "user_id",
-//         onDelete: "CASCADE",
-//         onUpdate: "CASCADE",
-//         allowNull: false
-//     },
-//     sourceKey: "id"
-// })
 
 export default User;

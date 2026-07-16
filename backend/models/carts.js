@@ -1,8 +1,6 @@
 import { DataTypes } from "sequelize";
 
 import sequelize from "../config/db.js";
-import CartItems from "./cart-items.js";
-import Product from "./products.js";
 
 const Cart = sequelize.define(
     "Cart", {
@@ -54,19 +52,5 @@ const Cart = sequelize.define(
         ]
     }
 )
-
-// Cart.belongsToMany(Product, {
-//     through: CartItems,
-// })
-
-// Cart.hasMany(CartItems, {
-//     foreignKey: {
-//         name: "cart_id",
-//         onDelete: "CASCADE",
-//         onUpdate: "CASCADE"
-//     }
-// })
-// CartItems.belongsTo(Cart);
-
 
 export default Cart

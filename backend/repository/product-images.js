@@ -1,4 +1,4 @@
-import {ProductImage} from "../models/index.js";
+import {ProductImage} from "../models/index.cjs";
 export default class ProductImageRepo {
 
     async getAll() {
