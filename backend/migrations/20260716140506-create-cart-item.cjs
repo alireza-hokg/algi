@@ -25,7 +25,7 @@ module.exports = {
               min: 1
           }
       },
-      price: {
+      unitPrice: {
           type: Sequelize.INTEGER,
           allowNull: false,
           validate: {
@@ -33,14 +33,28 @@ module.exports = {
               min: 0
           }
       },
+      totalprice: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+      },
+      discountAmount: {
+          type: Sequelize.DECIMAL(10, 2),
+          allowNull: true
+      },
+      finalPrice: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      } 
     });
   },
   async down(queryInterface, Sequelize) {

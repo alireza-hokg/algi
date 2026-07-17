@@ -29,7 +29,7 @@ export default (sequelize, DataTypes) => {
             min: 1
         }
     },
-    price: {
+    unitPrice: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -37,6 +37,18 @@ export default (sequelize, DataTypes) => {
             min: 0
         }
     },
+    totalprice: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    discountAmount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
+    },
+    finalPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
   }, {
     timestamps: true,
     sequelize,
