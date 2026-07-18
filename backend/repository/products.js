@@ -1,6 +1,8 @@
-import {Product} from "../modeltest/index.cjs";
 
 export default class ProductRepository {
+    constructor(Product) {
+        this.Product = Product;
+    }
     async getAllProducts() {
         const result = await Product.findAndCountAll({
             raw: true

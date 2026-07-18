@@ -34,6 +34,7 @@ export default (sequelize, DataTypes) => {
     },
     category_id: {
       type: DataTypes.INTEGER,
+      allowNull: false
     },
     sku: {
       type: DataTypes.STRING,

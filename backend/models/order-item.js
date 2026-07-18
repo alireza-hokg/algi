@@ -2,9 +2,9 @@ import { Model } from "sequelize";
 
 export default (sequelize, DataTypes) => {
   class OrderItem extends Model {
-
+    
   }
-
+  
   OrderItem.init({
     id: {
       type: DataTypes.BIGINT,
@@ -66,4 +66,5 @@ export default (sequelize, DataTypes) => {
     sequelize,
     modelName: "OrderItem"
   })
+  return OrderItem
 }

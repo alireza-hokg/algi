@@ -40,5 +40,9 @@ export default (sequelize, DataTypes) => {
     modelName: "User"
   })
 
+  User.associations = function(models) {
+    
+  }
+
   return User
 }

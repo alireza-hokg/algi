@@ -1,7 +1,11 @@
 import { Op } from "sequelize";
-import { Cart, Product } from "../modeltest/index.cjs";
 
 export default class CartRepo {
+    constructor(Cart, Product) {
+        this.Cart = Cart;
+        this.Product = Product;
+    }
+
     async findById(id) {
         return await Cart.findByPk(id);
     }

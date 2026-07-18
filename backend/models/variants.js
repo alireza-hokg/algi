@@ -7,10 +7,17 @@ export default (sequelize, DataTypes) => {
 
   Variants.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
+    },
+    productId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+            model: "Product"
+        }
     },
     size: {
         type: DataTypes.INTEGER,

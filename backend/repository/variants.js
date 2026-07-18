@@ -1,6 +1,10 @@
-import {Product, Variant} from "../modeltest/all-models.js";
 
 export default class VariantRepo {
+    constructor(Variant, Product) {
+        this.Variant = Variant;
+        this.Product = Product;
+    }
+    
     async getVariantsByProductId(productId) {
         const variants = await Variant.findAndCountAll({
             where: {

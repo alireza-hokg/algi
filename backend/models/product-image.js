@@ -47,4 +47,5 @@ export default (sequelize, DataTypes) => {
     sequelize,
     modelName: "ProductImage"
   })
+  return ProductImage
 }

@@ -1,12 +1,14 @@
 import express from "express";
+
 import VariantController from "../controllers/variants.js";
 import VariantRepo from "../repository/variants.js";
 import VariantService from "../services/variants.js";
 import ProductService from "../services/products.js";
 import ProductRepository from "../repository/products.js";
+import { models } from "../models/index.js";
 
-const variantRepo = new VariantRepo();
-const productRepo = new ProductRepository();
+const productRepo = new ProductRepository(models.Product);
+const variantRepo = new VariantRepo(models.Variant, models.Product);
 const productService = new ProductService(productRepo);
 const variantService = new VariantService(variantRepo, productService);
 const variantController = new VariantController(variantService);

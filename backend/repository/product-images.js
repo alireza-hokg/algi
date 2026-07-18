@@ -1,6 +1,7 @@
-import {ProductImage} from "../modeltest/index.cjs";
 export default class ProductImageRepo {
-
+    constructor(ProductImage) {
+        this.ProductImage = ProductImage;
+    }
     async getAll() {
         return await ProductImage.findAll();
     }

@@ -5,9 +5,10 @@ import OrderRepo from "../repository/orders.js";
 import OrderItemService from "../services/order-items.js";
 import OrderService from "../services/orders.js";
 import OrderItemController from "../controllers/order-items.js";
+import { models } from "../models/index.js";
 
-const orderRepo = new OrderRepo();
-const orderItemRepo = new OrderItemRepo();
+const orderRepo = new OrderRepo(models.Order);
+const orderItemRepo = new OrderItemRepo(models.OrderItem);
 const orderService = new OrderService(orderRepo);
 const orderItemService = new OrderItemService(orderItemRepo, orderService);
 const orderItemController = new OrderItemController(orderItemService);

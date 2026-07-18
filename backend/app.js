@@ -12,10 +12,8 @@ import ordersRoute from "./routes/orders.js"
 import orderItemsRoute from "./routes/order-items.js"
 import cartsRoute from "./routes/carts.js";
 
-import { createData } from "./seeders/seed.js";
 import { responseFormatter } from "./middlewares/responseFormatter.js";
 
-/** Default server port (can be overridden by environment variable) */
 const { SERVER_PORT = 9000 } = process.env;
 
 const app = express();
@@ -29,10 +27,10 @@ app.use(cors({
 })); 
 
 app.use(cookieParser())
-app.use(express.json()); // Parse json request bodies
-app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies (for form submissions)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
-app.use(responseFormatter); // Custom response formatter middleware
+app.use(responseFormatter);
 
 // ============ API Routes ============
 app.use("/api/v1", productsRoutes)
@@ -43,12 +41,6 @@ app.use("/api/v1", ordersRoute)
 app.use("/api/v1", orderItemsRoute)
 app.use("/api/v1", cartsRoute)
 
-/**
- * Initializes and starts the Express server
- * @async
- * @returns {Promise<void>}
- * @throws {Error} if database connection or server startup fails
- */
 async function startServer() {
     const isProduction = process.env.NODE_ENV === "production";
 
@@ -60,9 +52,8 @@ async function startServer() {
             // Disable foreign key checks to avoid conflicts when dropping/recreating tables
             await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
             // Sync all models with database (force: true drops existing tables)
-            // await sequelize.sync({ force: true });
+            await sequelize.sync({ force: true });
             console.log("Database connected successfully");
-            createData();
         }
 
         // Start HTTP server on configured port

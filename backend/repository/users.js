@@ -1,6 +1,8 @@
-import {User} from "../modeltest/index.cjs";
 
 export default class UserRepo {
+    constructor(User) {
+        this.User = User;
+    }
     async getAll() {
         const users = await User.findAll({
             raw: true

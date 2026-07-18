@@ -1,6 +1,8 @@
-import {Order} from "../modeltest/index.cjs"
 
 export default class OrderRepo {
+    constructor(Order) {
+        this.Order = Order;
+    }
     async getAll() {
         return await Order.findAll();
     }

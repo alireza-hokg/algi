@@ -7,12 +7,13 @@ import OrderService from "../services/orders.js";
 import OrderItemService from "../services/order-items.js";
 import UserService from "../services/users.js";
 import OrderController from "../controllers/orders.js";
+import { models } from "../models/index.js";
 
 const router = express.Router();
 
-const orderRepo = new OrderRepo();
-const userRepo = new UserRepo();
-const orderItemRepo = new OrderItemRepo();
+const orderRepo = new OrderRepo(models.Order);
+const userRepo = new UserRepo(models.User);
+const orderItemRepo = new OrderItemRepo(models.OrderItem);
 const orderItemService = new OrderItemService(orderItemRepo)
 const userService = new UserService(userRepo);
 const orderService = new OrderService(orderRepo, userService, orderItemService);
