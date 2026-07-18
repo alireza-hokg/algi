@@ -54,6 +54,8 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
     await queryInterface.dropTable('Products');
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
   }
 };

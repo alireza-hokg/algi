@@ -9,12 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-          type: Sequelize.INTEGER.UNSIGNED,
-          autoIncrement: true,
-          allowNull: false,
-          primaryKey: true
-      },
       name: {
           type: Sequelize.STRING,
           allowNull: false
@@ -36,6 +30,8 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
     await queryInterface.dropTable('categories');
+    await queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
   }
 };
