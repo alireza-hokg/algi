@@ -12,55 +12,43 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    orderId: {
+    order_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: 'Orders',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
-      productId: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-        references: {
-          model: 'Products',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-      },
-      quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          min: 1
-        }
-      },
-      unitPrice: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-      },
-      totalPrice: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-      },
-      discount: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0
-      },
-      finalPrice: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-      },
-      attributes: {
-        type: DataTypes.JSON,
-        allowNull: true,
-        comment: 'اطلاعات اضافی مثل رنگ، سایز و ...'
-      },
+    product_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 1
+      }
+    },
+    unitPrice: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
+    totalPrice: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
+    discount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0
+    },
+    finalPrice: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
+    attributes: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      comment: 'اطلاعات اضافی مثل رنگ، سایز و ...'
+    },
   }, {
     timestamps: true,
     sequelize,

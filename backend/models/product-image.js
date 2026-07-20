@@ -47,5 +47,13 @@ export default (sequelize, DataTypes) => {
     sequelize,
     modelName: "ProductImage"
   })
+
+  ProductImage.associations = function(models) {
+    this.belongsTo(models.Product, {
+        foreignKey: "productId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
+  }
   return ProductImage
 }

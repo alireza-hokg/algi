@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      orderId: {
+      order_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -19,7 +19,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      productId: {
+      product_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {

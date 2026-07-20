@@ -12,7 +12,7 @@ export default (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false
     },
-    productId: {
+    product_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -48,5 +48,14 @@ export default (sequelize, DataTypes) => {
     sequelize,
     modelName: "Variant"
   })
+
+  Variants.associations = function(models) {
+    this.belongsTo(models.Product, {
+        foreignKey: {
+            name: "productId",
+            allowNull: false
+        }
+    })
+  }
   return Variants
 }

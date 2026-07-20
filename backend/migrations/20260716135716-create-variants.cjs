@@ -9,7 +9,7 @@ module.exports = {
           autoIncrement: true,
           allowNull: false
       },
-      productId: {
+      product_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },

@@ -50,5 +50,26 @@ export default (sequelize, DataTypes) => {
     sequelize,
     modelName: "Product"
   })
+
+  Product.associations = function(models) {
+    this.hasMany(models.Variant, {
+      foreignKey: {
+        name: "productId",
+        allowNull: false
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    })
+    
+    this.hasMany(models.ProductImage, {
+      foreignKey: {
+        name: "productId",
+        allowNull: false
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+  }
+
   return Product
 }
