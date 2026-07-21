@@ -65,7 +65,6 @@ const Product = () => {
         try {
             // ویژگی های محصول مثل طول و سایز 
             const { data: variantsData } = await get(`/products/${slug}/variants`);
-            console.log(variantsData)
             const product_id = variantsData.body[0]?.product_id;
             // خود محصول مثلا قیمت
             const { data: productData } = await get(`/products/${product_id}`);
