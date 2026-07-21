@@ -3,19 +3,19 @@ export default class ProductImageRepo {
         this.ProductImage = ProductImage;
     }
     async getAll() {
-        return await ProductImage.findAll();
+        return await this.ProductImage.findAll();
     }
 
     async get(id) {
-        return await ProductImage.findByPk(id);
+        return await this.ProductImage.findByPk(id);
     }
 
     async create(imageData) {
-        return await ProductImage.create(imageData);
+        return await this.ProductImage.create(imageData);
     }
 
     async remove(id) {
-        return await ProductImage.destroy({
+        return await this.ProductImage.destroy({
             where: {
                 id
             }

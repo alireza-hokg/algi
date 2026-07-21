@@ -3,15 +3,13 @@ export default class UserRepo {
     constructor(User) {
         this.User = User;
     }
+
     async getAll() {
-        const users = await User.findAll({
-            raw: true
-        });
-        return users
+        return await this.User.findAll();
     }
 
     async get(id) {
-        return await User.findByPk(id);
+        return await this.User.findByPk(id);
     }
 
     /**
@@ -20,7 +18,7 @@ export default class UserRepo {
      * @returns user registered or null
      */
     async create(user) {
-        return await User.create(user);
+        return await this.User.create(user);
     }
 
     /**
@@ -29,7 +27,7 @@ export default class UserRepo {
      * @returns user found or null
      */
     async findByPhone(phoneNumber) {
-        return await User.findOne({
+        return await this.User.findOne({
             where: {
                 phoneNumber
             },
@@ -39,7 +37,7 @@ export default class UserRepo {
     }
 
     async findByUserId(userId) {
-        const user = await User.findByPk(userId, {
+        const user = await this.User.findByPk(userId, {
             attributes: {
                 exclude: ["password"]
             }

@@ -4,7 +4,7 @@ export default class ProductRepository {
         this.Product = Product;
     }
     async getAllProducts() {
-        const result = await Product.findAndCountAll({
+        const result = await this.Product.findAndCountAll({
             raw: true
         });
         return {
@@ -14,17 +14,17 @@ export default class ProductRepository {
     }
 
     async getById(id) {
-        return await Product.findByPk(id, {
+        return await this.Product.findByPk(id, {
             raw: true
         });
     }
     
     async create(product) {
-        return await Product.create(product);
+        return await this.Product.create(product);
     }
 
     async update(product, productId) {
-        return await Product.update({
+        return await this.Product.update({
             name: product.name,
             price: product.price,
             category_id: product.category_id,
@@ -36,7 +36,7 @@ export default class ProductRepository {
     }
 
     async delete(productId) {
-        return await Product.destroy({
+        return await this.Product.destroy({
             where: {
                 id: productId
             },
@@ -44,7 +44,7 @@ export default class ProductRepository {
     }
 
     async getBySlug(slug) {
-        const product = await Product.findOne({
+        const product = await this.Product.findOne({
             where: {
                 slug
             },

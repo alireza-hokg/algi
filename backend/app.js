@@ -49,10 +49,6 @@ async function startServer() {
             await sequelize.authenticate();
             console.log("Database connection verified")
         } else {
-            // Disable foreign key checks to avoid conflicts when dropping/recreating tables
-            await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
-            // Sync all models with database (force: true drops existing tables)
-            // await sequelize.sync({ force: true });
             console.log("Database connected successfully");
         }
 

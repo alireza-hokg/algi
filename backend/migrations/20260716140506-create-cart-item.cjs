@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cart-Items', {
+    await queryInterface.createTable('Cart_Items', {
       id: {
           type: Sequelize.BIGINT.UNSIGNED,
           allowNull: false,

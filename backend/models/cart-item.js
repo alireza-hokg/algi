@@ -52,7 +52,7 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "CartItem"
+    modelName: "Cart_Item",
   })
   return CartItem
 }

@@ -8,38 +8,15 @@ export default class UserController {
         this.userService = userService
     }
 
-    /**
-     * UserController#getAllUsers
-     */
     async getAllUsers(req, res) {
         try {
             const users = await this.userService.getAll();
-            return res.success(users, "Users successfully fetched", 200);
+            return res.success(users, "کاربران با موفقیت گرفته شدند.", 200);
         } catch(err) {
             return res.error(err.message, err.statusCode || 500);
         }
     }
 
-    /**
-     * ثبت نام کاربر
-     * UserController#register
-     * 
-     * @param {Object} req - درخواست Express
-     * @param {Object} req.body - بدنه درخواست
-     * @param {string} req.body.phoneNumber - شماره موبایل کاربر
-     * @param {string} req.body.password - رمز کاربر
-     * @param {string} [req.body.role=customer] - نقش کاربر
-     * 
-     * @param {Object} res - پاسخ Express
-     * 
-     * @returns {Object} پاسخ JSON
-     * 
-     * @returns  ثبت نام کاربر با موفقیت انجام شد
-     * 
-     * @throws {400} شماره موبایل و رمز الزامی است
-     * @throws {409} این شماره قبلا ثبت شده
-     * @throws {500} خطای سرور
-     */
     async register(req, res) {
         try {
             const { phoneNumber, password, role } = req.body;
@@ -49,38 +26,13 @@ export default class UserController {
                 role
             }
             const user = await this.userService.register(initialData);
-            return res.success(user, "user created successfully", 200);
+            return res.success(user, "کاربر با موفقیت ساخته شد.", 200);
         }
         catch(err) {
             return res.error(err.message, err.statusCode || 500);
         }
     }
 
-    /**
-     * ورود کاربر
-     * UserController#login
-     * 
-     * @async
-     * @function login
-     * @memberof UserController
-     * 
-     * @param {Object} req - درخواست Express
-     * @param {string} req.body.phoneNumber - شماره تلفن کاربر (required)
-     * @param {string} req.body.password - رمز عبور کاربر (required)
-     * 
-    * @param {Object} res - پاسخ Express
-    * @returns {Promise<void>} - 
-    * 
-    * @description
-    * پاسخ موفق 200
-    * {
-    *   "success": true,
-    *   "body": {},
-    *   "message": "user login successfully"}
-    * 
-    * @throws {400} - اطلاعات مورد نیاز را وارد کنید
-    * @throws {401} - اطلاعات نادرست
-    */
     async login(req, res) {
         try {
             const { phoneNumber, password } = req.body;
@@ -88,14 +40,14 @@ export default class UserController {
             const response = await this.userService.login(initialData);
             // ارسال token در کوکی
             res.cookie('token', response.token, {
-                httpOnly: true,      // ✅ امنیت در برابر XSS
+                httpOnly: true,
                 secure: process.env.NODE_ENV === "production" ? true : false,
-                sameSite: 'strict',  // ✅ امنیت در برابر CSRF  
+                sameSite: 'strict',
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 path: '/'
             });
 
-            res.success(response, "user login successfully", 200)
+            res.success(response, "با موفقیت وارد شدید.", 200)
         } catch(err) {
             console.log(err)
             res.error(err.message, err.statusCode || 500);

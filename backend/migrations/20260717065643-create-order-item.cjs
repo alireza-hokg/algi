@@ -1,8 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Order-Items', {
+    await queryInterface.createTable('Order_Items', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,22 +11,10 @@ module.exports = {
       order_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: 'Orders',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       product_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: 'Products',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
       },
       quantity: {
         type: Sequelize.INTEGER,

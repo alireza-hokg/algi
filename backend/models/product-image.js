@@ -45,14 +45,14 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "ProductImage"
+    modelName: "Product_Image",
   })
 
   ProductImage.associations = function(models) {
     this.belongsTo(models.Product, {
         foreignKey: "productId",
         onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        onUpdate: "CASCADE",
     })
   }
   return ProductImage

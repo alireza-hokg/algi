@@ -11,7 +11,7 @@ export default class UserService {
             return await this.userRepo.getAll();
         }
         catch(err) {
-            throw new DatabaseError("Database cant fetch users")
+            throw new DatabaseError(err.message)
         }
     }
 
@@ -96,7 +96,7 @@ export default class UserService {
             if (err instanceof ValidationError || err instanceof NotFoundError) {
                 throw err;
             }
-            throw new DatabaseError(err.message || "خطای سرور")
+            throw new DatabaseError("کاربر یافت نشد." || "خطای سرور")
         }
     }
 

@@ -6,7 +6,7 @@ export default class VariantRepo {
     }
     
     async getVariantsByProductId(productId) {
-        const variants = await Variant.findAndCountAll({
+        const variants = await this.Variant.findAndCountAll({
             where: {
                 product_id: productId
             },
@@ -25,17 +25,17 @@ export default class VariantRepo {
     }
 
     async findOneByProductIdAndSizeAndColor(uniqueValue) {
-        return await Variant.findOne({
+        return await this.Variant.findOne({
             where: uniqueValue
         })
     }
 
     async create(variantData) {
-        return await Variant.create(variantData);
+        return await this.Variant.create(variantData);
     }
 
     async update(variantData, variantId) {
-        return await Variant.update(
+        return await this.Variant.update(
             variantData, {
             where: {
                 id: variantId
