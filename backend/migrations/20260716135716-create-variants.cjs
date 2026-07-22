@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false,
       },
       size: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.DECIMAL(10, 2),
           allowNull: false
       },
       color: {

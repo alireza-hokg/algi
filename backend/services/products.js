@@ -1,4 +1,6 @@
 
+import slugify from "slugify";
+
 import { NotFoundError, ValidationError, DatabaseError } from "../utils/Error.js";
 
 // Service just received the data and process it
@@ -11,10 +13,7 @@ export default class ProductService {
     async getAllProducts() {
         try {
             const {rows, count} = await this.productRepository.getAllProducts();
-            // No data
-            if (rows.length === 0) {
-                throw new NotFoundError("no product found.");
-            }
+            
             const normalizedProducts = this.#normalizeProducts(rows);
             return normalizedProducts;
         } catch(err) {
@@ -47,8 +46,8 @@ export default class ProductService {
     }
 
     async createProduct(product) {
-        const { name, price, sku, category_id, slug, images } = product;
-        if (!name || !price || !sku || !slug) {
+        const { name, price, sku, category_id, images } = product;
+        if (!name || !price || !sku || !category_id) {
             throw new ValidationError("invalid data", 400);
         }
         const normalizedProduct = {

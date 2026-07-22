@@ -15,6 +15,7 @@ export default (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING(70),
       allowNull: false,
+      unique: true,
       validate: {
         isShort(value) {
           if (value.length < 3) {

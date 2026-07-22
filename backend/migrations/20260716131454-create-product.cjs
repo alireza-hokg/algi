@@ -12,6 +12,7 @@ module.exports = {
       name: {
           type: Sequelize.STRING(70),
           allowNull: false,
+          unique: true,
           validate: {
               isShort(value) {
                   if (value.length < 3) {

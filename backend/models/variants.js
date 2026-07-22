@@ -20,7 +20,7 @@ export default (sequelize, DataTypes) => {
         }
     },
     size: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
     color: {
@@ -55,6 +55,16 @@ export default (sequelize, DataTypes) => {
             name: "productId",
             allowNull: false
         }
+    })
+
+    this.hasMany(models.Color, {
+        foreignKey: {
+            name: "variant_id",
+            allowNull: false
+        },
+        sourceKey: "id",
+        onDelete: "RESTRICT",
+        onUpdate: "CASCADE"
     })
   }
   return Variants
