@@ -5,12 +5,12 @@ import OrderRepo from "../repository/orders.js";
 import OrderItemService from "../services/order-items.js";
 import OrderService from "../services/orders.js";
 import OrderItemController from "../controllers/order-items.js";
-import { models } from "../models/index.js";
+import db from "../models/index.cjs";
 
-const orderRepo = new OrderRepo(models.Order);
-const orderItemRepo = new OrderItemRepo(models.OrderItem);
+const orderRepo = new OrderRepo(db.Order);
+const orderItemRepo = new OrderItemRepo(db.OrderItem);
 const orderService = new OrderService(orderRepo);
-const orderItemService = new OrderItemService(orderItemRepo, orderService);
+const orderItemService = new OrderItemService(orderItemRepo, orderService, db.sequelize);
 const orderItemController = new OrderItemController(orderItemService);
 
 const router = express.Router();

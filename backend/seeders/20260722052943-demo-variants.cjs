@@ -7,7 +7,12 @@ module.exports = {
       {
         product_id: 1,
         size: 44,
-        color: ""
+        quantity: 22,
+        height: 10,
+        width: 20,
+        waist: 22,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ])
   },

@@ -1,5 +1,4 @@
 /**
- * @constant {RegExp} phoneRegex
  * 
  * @description
  * PhoneNumber must be Iran phoneNumber and starts with 09

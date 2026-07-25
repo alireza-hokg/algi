@@ -1,11 +1,35 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
-  class Order extends Model {
+module.exports = (sequelize, DataTypes) => {
+    class Order extends Model {
+        static associate = function(models) {
+            this.hasMany(models.Order_Item, {
+                foreignKey: {
+                    name: "order_id",
+                    allowNull: false
+                },
+                onUpdate: "CASCADE",
+                onDelete: "RESTRICT"
+            })
 
-  }
+            this.belongsToMany(models.Product, {
+                through: "order-items",
+                foreignKey: "order_id",
+                otherKey: "product_id"
+            })
 
-  Order.init({
+            this.belongsTo(models.User, {
+                foreignKey: {
+                    name: "user_id",
+                    allowNull: false
+                },
+                onUpdate: "CASCADE",
+                onDelete: "RESTRICT"
+            })
+        }
+    }
+
+    Order.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
@@ -75,7 +99,8 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "Order"
-  })
-  return Order
+    modelName: "Order",
+    tableName: "orders"
+    })
+    return Order
 }

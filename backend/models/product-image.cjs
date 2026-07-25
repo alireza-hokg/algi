@@ -1,11 +1,11 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
-  class ProductImage extends Model {
+module.exports = (sequelize, DataTypes) => {
+    class ProductImage extends Model {
 
-  }
+    }
 
-  ProductImage.init({
+    ProductImage.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
@@ -42,18 +42,23 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: true
     }
-  }, {
+    }, {
     timestamps: true,
     sequelize,
     modelName: "Product_Image",
-  })
-
-  ProductImage.associations = function(models) {
-    this.belongsTo(models.Product, {
-        foreignKey: "productId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
+    tableName: "product_images"
     })
-  }
-  return ProductImage
+
+    ProductImage.associate = function(models) {
+        this.belongsTo(models.Product, {
+            foreignKey: {
+                name: "product_id",
+                allowNull: false
+            },
+            targetKey: "id",
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+        })
+    }
+    return ProductImage
 }

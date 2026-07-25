@@ -1,12 +1,12 @@
-import sequelize from "../config/db.js";
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
 import Joi from "joi";
 
 export default class OrderService {
-    constructor(orderRepo, userService, orderItemService) {
+    constructor(orderRepo, userService, orderItemService, sequelize) {
         this.orderRepo = orderRepo
         this.userService = userService;
         this.orderItemService = orderItemService
+        this.sequelize = sequelize;
     }
 
     async getAllOrders() {
@@ -77,7 +77,7 @@ export default class OrderService {
         try {
             await this.userService.getUser(user_id);
 
-            const result = await sequelize.transaction(async (transaction) => {
+            const result = await this.sequelize.transaction(async (transaction) => {
                 
                 const orderResult = await this.orderRepo.create(validateOrder, transaction)
 

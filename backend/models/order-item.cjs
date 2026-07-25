@@ -1,8 +1,26 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class OrderItem extends Model {
-    
+    static associate = function(models) {
+      this.belongsTo(models.Order, {
+        foreignKey: {
+          name: "order_id",
+          allowNull: false
+        },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT"
+      })
+
+      this.belongsTo(models.Product, {
+        foreignKey: {
+          name: "product_id",
+          allowNull: false
+        },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT"
+      })
+    }
   }
   
   OrderItem.init({
@@ -53,6 +71,7 @@ export default (sequelize, DataTypes) => {
     timestamps: true,
     sequelize,
     modelName: "Order_Item",
+    tableName: "order_items"
   })
   return OrderItem
 }

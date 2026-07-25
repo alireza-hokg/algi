@@ -1,12 +1,12 @@
 import Joi from "joi";
 
 import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
-import sequelize from "../config/db.js";
 
 export default class orderItemService {
-    constructor(orderItemRepo, orderService) {
+    constructor(orderItemRepo, orderService, sequelize) {
         this.orderItemRepo = orderItemRepo
         this.orderService = orderService;
+        this.sequelize = sequelize
     }
 
     async getAll() {
@@ -76,7 +76,7 @@ export default class orderItemService {
         const orderItemList = await this.getAllByOrderId(orderItemId);
         
         try {
-            const result = await sequelize.transaction(async (transaction) => {
+            const result = await this.sequelize.transaction(async (transaction) => {
                 const orderItemDeleted = await this.orderItemRepo.remove(orderItemId, transaction);
                 // If there is only one orderItem then remove the order
                 if (orderItemList.length === 1) {

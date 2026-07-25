@@ -3,9 +3,9 @@ import express from "express";
 import ProductRepository from "../repository/products.js";
 import ProductService from "../services/products.js";
 import ProductController from "../controllers/products.js";
-import { models } from "../models/index.js";
+import db from "../models/index.cjs";
 
-const productRepository = new ProductRepository(models.Product);
+const productRepository = new ProductRepository(db.Product);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 

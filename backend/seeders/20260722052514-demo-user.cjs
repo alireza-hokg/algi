@@ -7,7 +7,9 @@ module.exports = {
       {
         phoneNumber: "09051461938",
         password: "Alirezza2547",
-        role: "admin"
+        role: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ])
   },

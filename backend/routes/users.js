@@ -4,9 +4,9 @@ import UserRepo from "../repository/users.js";
 import UserService from "../services/users.js";
 import UserController from "../controllers/users.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
-import { models } from "../models/index.js";
+import db from "../models/index.cjs";
 
-const userRepo = new UserRepo(models.User);
+const userRepo = new UserRepo(db.User);
 const userService = new UserService(userRepo);
 const userController = new UserController(userService);
 

@@ -1,6 +1,6 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize")
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     
   }
@@ -49,26 +49,36 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "Product"
+    modelName: "Product",
+    tableName: "products"
   })
 
-  Product.associations = function(models) {
+  Product.associate = function(models) {
     this.hasMany(models.Variant, {
       foreignKey: {
-        name: "productId",
+        name: "product_id",
         allowNull: false
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     })
     
-    this.hasMany(models.ProductImage, {
+    this.hasMany(models.Product_Image, {
       foreignKey: {
-        name: "productId",
+        name: "product_id",
         allowNull: false
       },
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
+    })
+
+    this.hasMany(models.Cart_Item, {
+      foreignKey: {
+        name: "product_id",
+        allowNull: false
+      },
+      onDelete: "RESTRICT",
+      onUpdate: "CASCADE"
     })
   }
 

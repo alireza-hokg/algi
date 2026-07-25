@@ -1,9 +1,18 @@
 "use strict"
-import { Model } from "sequelize"
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-
+    static associate = function(models) {
+      this.hasMany(models.Order, {
+        foreignKey: {
+          name: "user_id",
+          allowNull: false
+        },
+        onDelete: "RESTRICT",
+        onUpdate: "CASCADE"
+      })
+    }
   }
   
   User.init({
@@ -37,12 +46,9 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "User"
+    modelName: "User",
+    tableName: "users"
   })
-
-  User.associations = function(models) {
-    
-  }
 
   return User
 }

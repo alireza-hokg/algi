@@ -5,12 +5,12 @@ import CartService from "../services/carts.js";
 import CartRepo from "../repository/carts.js";
 import UserRepo from "../repository/users.js";
 import UserService from "../services/users.js";
-import { models } from "../models/index.js";
+import db from "../models/index.cjs";
 
 const router = express.Router();
 
-const cartRepo = new CartRepo(models.Cart);
-const userRepo = new UserRepo(models.User);
+const cartRepo = new CartRepo(db.Cart);
+const userRepo = new UserRepo(db.User);
 const userService = new UserService(userRepo);
 const cartService = new CartService(cartRepo, userService);
 const cartController = new CartController(cartService);

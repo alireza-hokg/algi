@@ -1,6 +1,6 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
 
   }
@@ -23,7 +23,8 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "Category"
+    modelName: "Category",
+    tableName: "categories"
   })
   return Category
 }

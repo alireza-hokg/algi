@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 
-import sequelize from "./config/db.js";
+import db from "./models/index.cjs";
 import productsRoutes from "./routes/products.js";
 import variantsRoutes from "./routes/variants.js";
 import userRoutes from "./routes/users.js";
@@ -17,6 +17,7 @@ import { responseFormatter } from "./middlewares/responseFormatter.js";
 const { SERVER_PORT = 9000 } = process.env;
 
 const app = express();
+const sequelize = db.sequelize;
 
 // ============= Middlewares =============
 app.use(cors({
@@ -42,22 +43,23 @@ app.use("/api/v1", orderItemsRoute)
 app.use("/api/v1", cartsRoute)
 
 async function startServer() {
-    const isProduction = process.env.NODE_ENV === "production";
-
+    const isDevelopment = process.env.NODE_ENV === "development";
+    
     try {
-        if (isProduction) {
-            await sequelize.authenticate();
-            console.log("Database connection verified")
-        } else {
-            console.log("Database connected successfully");
+        await sequelize.authenticate();
+        console.log("Database connection established successfully.")
+        if (isDevelopment) {
+            // await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
+            // await sequelize.sync({ force: true });
+            // await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
+            console.log("Development database synced (force: true)")
         }
-
-        // Start HTTP server on configured port
-        app.listen(SERVER_PORT, (req, res) => {
+        app.listen(SERVER_PORT, () => {
             console.log(`Server is listening to port ${SERVER_PORT}`)
         })
     } catch(err) {
         console.log("Unable to start server ", err.message);
+        process.exit(1);
     }
 }
 

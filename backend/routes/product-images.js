@@ -5,12 +5,12 @@ import ProductImageService from "../services/product-images.js";
 import ProductImageRepo from "../repository/product-images.js";
 import ProductService from "../services/products.js";
 import ProductRepository from "../repository/products.js";
-import { models } from "../models/index.js";
+import db from "../models/index.cjs";
 
 const router = express.Router();
 
-const productImageRepo = new ProductImageRepo(models.ProductImage);
-const productRepo = new ProductRepository(models.Product);
+const productImageRepo = new ProductImageRepo(db.ProductImage);
+const productRepo = new ProductRepository(db.Product);
 const productService = new ProductService(productRepo);
 const productImageService = new ProductImageService(productImageRepo, productService)
 const productImageController = new ProductImageController(productImageService);

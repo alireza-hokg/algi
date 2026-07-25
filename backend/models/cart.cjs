@@ -1,8 +1,23 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class Cart extends Model {
-    
+    static associate(models) {
+      this.hasMany(models.Cart_Item, {
+        foreignKey: {
+          name: "cart_id",
+          allowNull: false
+        },
+        onDelete: "RESTRICT",
+        onUpdate: "CASCADE"
+      })
+      
+      this.belongsToMany(models.Product, {
+        through: models.Cart_Item,
+        foreignKey: "product_id",
+        otherKey: "cart_id"
+      })
+    }
   }
 
   Cart.init({
@@ -46,7 +61,8 @@ export default (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     sequelize,
-    modelName: "Cart"
+    modelName: "Cart",
+    tableName: "carts"
   })
   return Cart;
 }
