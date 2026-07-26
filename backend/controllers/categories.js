@@ -18,10 +18,7 @@ export default class CategoryController {
         
         try {
             const result = await this.categoryService.create(req.body);
-            console.log(result)
-            if (result.success) {
-                res.created(result, "Category created succussfully.")
-            }
+            res.created(result, "Category created succussfully.")
         }
         catch(err) {
             res.error(err.message, err.statusCode)

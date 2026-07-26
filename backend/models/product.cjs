@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
+    category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     name: {
       type: DataTypes.STRING(70),
       allowNull: false,
@@ -33,10 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     sku: {
       type: DataTypes.STRING,
       allowNull: false
@@ -50,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     sequelize,
     modelName: "Product",
-    tableName: "products"
+    tableName: "products",
+    paranoid: true
   })
 
   Product.associate = function(models) {

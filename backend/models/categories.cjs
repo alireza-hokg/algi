@@ -21,15 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.SMALLINT.UNSIGNED,
       allowNull: true
     },
-    is_active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
   }, {
     timestamps: true,
     sequelize,
     modelName: "Category",
-    tableName: "categories"
+    tableName: "categories",
+    paranoid: true
   })
   return Category
 }

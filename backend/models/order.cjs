@@ -100,7 +100,8 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     sequelize,
     modelName: "Order",
-    tableName: "orders"
+    tableName: "orders",
+    paranoid: true
     })
     return Order
 }

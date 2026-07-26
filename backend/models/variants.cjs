@@ -60,7 +60,8 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     sequelize,
     modelName: "Variant",
-    tableName: "variants"
+    tableName: "variants",
+    paranoid: true
   })
 
   return Variants

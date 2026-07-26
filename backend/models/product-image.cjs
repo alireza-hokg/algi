@@ -14,10 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     product_id: {
         type: DataTypes.INTEGER.UNSIGNED,
-        references: {
-            model: "Products",
-            key: "id"
-        },
+        allowNull: false
     },
     image_url: {
         type: DataTypes.STRING(500),
@@ -43,10 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
     }
     }, {
-    timestamps: true,
-    sequelize,
-    modelName: "Product_Image",
-    tableName: "product_images"
+        timestamps: true,
+        sequelize,
+        modelName: "Product_Image",
+        tableName: "product_images"
     })
 
     ProductImage.associate = function(models) {

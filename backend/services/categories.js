@@ -1,5 +1,9 @@
 import Joi from "joi";
 
+import {
+    createValidationSchema,
+    updateValidationSchema
+} from "../schemas/category.js"
 import { 
     ConflictError, 
     DatabaseError, 
@@ -45,20 +49,14 @@ export default class CategoryService {
     }
 
     async create(body) {
-        // ایا body.name وجود دارد؟
-        if (!body || !body.name) {
-            throw new ValidationError("Name is required.")
-        }
         // حذف فاصله های اضافی
         const normalizedName = body.name.trim();
         
-        const categoryValidationSchema = Joi.object().keys({
-            name: Joi.string().required().min(2).max(100),
-            parent_id: Joi.number().optional().allow(null)
-        })
-        const { value: categoryValue, error: categoryError } = categoryValidationSchema.validate({
+        const { value: categoryValue, error: categoryError } = createValidationSchema.validate({
             name: normalizedName,
             parent_id: body?.parent_id || null
+        }, {
+            abortEarly: false
         })
         
         if (categoryError) {
@@ -70,18 +68,14 @@ export default class CategoryService {
         if (existingCategory) {
             throw new ConflictError("There is a category with this name.", 409)
         }
-
-        
-        const transaction = await this.sequelize.transaction();
-        try {
-            if (categoryValue.parent_id) {
-                const parentExists = await this.getById(categoryValue.parent_id, transaction);
-                if (!parentExists) {
-                    throw new ValidationError("Parent category does not exists.")
-                }
+        if (categoryValue.parent_id) {
+            const parentExists = await this.getById(categoryValue.parent_id);
+            if (!parentExists) {
+                throw new ValidationError("Parent category does not exists.")
             }
-            const result = await this.categoryRepo.create(categoryValue, transaction);
-            await transaction.commit();
+        }
+        try {
+            const result = await this.categoryRepo.create(categoryValue);
             return {
                 id: result.id,
                 name: result.name,
@@ -89,7 +83,6 @@ export default class CategoryService {
             }
         }
         catch(err) {
-            await  transaction.rollback();
             if (err instanceof ValidationError || err instanceof ConflictError) {
                 throw err
             }
@@ -104,12 +97,7 @@ export default class CategoryService {
         
         const normalizedName = body.name.trim();
 
-        const categoryValidationSchema = Joi.object().keys({
-            id: Joi.number().required().min(1),
-            name: Joi.string().required().min(2).max(100),
-            parent_id: Joi.number().optional().allow(null)
-        })
-        const { value: categoryValue, error: categoryError } = categoryValidationSchema.validate({
+        const { value: categoryValue, error: categoryError } = updateValidationSchema.validate({
             id,
             name: normalizedName,
             parent_id: body.parent_id

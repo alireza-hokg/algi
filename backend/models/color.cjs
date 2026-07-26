@@ -37,15 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
   }, {
     timestamps: true,
     sequelize,
     modelName: 'Color',
-    tableName: "colors"
+    tableName: "colors",
+    paranoid: true
   });
   
   return Color

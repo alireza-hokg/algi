@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'ColorVariant',
     tableName: "colors_variants",
+    paranoid: true,
     indexes: [
       {
         unique: true,

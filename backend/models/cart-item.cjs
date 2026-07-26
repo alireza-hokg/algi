@@ -68,10 +68,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     }
     }, {
-    timestamps: true,
-    sequelize,
-    modelName: "Cart_Item",
-    tableName: "cart_items"
+        timestamps: true,
+        sequelize,
+        modelName: "Cart_Item",
+        tableName: "cart_items",
+        paranoid: true
     })
 
     CartItem.associate = function(models) {

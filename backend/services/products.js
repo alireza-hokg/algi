@@ -1,7 +1,14 @@
-
 import slugify from "slugify";
 
-import { NotFoundError, ValidationError, DatabaseError } from "../utils/Error.js";
+import {
+    NotFoundError,
+    ValidationError,
+    DatabaseError
+} from "../utils/Error.js";
+import {
+    createValidationSchema,
+    updateValidationSchema
+} from "../schemas/product.js"
 
 // Service just received the data and process it
 // Logic and validation happens here
@@ -45,22 +52,30 @@ export default class ProductService {
         }
     }
 
-    async createProduct(product) {
-        const { name, price, sku, category_id, images } = product;
-        if (!name || !price || !sku || !category_id) {
-            throw new ValidationError("invalid data", 400);
+    async createProduct(body) {
+        const { value: productValue, error: productError } = createValidationSchema.validate({
+            name: body.name,
+            price: body.price,
+            sku: body.sku,
+            category_id: body.category_id,
+            slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
+        }, {
+            abortEarly: false
+        })
+        if (productError) {
+            throw new ValidationError(productError.message)
         }
-        const normalizedProduct = {
-            name,
-            price,
-            sku,
-            category_id,
-            slug: slugify(name, { lower: true }) + `-${sku}`,
-            images
-        }
+
         try {
-            const result = await this.productRepository.create(normalizedProduct)
-            return result.dataValues
+            const result = await this.productRepository.create(productValue)
+            return {
+                id: result.id,
+                name: result.name,
+                price: result.price,
+                sku: result.sku,
+                category_id: result.category_id,
+                slug: result.slug
+            }
         } catch(err) {
             if (err instanceof ValidationError) {
                 throw err;
@@ -69,28 +84,29 @@ export default class ProductService {
         }
     }
 
-    async updateProduct(product, productId) {
+    async updateProduct(body, productId) {
         const numericProductId = Number(productId);
         if (isNaN(numericProductId)) {
             throw new ValidationError("productId must be integer");
         }
-        const currentProduct = await this.productRepository.getById(numericProductId);
-        if (!currentProduct) {
-            throw new NotFoundError("No product found.")
+        await this.productRepository.getById(numericProductId);
+        
+        const { value: categoryValue, error: categoryError } = updateValidationSchema.validate({
+            id: numericProductId,
+            name: body.name,
+            price: body.price,
+            sku: body.sku,
+            category_id: body.category_id,
+            slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
+        })
+        if (categoryError) {
+            throw new ValidationError(categoryError.message)
         }
-        const { name, price, sku, category_id, images } = product;
-        const normalizedProduct = {
-            name,
-            price,
-            sku,
-            category_id,
-            slug: slugify(name, { lower: true }) + `-${sku}`,
-            images
-        }
+
         try {
-            const [isUpdated] = await this.productRepository.update(normalizedProduct, productId);
+            const [isUpdated] = await this.productRepository.update(categoryValue);
             if (isUpdated) {
-                return product
+                return categoryValue
             }
         } catch(err) {
             if (err instanceof ValidationError || err instanceof NotFoundError) {

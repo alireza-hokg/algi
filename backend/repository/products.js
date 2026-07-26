@@ -23,7 +23,7 @@ export default class ProductRepository {
         return await this.Product.create(product);
     }
 
-    async update(product, productId) {
+    async update(product) {
         return await this.Product.update({
             name: product.name,
             price: product.price,
@@ -31,7 +31,7 @@ export default class ProductRepository {
             sku: product.sku,
             slug: product.slug
         }, {
-            where: { id: productId }
+            where: { id: product.id }
         })
     }
 

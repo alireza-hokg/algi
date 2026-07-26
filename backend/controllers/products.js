@@ -31,17 +31,8 @@ export default class ProductController {
     }
 
     async createProduct(req, res) {
-        // PARAMETERS name, price, sku
-        const { name, price, sku, category_id, images } = req.body;
-        const initialData = {
-            name,
-            price,
-            sku,
-            category_id,
-            images
-        };
         try {
-            const result = await this.productService.createProduct(initialData);
+            const result = await this.productService.createProduct(req.body);
             return res.created(result, 201);
         } catch(err) {
             res.error(err.message, err.statusCode || 500);
@@ -50,17 +41,9 @@ export default class ProductController {
 
     async updateProduct(req, res) {
         const { id } = req.params;
-        const { name, price, category_id, sku, images } = req.body;
-        const formattedData = {
-            name,
-            price,
-            category_id,
-            sku,
-            images
-        }
         try {
-            const result = await this.productService.updateProduct(formattedData, id);
-            return res.updated(result, "Product updated.");
+            const result = await this.productService.updateProduct(req.body, id);
+            return res.updated(result, "Product updated successfully.");
         } catch(err) {
             res.error(err.message, err.statusCode || 500)
         }

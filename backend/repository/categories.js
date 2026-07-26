@@ -8,10 +8,8 @@ export default class CategoryRepo {
         return await this.Category.findAll();
     }
 
-    async getById(id, transaction) {
-        return await this.Category.findByPk(id, {
-            transaction
-        })
+    async getById(id) {
+        return await this.Category.findByPk(id)
     }
 
     async getByName(name) {
@@ -23,9 +21,7 @@ export default class CategoryRepo {
     }
 
     async create(body, transaction) {
-        return await this.Category.create(body, {
-            transaction
-        })
+        return await this.Category.create(body)
     }
 
     async update(body) {
