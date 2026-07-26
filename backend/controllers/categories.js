@@ -6,11 +6,11 @@ export default class CategoryController {
     async getAll(req, res) {
         try {
             const result = await this.categoryService.getAll();
-            res.success(result)
+            res.success(result, "All Categories loaded successfully")
         }
         catch(err) {
             console.log(err.message)
-            res.error(err.message)
+            res.error(err.message, err.statusCode)
         }
     }
 
@@ -19,12 +19,34 @@ export default class CategoryController {
         try {
             const result = await this.categoryService.create(req.body);
             console.log(result)
-            if (result) {
-                res.created(result)
+            if (result.success) {
+                res.created(result, "Category created succussfully.")
             }
         }
         catch(err) {
-            res.error(err.message)
+            res.error(err.message, err.statusCode)
+        }
+    }
+
+    async update(req, res) {
+        const { id } = req.params;
+        try {
+            const result = await this.categoryService.update(req.body, id)
+            res.updated(result, "Category updated successfully.")
+        }
+        catch(err) {
+            res.error(err.message, err.statusCode)
+        }
+    }
+
+    async remove(req, res) {
+        const { id } = req.params;
+        try {
+            const result =  await this.categoryService.remove(id)
+            res.deleted(result, "Category deleted successfully.")
+        }
+        catch(err) {
+            res.error(err.message, err.statusCode)
         }
     }
 }

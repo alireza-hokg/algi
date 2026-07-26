@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     parent_id: {
       type: DataTypes.SMALLINT.UNSIGNED,
       allowNull: true
+    },
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     }
   }, {
     timestamps: true,
