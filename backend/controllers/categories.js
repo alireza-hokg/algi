@@ -14,6 +14,17 @@ export default class CategoryController {
         }
     }
 
+    async getById(req, res) {
+        const { id } = req.params
+        try {
+            const result = await this.categoryService.getById(id);
+            return res.success(result, "Category loaded successfully.")
+        }
+        catch(err) {
+            res.error(err.message)
+        }
+    }
+
     async create(req, res) {
         
         try {

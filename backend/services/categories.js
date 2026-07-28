@@ -140,7 +140,7 @@ export default class CategoryService {
             return await this.categoryRepo.remove(id)
         }
         catch(err) {
-            if (err instanceof ValidationError || err instanceof NotFoundError) {
+            if (err instanceof NotFoundError) {
                 throw err
             }
             throw new DatabaseError(err.message)

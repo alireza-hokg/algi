@@ -12,8 +12,9 @@ const categoryService = new CategoryService(categoryRepo, db.sequelize);
 const categoryController = new CategoryController(categoryService)
 
 router.get("/categories", categoryController.getAll.bind(categoryController))
+router.get("/categories/:id", categoryController.getById.bind(categoryController))
 router.post("/categories", categoryController.create.bind(categoryController))
 router.put("/categories/:id", categoryController.update.bind(categoryController))
-router.patch("/categories/:id", categoryController.remove.bind(categoryController))
+router.delete("/categories/:id", categoryController.remove.bind(categoryController))
 
 export default router;

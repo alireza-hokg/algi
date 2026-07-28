@@ -33,9 +33,7 @@ export default class CategoryRepo {
     }
 
     async remove(id) {
-        return await this.Category.update({
-            is_active: false
-        }, {
+        return await this.Category.destroy({
             where: {
                 id
             }
