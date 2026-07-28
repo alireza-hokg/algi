@@ -7,6 +7,10 @@ export default class ColorRepo {
         return await this.Color.findAll();
     }
 
+    async getById(id) {
+        return await this.Color.findByPk(id)
+    }
+
     async getByName(name) {
         return await this.Color.findOne({
             where: {
@@ -26,6 +30,14 @@ export default class ColorRepo {
         }, {
             where: {
                 id: color.id
+            }
+        })
+    }
+
+    async remove(id) {
+        return await this.Color.destroy({
+            where: {
+                id
             }
         })
     }

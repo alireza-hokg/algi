@@ -15,6 +15,23 @@ export default class ColorService {
         }
     }
 
+    async getById(colorId) {
+        const numericColorId = Number(colorId);
+        if (!numericColorId) {
+            throw new ValidationError("colorId must be integer.")
+        }
+
+        try {
+            return await this.colorRepo.getById(numericColorId);
+        }
+        catch(err) {
+            if (err instanceof ValidationError) {
+                throw err
+            }
+            throw new DatabaseError(err.message);
+        }
+    }
+
     async getColorByName(name) {
         try {
             return await this.colorRepo.getByName(name)
@@ -75,6 +92,17 @@ export default class ColorService {
                 throw err
             }
             throw new DatabaseError(err.message);
+        }
+    }
+
+    async remove(colorId) {
+        const color = await this.getById(colorId);
+        try {
+            const result = await this.colorRepo.remove(colorId)
+            return result
+        }
+        catch(err) {
+            throw new DatabaseError(err.message)
         }
     }
 }

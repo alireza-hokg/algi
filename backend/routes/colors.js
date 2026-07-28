@@ -12,7 +12,9 @@ const colorController = new ColorController(colorService);
 const router = express.Router();
 
 router.get("/colors", colorController.getAll.bind(colorController));
+router.get("/colors/:id", colorController.getById.bind(colorController))
 router.post("/colors", colorController.create.bind(colorController));
-router.put("/colors/:id", colorController.update.bind(colorController))
+router.put("/colors/:id", colorController.update.bind(colorController));
+router.delete("/colors/:id", colorController.remove.bind(colorController));
 
 export default router;
