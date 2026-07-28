@@ -14,9 +14,9 @@ export default class ProductRepository {
     }
 
     async getById(id) {
-        return await this.Product.findByPk(id, {
-            raw: true
-        });
+        const result = await this.Product.findByPk(id);
+        console.log(result);
+        return result
     }
     
     async create(product) {

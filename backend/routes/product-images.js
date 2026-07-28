@@ -9,18 +9,15 @@ import db from "../models/index.cjs";
 
 const router = express.Router();
 
-const productImageRepo = new ProductImageRepo(db.ProductImage);
-const productRepo = new ProductRepository(db.Product);
+const productImageRepo = new ProductImageRepo(db.Product_Image);
+const productRepo = new ProductRepository(db.Product_Image);
 const productService = new ProductService(productRepo);
 const productImageService = new ProductImageService(productImageRepo, productService)
 const productImageController = new ProductImageController(productImageService);
 
 router.get("/product-images", productImageController.getAllImages.bind(productImageController));
-
 router.get("/product-images/:id", productImageController.getImage.bind(productImageController))
-
 router.post("/product-images", productImageController.createImage.bind(productImageController))
-
 router.delete("/product-images/:id", productImageController.deleteImage.bind(productImageController))
 
 export default router;

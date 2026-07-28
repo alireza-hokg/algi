@@ -1,3 +1,4 @@
+import Joi from "joi";
 
 import { ConflictError, DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
 
@@ -32,25 +33,37 @@ export default class ProductImageService {
         }
     }
 
-    async createImage(initialImageData) {
-        const { product_id, image_url, image_text, is_main, size, mime_type } = initialImageData;
+    async createImage(body) {
+        const productImageValidationSchema = Joi.object().keys({
+            product_id: Joi.number().required(),
+            image_url: Joi.string().required(),
+            image_text: Joi.string().optional().allow(null),
+            is_main: Joi.boolean().optional().allow(null),
+            size: Joi.number().optional().allow(null),
+            mime_type: Joi.string().optional().allow(null)
+        })
+
         try {
-            if (!product_id || !image_url) {
-                throw new ValidationError("product_id & image_url لازم هست")
+            const { value: productImageValue, error: productImageError } = 
+            productImageValidationSchema.validate({
+                product_id: body.product_id,
+                image_url: body.image_url,
+                image_text: body.image_text,
+                is_main: body.is_main,
+                size: body.size,
+                mime_type: body.mime_type
+            })
+            if (productImageError) {
+                throw new ValidationError(productImageError.message)
             }
-
-            const product = await this.productService.getProductById(product_id);
-            if (!product) {
-                throw new NotFoundError("product وجود ندارد")
-            }
-
-            const result = await this.productImageRepo.create(initialImageData);
-            return result
+            
+            await this.productService.getProductById(body.product_id);
+            return await this.productImageRepo.create(productImageValue);
         } catch(err) {
             if (err.name === "SequelizeUniqueConstraintError") {
                 throw new ConflictError("این url قبلا ثبت شده است")
             }
-            if (err instanceof ValidationError && err instanceof NotFoundError) {
+            if (err instanceof ValidationError) {
                 throw err
             }
             throw new DatabaseError(err)

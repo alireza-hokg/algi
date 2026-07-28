@@ -12,7 +12,7 @@ export default class ProductController {
             return res.success(result, "Products fetched Successfully");
             
         } catch(err) {
-            res.error(err.message, err.code);
+            res.error(err.message, err.statusCode);
         }
     }
 

@@ -48,7 +48,7 @@ export default class ProductService {
             if (err instanceof NotFoundError || err instanceof ValidationError) {
                 throw err
             }
-            throw new DatabaseError('Database error.', 500)
+            throw new DatabaseError(err.message, 500)
         }
     }
 
@@ -80,7 +80,7 @@ export default class ProductService {
             if (err instanceof ValidationError) {
                 throw err;
             }
-            throw new DatabaseError(err.message, 500);
+            throw new DatabaseError(err.message);
         }
     }
 
@@ -90,7 +90,6 @@ export default class ProductService {
             throw new ValidationError("productId must be integer");
         }
         await this.productRepository.getById(numericProductId);
-        
         const { value: categoryValue, error: categoryError } = updateValidationSchema.validate({
             id: numericProductId,
             name: body.name,
@@ -161,7 +160,7 @@ export default class ProductService {
             if (err instanceof NotFoundError) {
                 return err
             }
-            throw new DatabaseError("Internal server error.")
+            throw new DatabaseError(err.message || "Database error.")
         }
     }
 }
