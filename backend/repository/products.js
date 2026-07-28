@@ -15,7 +15,6 @@ export default class ProductRepository {
 
     async getById(id) {
         const result = await this.Product.findByPk(id);
-        console.log(result);
         return result
     }
     
