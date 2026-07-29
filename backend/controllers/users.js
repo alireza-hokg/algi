@@ -19,13 +19,7 @@ export default class UserController {
 
     async register(req, res) {
         try {
-            const { phoneNumber, password, role } = req.body;
-            const initialData = {
-                phoneNumber,
-                password,
-                role
-            }
-            const user = await this.userService.register(initialData);
+            const user = await this.userService.register(req.body);
             return res.success(user, "کاربر با موفقیت ساخته شد.", 200);
         }
         catch(err) {

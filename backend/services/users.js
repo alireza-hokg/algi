@@ -1,6 +1,8 @@
-import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../utils/Error.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
+import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../utils/Error.js";
+import { registerValidationSchema } from "../schemas/user.js"
 
 export default class UserService {
     constructor(userRepo) {
@@ -29,21 +31,27 @@ export default class UserService {
     }
 
     async register(user) {
-        const { phoneNumber, password, role } = user;
-        if (!phoneNumber || !password) {
-            throw new ValidationError("شماره موبایل و رمز الزامی است")
-        }
+        console.log(user)
         try {
-            const existingUser = await this.userRepo.findByPhone(phoneNumber);
+            const { value: userValue, error: errorValue } = registerValidationSchema.validate({
+                phoneNumber: user.phoneNumber,
+                password: user.password
+            });
+            if (errorValue) {
+                console.log('s')
+                throw new ValidationError(errorValue.message)
+            }
+
+            const existingUser = await this.userRepo.findByPhone(userValue.phoneNumber);
             if (existingUser) {
                 throw new ConflictError("این شماره قبلا ثبت شده");
             }
             
             // هش کردن پسورد
-            const hashedPass = await bcrypt.hash(password, 10);
+            const hashedPass = await bcrypt.hash(userValue.password, 10);
 
             // ساخت ابجکت کاربر برای ذخیره
-            const newUser = {phoneNumber, role, password: hashedPass}
+            const newUser = {phoneNumber: userValue.phoneNumber, role: "customer", password: hashedPass}
             
             // ذخیره در دیتابیس
             const result = await this.userRepo.create(newUser);
