@@ -3,7 +3,7 @@ const slugify = require("slugify")
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert("products", [
+    await queryInterface.bulkInsert("products", [
       {
         name: "یاکوزی",
         price: 100000,
@@ -44,6 +44,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete("products", null, {})
+    await queryInterface.bulkDelete("products", null, {});
+    console.log("products deleted successfully. ✅")
   }
 };

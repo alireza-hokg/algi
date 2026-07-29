@@ -53,9 +53,9 @@ async function startServer() {
         await sequelize.authenticate();
         console.log("Database connection established successfully.")
         if (isDevelopment) {
-            // await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
-            // await sequelize.sync({ force: true });
-            // await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
+            await sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
+            await sequelize.sync({ force: true });
+            await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
             console.log("Development database synced (force: true)")
         }
         app.listen(SERVER_PORT, () => {
