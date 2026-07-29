@@ -6,7 +6,6 @@ import GuestRoute from "../components/common/GuestRoute";
 import Dashboard from "../pages/admin/Dashboard.jsx";
 import Layout from "../components/layout/main/";
 import Orders from "../pages/orders.jsx";
-import Products from "../pages/admin/Products.jsx";
 import AdminOrders from "../pages/admin/Orders.jsx";
 import Transactions from "../pages/admin/Transactions.jsx";
 import Carts from "../pages/carts/";
@@ -47,7 +46,6 @@ const AppRoutes = () => {
             {/* ADMIN */}
             <Route path="/admin" element={<Layout />}>
                 <Route index element={<Dashboard />} />
-                <Route path="products" element={<Products />} />
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="transactions" element={<Transactions />} />
             </Route>
