@@ -15,6 +15,7 @@ module.exports = {
 
     const productImages = [];
     const now = new Date();
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
 
     for (const product of products) {
       productImages.push({
@@ -43,11 +44,14 @@ module.exports = {
 
       await queryInterface.bulkInsert("product_images", productImages, {})
       console.log(`${productImages.length} product images seeded succussfully. ✅`)
+      await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
     }
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
     await queryInterface.bulkDelete("product_images", null, {});
     console.log("All product images deleted!")
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
   }
 };

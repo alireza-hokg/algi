@@ -2,14 +2,6 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const categories = await queryInterface.sequelize.query(
-      'SELECT id FROM categories',
-      { type: queryInterface.sequelize.QueryTypes.SELECT}
-    )
-    if (categories) {
-      console.log("categories exists.")
-      return;
-    }
     
     await queryInterface.bulkInsert("categories", [
       {
@@ -27,7 +19,10 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
+
     await queryInterface.bulkDelete("categories", null, {})
     console.log("categories deleted successfully. ✅")
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
   }
 };

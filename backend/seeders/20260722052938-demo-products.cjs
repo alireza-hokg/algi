@@ -3,6 +3,16 @@ const slugify = require("slugify")
 
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const categories = await queryInterface.sequelize.query(
+      'SELECT id FROM categories',
+      { type: queryInterface.sequelize.QueryTypes.SELECT}
+    )
+    if (!categories) {
+      console.log("No categories found.Please run categories first")
+      return;
+    }
+
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
     await queryInterface.bulkInsert("products", [
       {
         name: "یاکوزی",
@@ -41,10 +51,14 @@ module.exports = {
         updatedAt: new Date()
       },
     ])
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
+
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 0")
     await queryInterface.bulkDelete("products", null, {});
     console.log("products deleted successfully. ✅")
+    await queryInterface.sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
   }
 };
