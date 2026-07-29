@@ -56,6 +56,7 @@ export default class ProductService {
         const { value: productValue, error: productError } = createValidationSchema.validate({
             name: body.name,
             price: body.price,
+            discount: body.discount,
             sku: body.sku,
             category_id: body.category_id,
             slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
@@ -66,6 +67,8 @@ export default class ProductService {
             throw new ValidationError(productError.message)
         }
 
+        const discount_price = productValue.price * (productValue.discount/100);
+        productValue.discount_price = discount_price;
         try {
             const result = await this.productRepository.create(productValue)
             return {
@@ -90,22 +93,25 @@ export default class ProductService {
             throw new ValidationError("productId must be integer");
         }
         await this.productRepository.getById(numericProductId);
-        const { value: categoryValue, error: categoryError } = updateValidationSchema.validate({
+        const { value: productValue, error: productError } = updateValidationSchema.validate({
             id: numericProductId,
             name: body.name,
             price: body.price,
+            discount: body.discount,
             sku: body.sku,
             category_id: body.category_id,
             slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
         })
-        if (categoryError) {
-            throw new ValidationError(categoryError.message)
+        if (productError) {
+            throw new ValidationError(productError.message)
         }
-
+        const discount_price = productValue.price * (productValue.discount/100);
+        productValue.discount_price = discount_price;
         try {
-            const [isUpdated] = await this.productRepository.update(categoryValue);
+            
+            const [isUpdated] = await this.productRepository.update(productValue);
             if (isUpdated) {
-                return categoryValue
+                return productValue
             }
         } catch(err) {
             if (err instanceof ValidationError || err instanceof NotFoundError) {

@@ -4,6 +4,7 @@ export const createValidationSchema = Joi.object().keys({
     name: Joi.string().required(),
     category_id: Joi.number().required(),
     price: Joi.number().required(),
+    discount: Joi.number().optional().allow(null),
     sku: Joi.string().required(),
     slug: Joi.string().required(),
 })
@@ -13,6 +14,7 @@ export const updateValidationSchema = Joi.object().keys({
     name: Joi.string().required(),
     category_id: Joi.number().required(),
     price: Joi.number().required(),
+    discount: Joi.number().optional().allow(null),
     sku: Joi.string().required(),
     slug: Joi.string().required(),
 })
