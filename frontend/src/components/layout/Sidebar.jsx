@@ -1,39 +1,15 @@
-import { X } from "lucide-react";
-import NavigationMenu from "../common/NavigationMenu";
-import { useEffect, useRef } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import NavigationMenu from "../common/NavigationMenu.jsx";
+import SidebarHeader from "../ui/SidebarHeader.jsx";
+import { useSidebar } from "../../hooks/useSidebar.js";
+import { useAuth } from "../../hooks/useAuth.js";
+import { getSidebarTitle } from "../../utils/sidebar.js";
 
 const Sidebar = ({
     onClose,
     isSidebarOpen
 }) => {
     const { user } = useAuth();
-    const sidebarRef = useRef();
-
-    useEffect(()=> {
-        const handleClickOutside = (e) => {
-            if (sidebarRef.current && sidebarRef.current.contains(e.target)) {
-                return
-            }
-
-            if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-                onClose();
-            }
-        }
-
-        const handleKeyOutside = (e) => {
-            if (e.key === "Escape") {
-                onClose()
-            }
-        }
-
-        document.addEventListener("keydown", handleKeyOutside);
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-            document.removeEventListener("keydown", handleKeyOutside)
-        }
-    }, [])
+    const sidebarRef = useSidebar(onClose);
 
     return(
         <aside
@@ -42,18 +18,9 @@ const Sidebar = ({
             text-white overflow-y-auto transform-3d z-30 ${isSidebarOpen ? '' : 'translate-x-full'}
             duration-300 ease-in-out`}
         >
-            <div className="flex justify-between mb-8 mt-2">
-                <h1 className="text-3xl">
-                    {user?.role === "customer" ? "الگی" : "پنل ادمین"}
-                </h1>
-                <button
-                    className="cursor-pointer p-2 rounded-full"
-                    onClick={onClose}
-                >
-                    <X color="#fb2c36" size={30}/>
-                </button>
-            </div>
-            
+            <SidebarHeader
+                title={getSidebarTitle(user?.role)}
+            />
             <NavigationMenu
                 userRole = {user?.role}
                 onClose={onClose}
