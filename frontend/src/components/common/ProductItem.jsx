@@ -3,15 +3,19 @@ import Sylvanas from "../../assets/images/download.jpg";
 import { ShoppingCart } from "lucide-react";
 
 const ProductItem = ({ product }) => {
-    console.log(product)
-    return( 
+    return(
         <li>
-            <figure>
-                <Link to={`/products/${product.slug}/variants`}>
+            <figure className="h-full">
+                <Link 
+                    to={`/products/${product.slug}/variants`}
+                    className="h-full"
+                >
                     <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
+                        {console.log(product.Product_Images)}
                         <img
                             className="w-full inline-block"
-                            src={Sylvanas}/>
+                            src={product.Product_Images.length > 0 ? product.Product_Images.find(image =>   
+                            image.is_main)?.image_url : Sylvanas}/>
                     </div>
                 </Link>
                 <div>
