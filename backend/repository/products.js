@@ -1,11 +1,17 @@
 
 export default class ProductRepository {
-    constructor(Product) {
+    constructor(Product, Product_Image) {
         this.Product = Product;
+        this.Product_Image = Product_Image
     }
+
     async getAllProducts() {
         const result = await this.Product.findAndCountAll({
-            raw: true
+            include: { 
+                model: this.Product_Image,
+                as: "Product_Images",
+                required: false
+            }
         });
         return {
             rows: result.rows,

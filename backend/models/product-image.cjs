@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         this.belongsTo(models.Product, {
             foreignKey: {
                 name: "product_id",
-                allowNull: false
+                allowNull: false,
             },
             targetKey: "id",
             onDelete: "CASCADE",

@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
     this.hasMany(models.Variant, {
       foreignKey: {
         name: "product_id",
-        allowNull: false
+        allowNull: false,
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
@@ -75,7 +75,8 @@ module.exports = (sequelize, DataTypes) => {
     this.hasMany(models.Product_Image, {
       foreignKey: {
         name: "product_id",
-        allowNull: false
+        allowNull: false,
+        as: "Product_Images"
       },
       onDelete: "CASCADE",
       onUpdate: "CASCADE",

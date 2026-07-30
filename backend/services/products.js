@@ -19,10 +19,11 @@ export default class ProductService {
 
     async getAllProducts() {
         try {
-            const {rows, count} = await this.productRepository.getAllProducts();
+            const result = await this.productRepository.getAllProducts();
             
-            const normalizedProducts = this.#normalizeProducts(rows);
-            return normalizedProducts;
+            // const normalizedProducts = this.#normalizeProducts(rows);
+            // return normalizedProducts;
+            return result
         } catch(err) {
             if (err instanceof NotFoundError) {
                 throw err
