@@ -1,36 +1,10 @@
-import { useState } from "react";
-
-import Login from "../components/Auth/Login.jsx";
-import Register from "../components/Auth/Register.jsx";
-import { Link } from "react-router-dom";
 import AuthHeader from "../components/layout/AuthHeader.jsx";
+import AuthForm from "../components/Auth/AuthForm.jsx";
+import { useAuthForm } from "../hooks/useAuthForm.js";
+import AuthFooter from "../components/layout/AuthFooter.jsx";
 
 const Auth = () => {
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
-    const [step, setStep] = useState("login");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    // Phone input accepts just numbers and less than 12 digits
-    const onChangePhone = e => {
-        let value = e.target.value;
-        if (/^\d{0,11}$/.test(value)) {
-            setPhone(value)
-        }
-    }
-
-    const onChangePassword = e => {
-        let value = e.target.value;
-        setPassword(value);
-    }
-
-    const toggleStep = () => {
-        setPhone("");
-        setPassword("");
-        setError("");
-        setStep(step === "login" ? "register" : "login");
-    };
+    const authForm = useAuthForm();
 
     return (
         <div>
@@ -39,53 +13,10 @@ const Auth = () => {
             <main className="bg-gray-100 min-h-screen p-0.5">
                 {/* فرم لاگین/ثبت‌نام */}
                 <div className="container mx-auto px-4">
-                    <div className="max-w-md mx-auto">
-                        <div className="mt-12 mb-6">
-                            <h1 className="text-center text-3xl font-bold text-gray-800 mb-2">
-                                پوشاک آلگی
-                            </h1>
-                            <p className="text-center text-gray-500 text-sm">
-                                {step === "login" ? "ورود به حساب کاربری" : "عضویت در سایت"}
-                            </p>
-                        </div>
-
-                        {step === "login" ? (
-                            <Login
-                                phone={phone}
-                                password={password}
-                                onChangePhone={onChangePhone}
-                                onChangePassword={onChangePassword}
-                                error={error}
-                                loading={loading}
-                                onToggle={toggleStep}
-                            />
-                        ) : (
-                            <Register
-                                phone={phone}
-                                password={password}
-                                onChangePhone={onChangePhone}
-                                onChangePassword={onChangePassword}
-                                error={error}
-                                loading={loading}
-                                onToggle={toggleStep}
-                            />
-                        )}
-                    </div>
+                    <AuthForm {...authForm}/>
                 </div>
 
-                {/* فوتر با لینک‌های اضافی */}
-                <footer className="mt-16 text-center text-gray-400 text-sm">
-                    <div className="border-t pt-6">
-                        <Link to="/terms" className="mx-2 hover:text-amber-600">قوانین</Link>
-                        <span>|</span>
-                        <Link to="/privacy" className="mx-2 hover:text-amber-600">حریم خصوصی</Link>
-                        <span>|</span>
-                        <Link to="/faq" className="mx-2 hover:text-amber-600">سوالات متداول</Link>
-                    </div>
-                    <div className="mt-4">
-                        <p>© 2026 پوشاک آلگی. تمام حقوق محفوظ است.</p>
-                    </div>
-                </footer>
+                <AuthFooter />
             </main>
         </div>
     );

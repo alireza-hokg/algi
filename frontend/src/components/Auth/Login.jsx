@@ -1,26 +1,14 @@
 
-import toast from "react-hot-toast";
-import { useAuth } from "../../hooks/useAuth.js";
-import { isValidPhone } from "../../utils/authPhone.js";
-
 const Login = ({
     phone,
     password,
     onChangePhone,
     onChangePassword,
     loading,
-    onToggle
+    toggleStep,
+    error,
+    handleSubmit
 }) => {
-    const { handleLogin } = useAuth();
-    
-    const handleSubmit = () => {
-        if (isValidPhone(phone)) {
-            handleLogin(phone, password);
-        } else {
-            toast.error("شماره موبایل باید با 09 شروع شود و 11 رقم باشد")
-        }
-    }
-    
     return(
         <div className="bg-white py-16 px-8 rounded-xl max-w-sm sm:max-w-md mx-auto">
             <h3
@@ -64,7 +52,7 @@ const Login = ({
                 <button
                     className="text-blue-500 hover:text-blue-600 cursor-pointer"
                     onClick={()=> {
-                        onToggle()
+                        toggleStep()
                     }}
                 >
                     ثبت نام
