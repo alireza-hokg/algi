@@ -1,19 +1,18 @@
 
-const Login = ({
+const Register = ({
     phone,
     password,
     onChangePhone,
     onChangePassword,
-    loading,
     toggleStep,
-    error,
     handleSubmit
 }) => {
-    return(
+
+    return (
         <div className="bg-white py-16 px-8 rounded-xl max-w-sm sm:max-w-md mx-auto">
             <h3
                 className="text-3xl text-gray-700 mb-8"
-            >ورود
+            >ثبت نام
             </h3>
             <p className="text-gray-500 text-sm mb-2">لطفا شماره موبایل خود را وارد کنید</p>
             <div className="mb-4">
@@ -45,21 +44,20 @@ const Login = ({
                 type="button"
                 onClick={handleSubmit}
             >
-                { loading ? "...در حال ارسال" : "ورود"}
+            ثبت نام
             </button>
             <div className="mt-4 flex gap-x-2">
-                <p className="text-sm">هنوز ثبت نام نکرده اید؟</p>
+                <p className="text-sm">ثبت نام کرده اید؟</p>
                 <button
                     className="text-blue-500 hover:text-blue-600 cursor-pointer"
                     onClick={()=> {
                         toggleStep()
                     }}
                 >
-                    ثبت نام
+                    ورود
                 </button>
             </div>
         </div>
     )
 }
-
-export default Login;
+export default Register;

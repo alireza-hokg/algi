@@ -11,7 +11,6 @@ const ProductItem = ({ product }) => {
                     className="h-full"
                 >
                     <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
-                        {console.log(product.Product_Images)}
                         <img
                             className="w-full inline-block"
                             src={product.Product_Images.length > 0 ? product.Product_Images.find(image =>   

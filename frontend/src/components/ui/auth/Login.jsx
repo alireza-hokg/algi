@@ -1,7 +1,4 @@
-import toast from "react-hot-toast";
-import { isValidPhone } from "../../utils/authPhone.js";
-
-const Register = ({
+const Login = ({
     phone,
     password,
     onChangePhone,
@@ -10,20 +7,11 @@ const Register = ({
     toggleStep,
     handleSubmit
 }) => {
-    
-    // const handleSubmit = () => {
-    //     if (isValidPhone(phone)) {
-    //         handleRegister(phone, password);
-    //     } else {
-    //         toast.error("شماره موبایل باید با 09 شروع شود و 11 رقم باشد")
-    //     }
-    // }
-
-    return (
+    return(
         <div className="bg-white py-16 px-8 rounded-xl max-w-sm sm:max-w-md mx-auto">
             <h3
                 className="text-3xl text-gray-700 mb-8"
-            >ثبت نام
+            >ورود
             </h3>
             <p className="text-gray-500 text-sm mb-2">لطفا شماره موبایل خود را وارد کنید</p>
             <div className="mb-4">
@@ -55,20 +43,21 @@ const Register = ({
                 type="button"
                 onClick={handleSubmit}
             >
-            ثبت نام
+                { loading ? "...در حال ارسال" : "ورود"}
             </button>
             <div className="mt-4 flex gap-x-2">
-                <p className="text-sm">ثبت نام کرده اید؟</p>
+                <p className="text-sm">هنوز ثبت نام نکرده اید؟</p>
                 <button
                     className="text-blue-500 hover:text-blue-600 cursor-pointer"
                     onClick={()=> {
                         toggleStep()
                     }}
                 >
-                    ورود
+                    ثبت نام
                 </button>
             </div>
         </div>
     )
 }
-export default Register;
+
+export default Login;

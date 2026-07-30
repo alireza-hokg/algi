@@ -1,11 +1,11 @@
-import Login from "./Login.jsx";
-import Register from "./Register.jsx";
+import Login from "../ui/auth/Login.jsx";
+import Register from "../ui/auth/Register.jsx";
 
 const AuthForm = ({
     isLogin,
     ...formProps
 }) => {
-    
+
     const getTitle = () => ({
         title: "پوشاک الگی",
         subtitle: isLogin ? "ورود به حساب کاربری" : "عضویت در سایت"
