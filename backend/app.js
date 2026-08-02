@@ -2,6 +2,11 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
+import multer from "multer";
+
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 
 import db from "./models/index.cjs";
 import productsRoutes from "./routes/products.js";
@@ -34,6 +39,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 app.use(responseFormatter);
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const uploadsPath = path.join(__dirname, "uploads");
+
+// Static
+app.use("/uploads", express.static(uploadsPath));
 
 // ============ API Routes ============
 app.use("/api/v1", productsRoutes)

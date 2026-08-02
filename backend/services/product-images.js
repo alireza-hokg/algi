@@ -1,4 +1,3 @@
-import Joi from "joi";
 
 import { ConflictError, DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
 import { createValidationSchema } from "../schemas/product-image.js"
@@ -34,19 +33,19 @@ export default class ProductImageService {
         }
     }
 
-    async createImage(body) {
+    async createImage(body, file) {
         
-
         try {
             const { value: productImageValue, error: productImageError } = 
             createValidationSchema.validate({
                 product_id: body.product_id,
-                image_url: body.image_url,
+                image_url: file.path,
                 image_text: body.image_text,
                 is_main: body.is_main,
-                size: body.size,
-                mime_type: body.mime_type
+                size: file.size,
+                mime_type: file.mimetype
             })
+            console.log(productImageValue)
             if (productImageError) {
                 throw new ValidationError(productImageError.message)
             }

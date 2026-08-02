@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 
 export default class VariantRepo {
     constructor(Variant, Product) {
@@ -10,17 +11,16 @@ export default class VariantRepo {
             where: {
                 product_id: productId
             },
+            attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"]},
             include: [
                 {
-                    model: Product,
+                    model: this.Product,
                     attributes: ['name', 'sku'],
                     required: true
                 }
             ],
-            raw: true,
             nest: false
-        },
-        )
+        })
         return variants
     }
 

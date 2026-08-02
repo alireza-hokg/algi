@@ -159,9 +159,7 @@ export default class ProductService {
     async getProductBySlug(slug) {
         try {
             const product = await this.productRepository.getBySlug(slug);
-            if (!product) {
-                throw new NotFoundError("No product found.")
-            }
+            
             return product
         } catch(err) {
             if (err instanceof NotFoundError) {

@@ -26,8 +26,9 @@ export default class ProductImageController {
     }
 
     async createImage(req, res) {
+
         try {
-            const result = await this.productImageService.createImage(req.body);
+            const result = await this.productImageService.createImage(req.body, req.file);
             return res.created(result, "product-images created successfully.")
         } catch(err) {
             res.error(err.message);
