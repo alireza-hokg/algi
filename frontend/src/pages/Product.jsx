@@ -7,17 +7,14 @@ import Screenshot from "../assets/images/screenshot.png";
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
 import DetailsTab from "../components/product/DetailsTab.jsx";
-import { useCart } from "../hooks/useCart.js";
+import CreateProductImage from "../components/ui/CreateProductImage.jsx";
 
 const Product = () => {
     const { slug } = useParams();
 
-    const { addToCart } = useCart();
-
     // Product states
     const [product, setProduct] = useState({});
     const [variants, setVariants] = useState([]);
-    const [variantColor, setVariantColor] = useState([]);
     const [variantSize, setVariantSize] = useState([]);
     const [variantWidth, setVariantWidth] = useState([]);
     const [variantHeight, setVariantHeight] = useState([]);
@@ -55,8 +52,6 @@ const Product = () => {
         if (count===0) {
             return
         }
-        const { success } = await addToCart(product, count);
-        success ? setCount(1) : null
     }
 
     const fetchData = async () => {
@@ -70,13 +65,11 @@ const Product = () => {
             const { data: productData } = await get(`/products/${product_id}`);
             const variants = variantsData.body || [];
             const product = productData.body || [];
-            const uniqueColors = [...new Set(variants.map(product => product.color))];
             const uniqueSizes = [...new Set(variants.map(product => product.size))];
             const uniqueWidth = [...new Set(variants.map(product => product.width))];
             const uniqueHeight = [...new Set(variants.map(product => product.height))];
 
             setVariants(variants);
-            setVariantColor(uniqueColors);
             setVariantSize(uniqueSizes);
             setVariantWidth(uniqueWidth);
             setVariantHeight(uniqueHeight);
@@ -122,6 +115,7 @@ const Product = () => {
     return (
         <div className="px-6 py-8">
             <div className="bg-white">
+                <CreateProductImage />
                 <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
                 border-b-gray-300">
                     {/* Product Image Section */}
@@ -200,24 +194,6 @@ const Product = () => {
                                 </div>
                             </div>
 
-                            {/* Colors */}
-                            <div className="bg-gray-50 rounded-xl p-4">
-                                <h3 className="font-bold text-gray-800 mb-3 text-lg">🎨 رنگ‌بندی:</h3>
-                                <div className="flex flex-wrap gap-3">
-                                    {variantColor?.map((color, index) => (
-                                        <div key={index} className="group">
-                                            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-700 text-sm hover:border-amber-500 hover:shadow-md transition-all cursor-pointer">
-                                                <span 
-                                                    className="w-3 h-3 rounded-full shadow-inner" 
-                                                    style={{ backgroundColor: color.toLowerCase() }}
-                                                />
-                                                {color}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
                             {/* Add to Cart Button */}
                             <div className="flex items-center gap-x-4">
                                 <div className="flex-0 flex text-2xl">
@@ -241,7 +217,6 @@ const Product = () => {
                                     >+</button>
                                 </div>
                                 <button
-                                    onClick={handleAddToCart}
                                     className="flex-1 bg-amber-500 hover:bg-black 
                                     text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
                                     duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"

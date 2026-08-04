@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import UserMenu from "../../common/UserMenu/index.jsx";
 
 import "./style.css"
-import { useCart } from "../../../hooks/useCart.js";
+// import { useCart } from "../../../hooks/useCart.js";
 
 const Header = ({
     toggleSidebar={toggleSidebar}
@@ -16,7 +16,7 @@ const Header = ({
     const [isUserDropdown, setIsUserDropdown] = useState(false);
     const buttonRef = useRef(null);
     const { isLogin } = useAuth();
-    const { cartCount, cartTotal } = useCart()
+    // const { cartCount, cartTotal } = useCart()
 
     return (
         <header className="bg-black text-white">
@@ -68,7 +68,7 @@ const Header = ({
                             ease-in-out"
                         >
                             <div className="relative">
-                                {cartCount === 0 ? null : (
+                                {/* {cartCount === 0 ? null : (
                                     <div
                                         className="flex justify-center items-center absolute bottom-8/12 right-8/12
                                         bg-amber-500 rounded-full py-0.5 px-1.5 text-white"
@@ -77,12 +77,12 @@ const Header = ({
                                                 {cartCount}
                                             </span>
                                     </div>
-                                )}
+                                )} */}
                                 <ShoppingBag />
                             </div>
                             
                             <span className="hidden lg:inline-block text-[13px]">
-                                {(cartTotal).toLocaleString("fa-IR")}{" "}تومان
+                                {/* {(cartTotal).toLocaleString("fa-IR")}{" "}تومان */}
                             </span>
                         </Link>
                     ) : null}

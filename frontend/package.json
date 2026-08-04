@@ -17,6 +17,7 @@
     "react-dom": "^19.2.5",
     "react-hot-toast": "^2.6.0",
     "react-loading-indicators": "^1.0.1",
+    "react-number-format": "^5.4.5",
     "react-router-dom": "^7.14.2",
     "tailwindcss": "^4.2.4",
     "yup": "^1.7.1"

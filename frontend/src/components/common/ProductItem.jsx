@@ -5,44 +5,43 @@ import { ShoppingCart } from "lucide-react";
 const ProductItem = ({ product }) => {
     return(
         <li>
-            <figure className="h-full">
+            <figure className="h-full flex flex-col">
                 <Link 
                     to={`/products/${product.slug}/variants`}
-                    className="h-full"
+                    className="flex-1"
                 >
-                    <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400">
+                    <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400 h-full">
                         <img
-                            className="w-full inline-block"
+                            className="w-full inline-block h-full"
                             src={product.Product_Images.length > 0 ? product.Product_Images.find(image =>   
-                            image.is_main)?.image_url : Sylvanas}/>
+                            image.is_main)?.image_url : Sylvanas}
+                        />
                     </div>
                 </Link>
-                <div>
-                    <figcaption>
-                        <div className="space-y-4">
-                            <div className="flex flex-col mx-4 space-y-1 items-center">
-                                <h3 className="text-[#555]">{product.name}</h3>
-                                <div className="space-x-1">
-                                    <span className="text-sm line-through decoration-1 decoration-gray-500
-                                    text-gray-500">{(376000).toLocaleString("fa-IR")}</span>{" "}
-                                    <span className="text-amber-500 font-extrabold">{(product.price).toLocaleString("fa-IR")} تومان</span>
-                                </div>
-                            </div>
-                            <div className="table mx-auto text-center mt-4">
-                                <Link
-                                    className="inline-block relative bg-lime-500 py-2 px-6 rounded-lg text-white group overflow-hidden"
-                                    to={`/products/${product.slug}/variants`}
-                                >
-                                    <span className="inline-block group-hover:-translate-y-20 duration-300">انتخاب گزینه ها</span>
-                                    <ShoppingCart
-                                        className="absolute top-0 bottom-0 left-0 right-0 m-auto translate-y-20
-                                        group-hover:translate-y-0 duration-300"
-                                    />
-                                </Link>
+                <figcaption>
+                    <div className="space-y-4">
+                        <div className="flex flex-col mx-4 space-y-1 items-center">
+                            <h3 className="text-[#555]">{product.name}</h3>
+                            <div className="space-x-1">
+                                <span className="text-sm line-through decoration-1 decoration-gray-500
+                                text-gray-500">{(376000).toLocaleString("fa-IR")}</span>{" "}
+                                <span className="text-amber-500 font-extrabold">{(product.price).toLocaleString("fa-IR")} تومان</span>
                             </div>
                         </div>
-                    </figcaption>
-                </div>
+                        <div className="table mx-auto text-center mt-4">
+                            <Link
+                                className="inline-block relative bg-lime-500 py-2 px-6 rounded-lg text-white group overflow-hidden"
+                                to={`/products/${product.slug}/variants`}
+                            >
+                                <span className="inline-block group-hover:-translate-y-20 duration-300">انتخاب گزینه ها</span>
+                                <ShoppingCart
+                                    className="absolute top-0 bottom-0 left-0 right-0 m-auto translate-y-20
+                                    group-hover:translate-y-0 duration-300"
+                                />
+                            </Link>
+                        </div>
+                    </div>
+                </figcaption>
             </figure>
         </li>
     )

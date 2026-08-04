@@ -8,7 +8,8 @@ import Layout from "../components/layout/main/";
 import Orders from "../pages/orders.jsx";
 import AdminOrders from "../pages/admin/Orders.jsx";
 import Transactions from "../pages/admin/Transactions.jsx";
-import Carts from "../pages/carts/";
+// import Carts from "../pages/carts/";
+import Products from "../pages/Products.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -35,9 +36,13 @@ const AppRoutes = () => {
                     element={<Product />}
                 />
                 <Route
+                    path="/products-list"
+                    element={<Products />}
+                />
+                {/* <Route
                     path="/carts"
                     element={<Carts />}
-                />
+                /> */}
                 <Route
                     path="/orders"
                     element={<Orders />}

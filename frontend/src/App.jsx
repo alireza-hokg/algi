@@ -3,13 +3,13 @@ import { BrowserRouter } from "react-router-dom"
 import AppRoutes from "./routes/index.jsx"
 import AuthProvider from "./contexts/AuthProvider.jsx"
 import { Toaster } from "react-hot-toast";
-import CartProvider from "./contexts/CartProvider.jsx";
+// import CartProvider from "./contexts/CartProvider.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <CartProvider>
+        {/* <CartProvider> */}
           <Toaster
             position="top-center"
             toastOptions={{
@@ -30,7 +30,7 @@ function App() {
             }}
           />
           <AppRoutes />
-        </CartProvider>
+        {/* </CartProvider> */}
       </AuthProvider>
     </BrowserRouter>
   )

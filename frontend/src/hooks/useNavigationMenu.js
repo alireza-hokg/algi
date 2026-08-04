@@ -13,7 +13,7 @@ export const useNavigationMenu = () => {
     ] : [], [isLogin])
 
     const adminMenu = useMemo(()=> isLogin ? [
-        { path: "/admin/products", text: "مدیریت محصولات", icon: "Box" },
+        { path: "/admin/products-list", text: "مدیریت محصولات", icon: "Box" },
         { path: "/admin/profile", text: "پروفایل", icon: "User" },
         { path: "/admin/customers", text: "مشتریان", icon: "BookUser" },
         { path: "/admin/orders", text: "مدیریت سفارشات", icon: "ShoppingBag"},
@@ -24,7 +24,7 @@ export const useNavigationMenu = () => {
 
     const mainMenu = useMemo(()=> [
         { path: "/", text: "صفحه اصلی", icon: "Home" },
-        { path: "/products", text: "محصولات", icon: "Box"},
+        { path: "/products-list", text: "محصولات", icon: "Box"},
         { path: "/today-discount", text: "تخفیفات روزانه", icon: "Tag" },
         { path: "/contact-us", text: "ارتباط با ما", icon: "Phone" },
         { path: "/about-us", text: "درباره ما", icon: "Info" },
