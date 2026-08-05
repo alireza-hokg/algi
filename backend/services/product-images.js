@@ -34,7 +34,6 @@ export default class ProductImageService {
     }
 
     async createImage(body, file) {
-        
         try {
             const { value: productImageValue, error: productImageError } = 
             createValidationSchema.validate({

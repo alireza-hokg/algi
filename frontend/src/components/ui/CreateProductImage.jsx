@@ -1,33 +1,66 @@
-const CreateProductImage = () => {
+import { useProductImage } from "../../hooks/useProductImage.js";
+
+const CreateProductImage = ({ product }) => {
+    const {
+        file,
+        fileText,
+        setFileText,
+        preview,
+        loading,
+        handleCreateProductImage,
+        onChangeFile,
+    } = useProductImage();
+
     return (
-        <form>
-            <div
-                className="mb-4 flex flex-col gap-y-2"
-            >
-                <div className="flex gap-x-2 items-center"> 
-                    <div className="flex-1 flex items-center gap-x-2">
-                        <label>
-                            متن عکس
-                        </label>
-                        <input
-                            className="outline-0 border py-1 px-2 rounded-md flex-1"
-                            type="text"
-                        />
-                    </div>
-                    <div className="flex-1">
-                        <input
-                            
-                            type="file"
-                        />
-                    </div>
+        <div className="mb-4 flex flex-col gap-y-2">
+            <div className="flex gap-x-2 items-center">
+                <div className="flex-1 flex items-center gap-x-2">
+                    <label>متن عکس</label>
+                    <input
+                        className="outline-0 border py-1 px-2 rounded-md flex-1"
+                        type="text"
+                        value={fileText}
+                        onChange={(e) => setFileText(e.target.value)}
+                        placeholder="متن عکس را وارد کنید..."
+                    />
                 </div>
-                <button
-                    // onClick={}
-                    className="py-2 px-4 bg-linear-to-r from-cyan-500 to-blue-500 rounded-md text-white 
-                    cursor-pointer"
-                >افزودن عکس</button>
+                <div className="flex-1">
+                    <input
+                        onChange={onChangeFile}
+                        type="file"
+                        accept="image/*" // فقط تصاویر
+                    />
+                </div>
             </div>
-        </form>
-    )
-}
+            
+            {/* نمایش نام فایل انتخاب‌شده */}
+            {file && (
+                <div className="text-sm text-gray-600">
+                    فایل انتخاب شده: {file.name} ({(file.size / 1024).toFixed(2)} KB)
+                </div>
+            )}
+            
+            {/* نمایش پیش‌نمایش */}
+            {preview && (
+                <div className="mt-2">
+                    <img 
+                        src={preview} 
+                        alt="پیش‌نمایش" 
+                        className="max-w-[200px] max-h-[200px] object-cover rounded-md border"
+                    />
+                </div>
+            )}
+            
+            <button
+                onClick={()=> handleCreateProductImage(product?.id)}
+                disabled={loading || !file}
+                className={`py-2 px-4 bg-linear-to-r from-cyan-500 to-blue-500 rounded-md text-white 
+                    cursor-pointer ${(loading || !file) && 'opacity-50 cursor-not-allowed'}`}
+            >
+                {loading ? "در حال آپلود..." : "افزودن عکس"}
+            </button>
+        </div>
+    );
+};
+
 export default CreateProductImage;
