@@ -38,13 +38,12 @@ export default class ProductImageService {
             const { value: productImageValue, error: productImageError } = 
             createValidationSchema.validate({
                 product_id: body.product_id,
-                image_url: file.path,
+                image_url: file.filename,
                 image_text: body.image_text,
                 is_main: body.is_main,
                 size: file.size,
                 mime_type: file.mimetype
             })
-            console.log(productImageValue)
             if (productImageError) {
                 throw new ValidationError(productImageError.message)
             }

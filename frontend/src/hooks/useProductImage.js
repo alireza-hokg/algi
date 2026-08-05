@@ -16,7 +16,6 @@ export const useProductImage = () => {
 
             // نمایش پیش‌نمایش (اختیاری)
             const previewUrl = URL.createObjectURL(selectedFile);
-            console.log(previewUrl)
             setPreview(previewUrl);
             
             // پاک کردن مقدار input بعد از آپلود (اختیاری)
@@ -41,8 +40,6 @@ export const useProductImage = () => {
             // ارسال به سرور
             const createdProductImage = await post("/product-images", formData);
             
-            console.log("عکس با موفقیت ایجاد شد:", createdProductImage);
-            
             // ریست کردن فرم بعد از آپلود موفق
             setFile(null);
             setFileText("");
@@ -62,7 +59,6 @@ export const useProductImage = () => {
         return () => {
             if (preview) {
                 URL.revokeObjectURL(preview);
-                console.log("URL ازاد شد.")
             }
         }
     }, [preview])

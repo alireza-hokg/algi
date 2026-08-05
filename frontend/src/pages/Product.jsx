@@ -116,6 +116,7 @@ const Product = () => {
         <div className="px-6 py-8">
             <div className="bg-white">
                 <CreateProductImage product={product} />
+
                 <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
                 border-b-gray-300">
                     {/* Product Image Section */}

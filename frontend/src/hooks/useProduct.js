@@ -30,7 +30,16 @@ export const useProducts = () => {
     }
 
     const handleCreateProduct = async (product) => {
-        console.log(product)
+        const {price} = product
+        const numericPrice = Number(String(price).replace(",", ""));
+
+        const updatedProduct = {
+            ...product,
+            price: numericPrice,
+        };
+
+        setProduct(updatedProduct);
+
         try {
             const createdProduct = await post("/products", product);
             console.log(createdProduct)

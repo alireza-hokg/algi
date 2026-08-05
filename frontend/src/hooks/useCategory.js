@@ -10,7 +10,6 @@ export const useCategory = () => {
             try {
                 const { data: categoriesData } = await get("/categories");
                 setCategories(categoriesData);
-                console.log(categoriesData)
             }
             catch(err) {
                 console.log(err.message)
