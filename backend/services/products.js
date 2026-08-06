@@ -20,9 +20,6 @@ export default class ProductService {
     async getAllProducts() {
         try {
             const result = await this.productRepository.getAllProducts();
-            
-            // const normalizedProducts = this.#normalizeProducts(rows);
-            // return normalizedProducts;
             return result
         } catch(err) {
             if (err instanceof NotFoundError) {
@@ -42,8 +39,9 @@ export default class ProductService {
             if (!product) {
                 throw new NotFoundError("product not found.")
             }
-            const normalizedProduct = this.#normalizeProduct(product);
-            return normalizedProduct;
+            return product
+            // const normalizedProduct = this.#normalizeProduct(product);
+            // return normalizedProduct;
             
         } catch(err) {
             if (err instanceof NotFoundError || err instanceof ValidationError) {

@@ -1,6 +1,7 @@
 import { useProductImage } from "../../hooks/useProductImage.js";
 
 const CreateProductImage = ({ product }) => {
+    
     const {
         file,
         fileText,

@@ -9,7 +9,6 @@ export const useProductImage = () => {
 
     const onChangeFile = (e) => {
         const selectedFile = e.target.files?.[0];
-        console.log("فایل انتخاب شد:", selectedFile);
         
         if (selectedFile) {
             setFile(selectedFile); // ✅ اصلاح شد
@@ -23,20 +22,18 @@ export const useProductImage = () => {
         }
     };
 
-    const handleCreateProductImage = async (productId) => {
+    const handleCreateProductImage = async (product_id) => {
         if (!file) {
             alert("لطفاً ابتدا یک فایل انتخاب کنید!");
             return;
         }
         
         setLoading(true);
-        
         try {
             const formData = new FormData();
             formData.append('product_image', file);
             formData.append('image_text', fileText);
-            formData.append('product_id', productId)
-
+            formData.append('product_id', product_id)
             // ارسال به سرور
             const createdProductImage = await post("/product-images", formData);
             

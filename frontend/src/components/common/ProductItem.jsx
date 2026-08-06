@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Sylvanas from "../../assets/images/download.jpg";
 import { ShoppingCart } from "lucide-react";
 
 const ProductItem = ({ product }) => {
+    // console.log(product.Product_Images)
     return(
         <li>
             <figure className="h-full flex flex-col">
@@ -11,11 +11,17 @@ const ProductItem = ({ product }) => {
                     className="flex-1"
                 >
                     <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400 h-full">
-                        <img
-                            className="w-full inline-block h-full"
-                            src={product.Product_Images.length > 0 ? product.Product_Images.find(image =>   
-                            image.is_main)?.image_url : Sylvanas}
-                        />
+                        {product.Product_Images.length > 0 ? (
+                            <img
+                                className="w-full inline-block h-full"
+                                src={`http://localhost:9000/uploads/${product.Product_Images.find(image => {
+                                    console.log(image)
+                                    if (image.is_main) {
+                                        return true
+                                    }
+                                })?.image_url}`}
+                            />
+                        ) : null}
                     </div>
                 </Link>
                 <figcaption>

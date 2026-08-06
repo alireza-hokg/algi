@@ -35,6 +35,8 @@ export default class ProductImageService {
 
     async createImage(body, file) {
         try {
+            await this.productService.getProductById(body.product_id);
+
             const { value: productImageValue, error: productImageError } = 
             createValidationSchema.validate({
                 product_id: body.product_id,
@@ -44,11 +46,10 @@ export default class ProductImageService {
                 size: file.size,
                 mime_type: file.mimetype
             })
+            
             if (productImageError) {
                 throw new ValidationError(productImageError.message)
             }
-            
-            await this.productService.getProductById(body.product_id);
             return await this.productImageRepo.create(productImageValue);
         } catch(err) {
             if (err.name === "SequelizeUniqueConstraintError") {

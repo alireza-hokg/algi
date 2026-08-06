@@ -1,4 +1,6 @@
 
+import toast from "react-hot-toast";
+
 import { useEffect, useState } from "react";
 
 import { get, post } from "../services/api.js";
@@ -41,8 +43,13 @@ export const useProducts = () => {
         setProduct(updatedProduct);
 
         try {
-            const createdProduct = await post("/products", product);
-            console.log(createdProduct)
+            const { data } = await post("/products", product);
+            if (data.success) {
+                toast.success("محصول با موفقیت ساخته شد.", {
+                    duration: 2000,
+                    position: "top-center"
+                })
+            }
         }
         catch(err) {
             console.log(err.message)

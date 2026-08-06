@@ -11,7 +11,7 @@ import { upload_files } from "../middlewares/uploadFiles.js";
 const router = express.Router();
 
 const productImageRepo = new ProductImageRepo(db.Product_Image);
-const productRepo = new ProductRepository(db.Product_Image);
+const productRepo = new ProductRepository(db.Product);
 const productService = new ProductService(productRepo);
 const productImageService = new ProductImageService(productImageRepo, productService)
 const productImageController = new ProductImageController(productImageService);
