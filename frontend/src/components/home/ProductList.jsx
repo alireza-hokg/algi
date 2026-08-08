@@ -2,7 +2,7 @@ import ErrorDisplay from "../common/ErrorDisplay.jsx";
 import Loading from "../common/Loading.jsx";
 import ProductSectionTitle from "./ProductSectionTitle.jsx";
 import ProductGrid from "../ui/ProductGrid.jsx";
-import { useProducts } from "../../hooks/useProduct.js";
+import { useProducts } from "../../hooks/useProducts.js";
 
 const ProductList = () => {
     const { 

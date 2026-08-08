@@ -1,6 +1,7 @@
 export default class ProductImageRepo {
-    constructor(ProductImage) {
+    constructor(ProductImage, Product) {
         this.ProductImage = ProductImage;
+        this.Product = Product
     }
     async getAll() {
         return await this.ProductImage.findAll();
@@ -8,6 +9,15 @@ export default class ProductImageRepo {
 
     async get(id) {
         return await this.ProductImage.findByPk(id);
+    }
+
+    async getProductById(product_id) {
+        return await this.Product.findByPk(product_id, {
+            include: {
+                model: this.ProductImage,
+                required: false
+            }
+        })
     }
 
     async create(imageData) {

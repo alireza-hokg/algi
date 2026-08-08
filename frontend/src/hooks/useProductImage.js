@@ -1,4 +1,7 @@
+import { toast } from "react-hot-toast";
+
 import { useEffect, useState } from "react";
+
 import { post } from "../services/api.js";
 
 export const useProductImage = () => {
@@ -35,18 +38,27 @@ export const useProductImage = () => {
             formData.append('image_text', fileText);
             formData.append('product_id', product_id)
             // ارسال به سرور
-            const createdProductImage = await post("/product-images", formData);
+            const { data } = await post("/product-images", formData);
             
-            // ریست کردن فرم بعد از آپلود موفق
-            setFile(null);
-            setFileText("");
-            setPreview(null);
-            
-            return createdProductImage;
+            if (data.success) {
+                // ریست کردن فرم بعد از آپلود موفق
+                setFile(null);
+                setFileText("");
+                setPreview(null);
+                toast.success("عکس با موفقیت اپلود شد.", {
+                    duration: 2000,
+                    position: "top-center"
+                })
+                return data;
+
+            }
             
         } catch (err) {
             console.error("خطا در آپلود عکس:", err.message);
-            alert("خطا در آپلود عکس: " + err.message);
+            toast.error(`خطا در اپلود عکس ${err.message}`, {
+                position: "top-center",
+                duration: 2000
+            })
         } finally {
             setLoading(false);
         }

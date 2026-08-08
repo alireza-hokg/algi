@@ -25,6 +25,18 @@ export default class ProductImageController {
         }
     }
 
+    async getAllByProductId(req, res) {
+        const { productId } = req.params;
+        console.log('param', productId)
+        try {
+            const result = await this.productImageService.getAllByProductId(productId)
+            res.success(result)
+        }
+        catch(err) {
+            res.error(err.message)
+        }
+    }
+
     async createImage(req, res) {
         try {
             const result = await this.productImageService.createImage(req.body, req.file);

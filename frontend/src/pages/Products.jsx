@@ -1,6 +1,6 @@
 import CreateProduct from "../components/ui/CreateProduct";
 import ProductGrid from "../components/ui/ProductGrid";
-import { useProducts } from "../hooks/useProduct";
+import { useProducts } from "../hooks/useProducts.js";
 
 const Products = () => {
     const { products, isEmpty } = useProducts();

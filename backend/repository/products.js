@@ -20,8 +20,6 @@ export default class ProductRepository {
     }
 
     async getById(id) {
-        console.log('this.Product model:', this.Product.name)
-        console.log('this.Product table:', this.Product.tableName)
         try {
             const result = await this.Product.findByPk(id);
             return result

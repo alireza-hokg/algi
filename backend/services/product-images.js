@@ -33,6 +33,16 @@ export default class ProductImageService {
         }
     }
 
+    async getAllByProductId(product_id) {
+        try {
+            const productWithImage = await this.productImageRepo.getProductById(product_id)
+            return productWithImage
+        }
+        catch(err) {
+            throw new DatabaseError(err.message)
+        }
+    }
+
     async createImage(body, file) {
         try {
             await this.productService.getProductById(body.product_id);

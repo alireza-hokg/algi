@@ -139,20 +139,6 @@ export default class ProductService {
             throw new DatabaseError(err.message, 500)
         }
     }
-    
-    #normalizeProduct(product) {
-        return {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            sku: product.sku,
-            slug: product.slug
-        }
-    }
-
-    #normalizeProducts(products) {
-        return products.map(product=> this.#normalizeProduct(product))
-    }
 
     async getProductBySlug(slug) {
         try {

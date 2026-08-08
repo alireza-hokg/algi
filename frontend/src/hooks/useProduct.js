@@ -1,86 +1,51 @@
-
-import toast from "react-hot-toast";
-
 import { useEffect, useState } from "react";
+import { get } from "../services/api.js";
 
-import { get, post } from "../services/api.js";
-
-export const useProducts = () => {
+export const useProduct = (slug) => {
+    
+    // Product states
+    const [product, setProduct] = useState({});
+    const [variants, setVariants] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [products, setProducts] = useState([]);
-    const [product, setProduct] = useState({
-        name: "",
-        price: 0,
-        discount: 0,
-        discount_price: 0,
-        sku: "",
-        category_id: ""
-    })
 
-    const fetchData = async () => {
+    const fetchProduct = async () => {
+        setLoading(true);
+        setError(null);
         try {
-            setLoading(true);
-            setError(null);
-            const { data: productsData } = await get("/products");
-            setProducts(productsData);
-        } catch(err) {
-            setError(err.message)
+            // ویژگی های محصول مثل طول و سایز 
+            const { data: variantsData } = await get(`/products/${slug}/variants`);
+            const product_id = variantsData?.body[0]?.product_id;
+            // خود محصول مثلا قیمت
+            const { data: productData } = await get(`/products/${product_id}`);
+            const variants = variantsData.body || [];
+            const product = productData.body || [];
+            // const uniqueSizes = [...new Set(variants.map(product => product.size))];
+            // const uniqueWidth = [...new Set(variants.map(product => product.width))];
+            // const uniqueHeight = [...new Set(variants.map(product => product.height))];
+
+            setVariants(variants);
+            // setVariantSize(uniqueSizes);
+            // setVariantWidth(uniqueWidth);
+            // setVariantHeight(uniqueHeight);
+            setProduct(product);
+        } catch (err) {
+            console.log(err);
+            setError(err.message);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    const handleCreateProduct = async (product) => {
-        const {price} = product
-        const numericPrice = Number(String(price).replace(",", ""));
-
-        const updatedProduct = {
-            ...product,
-            price: numericPrice,
-        };
-
-        setProduct(updatedProduct);
-
-        try {
-            const { data } = await post("/products", product);
-            if (data.success) {
-                toast.success("محصول با موفقیت ساخته شد.", {
-                    duration: 2000,
-                    position: "top-center"
-                })
-            }
-        }
-        catch(err) {
-            console.log(err.message)
-        }
-    }
-
-    const onChangeProduct = e => {
-        const { value, name } = e.target;
-        
-        setProduct(prevProduct=> ({
-            ...prevProduct,
-            [name]: value
-        }))
-    }
-
-    // Fetch products
     useEffect(()=> {
-        fetchData();
-    }, [])
-
+        fetchProduct();
+    }, [slug])
+    
     return {
-        loading,
-        setLoading,
-        error,
-        setError,
-        products,
-        setProducts,
-        isEmpty: products?.body?.rows?.length,
-        handleCreateProduct,
-        onChangeProduct,
         product,
-        setProduct
-    }
+        variants,
+        loading,
+        error,
+        refetch: fetchProduct
+    };
 }

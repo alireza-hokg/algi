@@ -10,7 +10,7 @@ import { upload_files } from "../middlewares/uploadFiles.js";
 
 const router = express.Router();
 
-const productImageRepo = new ProductImageRepo(db.Product_Image);
+const productImageRepo = new ProductImageRepo(db.Product_Image, db.Product);
 const productRepo = new ProductRepository(db.Product);
 const productService = new ProductService(productRepo);
 const productImageService = new ProductImageService(productImageRepo, productService)
@@ -18,7 +18,8 @@ const productImageController = new ProductImageController(productImageService);
 
 
 router.get("/product-images", productImageController.getAllImages.bind(productImageController));
-router.get("/product-images/:id", productImageController.getImage.bind(productImageController))
+router.get("/product-images/:id", productImageController.getImage.bind(productImageController));
+router.get("/products/:productId/images", productImageController.getAllByProductId.bind(productImageController))
 router.post("/product-images", upload_files, productImageController.createImage.bind(productImageController))
 router.delete("/product-images/:id", productImageController.deleteImage.bind(productImageController))
 

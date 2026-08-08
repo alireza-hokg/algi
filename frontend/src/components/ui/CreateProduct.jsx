@@ -1,7 +1,7 @@
 import { NumericFormat } from "react-number-format";
 
 import { useCategory } from "../../hooks/useCategory.js";
-import { useProducts } from "../../hooks/useProduct.js";
+import { useProducts } from "../../hooks/useProducts.js";
 
 const CreateProduct = () => {
     const { 
