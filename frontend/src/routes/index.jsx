@@ -32,17 +32,13 @@ const AppRoutes = () => {
                     element={<Home />}
                 />
                 <Route
-                    path="/products/:slug/variants"
+                    path="/products/slug/:slug"
                     element={<Product />}
                 />
                 <Route
                     path="/products-list"
                     element={<Products />}
                 />
-                {/* <Route
-                    path="/carts"
-                    element={<Carts />}
-                /> */}
                 <Route
                     path="/orders"
                     element={<Orders />}

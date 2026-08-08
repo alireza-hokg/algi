@@ -7,14 +7,14 @@ const Specification = ({variants, activeTab}) => {
     ]
 
     const existingAttributes = attributes.filter(attr=> {
-        return variants.map(product=> product[attr.key])
+        return variants?.map(product=> product[attr.key])
     })
 
     if (existingAttributes.length === 0) return null;
     
     return (
         <div className={`mb-8 scale-y-0 ${activeTab ? "scale-y-100 duration-1000" : null}`}>
-            {variants.map((product) => (
+            {variants?.map((product) => (
                 <div
                     key={product.id}
                     className="max-w-lg mx-auto rounded-lg py-4 mb-10"

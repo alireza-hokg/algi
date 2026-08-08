@@ -34,7 +34,7 @@ const DetailsTab = ({variants}) => {
             <ul
                 className="flex flex-col lg:hidden mt-6"
             >
-                {tabs.map(tab=> (
+                {tabs?.map(tab=> (
                     <li
                         key={tab.id}
                     >
@@ -53,7 +53,7 @@ const DetailsTab = ({variants}) => {
                 className="hidden lg:block justify-center gap-x-4"
             >
                 <div className="flex justify-center gap-x-6">
-                    {tabs.map(tab=> (
+                    {tabs?.map(tab=> (
                         <li key={tab.id}>
                             <button
                                 onClick={()=> toggleTab(tab.id)}

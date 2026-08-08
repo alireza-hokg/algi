@@ -15,14 +15,9 @@ const Product = () => {
 
     const {
         product,
-        variants,
         loading,
         error
     } = useProduct(slug)
-    console.log(product)
-    // const [variantSize, setVariantSize] = useState([]);
-    // const [variantWidth, setVariantWidth] = useState([]);
-    // const [variantHeight, setVariantHeight] = useState([]);
 
     const { isActive, toggleActive } = useModal();
 
@@ -68,7 +63,7 @@ const Product = () => {
 
                 <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
                 border-b-gray-300">
-                    <ProductImages product_id={product?.id} />
+                    <ProductImages product_images={product?.Product_Images} />
                     
                     {/* Product Details Section */}
                     <div className="lg:w-1/2 text-center inset-ring inset-ring-gray-100 px-6 py-10
@@ -122,9 +117,7 @@ const Product = () => {
                     </div>
                 </div>
                 {/* Product Variants Details */}
-                <div className="">
-                    <DetailsTab variants={variants} />
-                </div>
+                <DetailsTab variants={product?.variants} />
             </div>
             {
                 isActive ? (
