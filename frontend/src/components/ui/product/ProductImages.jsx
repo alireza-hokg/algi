@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { get } from "../../services/api.js";
+import { get } from "../../../services/api.js";
 
 const ProductImages = ({ product_id }) => {
     // image state

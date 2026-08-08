@@ -4,18 +4,6 @@ export default class VariantController {
         this.variantService = variantService;
     }
 
-    // Get Product-variant by slug 
-    async getVariantsBySlug(req, res) {
-        const { slug } = req.params;
-        try {
-            const result = await this.variantService.getVariantsBySlug(slug);
-            const {count, rows: variants} = result;
-            return res.success(variants, "Products fetch Successfully", 200, count);
-        } catch(err) {
-            return res.error(err.message, err.statusCode || 500);
-        }
-    }
-
     // async getVariantById
 
     // Create product-variant

@@ -6,22 +6,7 @@ export default class VariantService {
         this.variantRepo = variantRepo;
         this.productService = productService;
     }
-    // fetch all the variants by product.slug
-    async getVariantsBySlug(slug) {
-        try {
-            const product = await this.productService.getProductBySlug(slug);
-            if (!product) {
-                throw new NotFoundError('No product found by slug', 404)
-            }
-            const result = await this.variantRepo.getVariantsByProductId(product.id);
-            return result;
-        } catch(err) {
-            if (err instanceof NotFoundError) {
-                return err
-            }
-            throw new DatabaseError(err.message);
-        }
-    }
+    
     // Check if product_id, size and color is not the same
     async isVariantDuplicate(variantData) {
         const existing = await this.variantRepo.findOneByProductIdAndSizeAndColor(variantData);

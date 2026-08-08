@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
-import DetailsTab from "../components/product/DetailsTab.jsx";
+import DetailsTab from "../components/ui/product/DetailsTab.jsx";
 import CreateProductImage from "../components/ui/CreateProductImage.jsx";
 import { useModal } from "../hooks/useModal.js";
 import Modal from "../components/common/Modal.jsx";
-import ProductQuantity from "../components/ui/ProductQuantity.jsx";
+import ProductQuantity from "../components/ui/product/ProductQuantity.jsx";
 import { useProduct } from "../hooks/useProduct.js";
-import ProductImages from "../components/ui/ProductImages.jsx";
+import ProductImages from "../components/ui/product/ProductImages.jsx";
 
 const Product = () => {
     const { slug } = useParams();
@@ -19,7 +19,7 @@ const Product = () => {
         loading,
         error
     } = useProduct(slug)
-    
+    console.log(product)
     // const [variantSize, setVariantSize] = useState([]);
     // const [variantWidth, setVariantWidth] = useState([]);
     // const [variantHeight, setVariantHeight] = useState([]);

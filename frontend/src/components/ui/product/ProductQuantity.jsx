@@ -1,4 +1,4 @@
-import { useQuantity } from "../../hooks/useQuantity.js";
+import { useQuantity } from "../../../hooks/useQuantity.js";
 
 const ProductQuantity = () => {
     const {
@@ -7,7 +7,7 @@ const ProductQuantity = () => {
         onChangeCount,
         increaseCount
     } = useQuantity()
-    console.log(count)
+    
     return (
         <div className="flex items-center gap-x-4">
             <div className="flex-0 flex text-2xl">

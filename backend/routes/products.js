@@ -5,14 +5,15 @@ import ProductService from "../services/products.js";
 import ProductController from "../controllers/products.js";
 import db from "../models/index.cjs";
 
-const productRepository = new ProductRepository(db.Product, db.Product_Image);
+const productRepository = new ProductRepository(db.Product, db.Product_Image, db.Variant);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
 const router = express.Router();
 
-router.get("/products", productController.getProducts.bind(productController));
+router.get("/products", productController.getAllProductsAndImages.bind(productController));
 router.get("/products/:id", productController.getProductById.bind(productController))
+router.get("/products/slug/:slug", productController.getProductAndDetailsBySlug.bind(productController))
 router.post("/products", productController.createProduct.bind(productController));
 router.put("/products/:id", productController.updateProduct.bind(productController));
 router.delete("/products/:id", productController.deleteProduct.bind(productController))

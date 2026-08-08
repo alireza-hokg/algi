@@ -5,10 +5,10 @@ export default class ProductController {
     constructor(productService) {
         this.productService = productService;
     }
-    // Get All the products
-    async getProducts(req, res) {
+
+    async getAllProductsAndImages(req, res) {
         try {
-            const result = await this.productService.getAllProducts();
+            const result = await this.productService.getAllProductsAndImages();
             return res.success(result, "Products fetched Successfully");
             
         } catch(err) {
@@ -16,7 +16,6 @@ export default class ProductController {
         }
     }
 
-    // Get Product by id
     async getProductById(req, res) {
         let { id } = req.params;
         try {
@@ -27,6 +26,17 @@ export default class ProductController {
             return res.success(result, "Product fetched successfully.", 200);
         } catch(err) {
             return res.error(err.message, err.statusCode || 500)
+        }
+    }
+    
+    async getProductAndDetailsBySlug(req, res) {
+        const { slug } = req.params;
+        try {
+            const result = await this.productService.getProductAndDetailsBySlug(slug);
+            res.success(result);
+        }
+        catch(err) {
+            res.error(err.message)
         }
     }
 

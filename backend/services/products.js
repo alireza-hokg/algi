@@ -17,9 +17,9 @@ export default class ProductService {
         this.productRepository = productRepository;
     }
 
-    async getAllProducts() {
+    async getAllProductsAndImages() {
         try {
-            const result = await this.productRepository.getAllProducts();
+            const result = await this.productRepository.getAllProductsAndImages();
             return result
         } catch(err) {
             if (err instanceof NotFoundError) {
@@ -48,6 +48,19 @@ export default class ProductService {
                 throw err
             }
             throw new DatabaseError(err.message, 500)
+        }
+    }
+
+    async getProductAndDetailsBySlug(slug) {
+        try {
+            const productAndDetails = await this.productRepository.getBySlug(slug);
+            if (!productAndDetails) {
+                throw new NotFoundError("محصول مورد نظر پیدا نشد.")
+            }
+            return productAndDetails;
+        }
+        catch(err) {
+            throw new DatabaseError(err)
         }
     }
 
@@ -143,7 +156,7 @@ export default class ProductService {
     async getProductBySlug(slug) {
         try {
             const product = await this.productRepository.getBySlug(slug);
-            
+            console.log(product)
             return product
         } catch(err) {
             if (err instanceof NotFoundError) {

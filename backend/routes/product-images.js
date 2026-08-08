@@ -19,7 +19,6 @@ const productImageController = new ProductImageController(productImageService);
 
 router.get("/product-images", productImageController.getAllImages.bind(productImageController));
 router.get("/product-images/:id", productImageController.getImage.bind(productImageController));
-router.get("/products/:productId/images", productImageController.getAllByProductId.bind(productImageController))
 router.post("/product-images", upload_files, productImageController.createImage.bind(productImageController))
 router.delete("/product-images/:id", productImageController.deleteImage.bind(productImageController))
 

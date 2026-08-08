@@ -1,15 +1,15 @@
 
 export default class ProductRepository {
-    constructor(Product, Product_Image) {
+    constructor(Product, Product_Image, Variant) {
         this.Product = Product;
-        this.Product_Image = Product_Image
+        this.Product_Image = Product_Image;
+        this.Variant = Variant;
     }
 
-    async getAllProducts() {
+    async getAllProductsAndImages() {
         const result = await this.Product.findAndCountAll({
             include: { 
                 model: this.Product_Image,
-                as: "Product_Images",
                 required: false
             }
         });
@@ -59,6 +59,16 @@ export default class ProductRepository {
             where: {
                 slug
             },
+            include: [
+                { 
+                    model: this.Product_Image,
+                    required: false
+                },
+                {
+                    model: this.Variant,
+                    required: false
+                }
+            ]
         })
         return product;
     }
