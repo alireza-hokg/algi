@@ -64,6 +64,27 @@ export default class ProductService {
         }
     }
 
+    async getProductAndDetailsById(id) {
+        const numericId = Number(id);
+        if (isNaN(numericId)) {
+            throw new ValidationError("id must be integer")
+        }
+        try {
+            const product = await this.productRepository.getProductAndDetailsById(numericId);
+            if (!product) {
+                throw new NotFoundError("Product not exist.")
+            }
+            return product;
+        }
+        catch(err) {
+            console.log(err.message);
+            if (err instanceof ValidationError) {
+                throw err
+            }
+            throw new DatabaseError(err)
+        }
+    }
+
     async createProduct(body) {
         const { value: productValue, error: productError } = createValidationSchema.validate({
             name: body.name,

@@ -1,11 +1,8 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Loading from "../components/common/Loading.jsx";
 import ErrorDisplay from "../components/common/ErrorDisplay.jsx";
 import DetailsTab from "../components/ui/product/DetailsTab.jsx";
-import CreateProductImage from "../components/ui/CreateProductImage.jsx";
-import { useModal } from "../hooks/useModal.js";
-import Modal from "../components/common/Modal.jsx";
 import ProductQuantity from "../components/ui/product/ProductQuantity.jsx";
 import { useProduct } from "../hooks/useProduct.js";
 import ProductImages from "../components/ui/product/ProductImages.jsx";
@@ -18,9 +15,7 @@ const Product = () => {
         loading,
         error
     } = useProduct(slug)
-
-    const { isActive, toggleActive } = useModal();
-
+    
     {/* ////////// LOADING //////////// */}
     if (loading) {
         return (
@@ -47,18 +42,18 @@ const Product = () => {
     
     {/* ////////// Product page //////////// */}
     return (
-        <div className="px-6 py-8">
+        <section className="px-6 py-8">
             <div className="bg-white">
                 <div
                     className="mb-8"
                 >
-                    <button
+                    <Link
                         className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
                         cursor-pointer"
-                        onClick={toggleActive}
+                        to={`/products/${product.id}/images`}
                     >
                         ساخت عکس برای محصول
-                    </button>
+                    </Link>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
@@ -119,18 +114,9 @@ const Product = () => {
                 {/* Product Variants Details */}
                 <DetailsTab variants={product?.variants} />
             </div>
-            {
-                isActive ? (
-                    <Modal
-                        isActive={isActive}
-                        toggleActive={toggleActive}
-                    >
-                        <CreateProductImage product={product} />
-                    </Modal>
-                ) : null
-            }
             
-        </div>
+            
+        </section>
     );
 };
 

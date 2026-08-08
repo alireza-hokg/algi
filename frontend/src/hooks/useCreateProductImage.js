@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { post } from "../services/api.js";
 
-export const useProductImage = () => {
+export const useCreateProductImage = () => {
     const [file, setFile] = useState(null);
     const [fileText, setFileText] = useState("");
     const [preview, setPreview] = useState(null);

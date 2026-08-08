@@ -10,6 +10,7 @@ import AdminOrders from "../pages/admin/Orders.jsx";
 import Transactions from "../pages/admin/Transactions.jsx";
 // import Carts from "../pages/carts/";
 import Products from "../pages/Products.jsx";
+import ProductImages from "../pages/ProductImages.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -38,6 +39,10 @@ const AppRoutes = () => {
                 <Route
                     path="/products-list"
                     element={<Products />}
+                />
+                <Route
+                    path="/products/:id/images"
+                    element={<ProductImages />}
                 />
                 <Route
                     path="/orders"

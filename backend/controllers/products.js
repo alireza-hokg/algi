@@ -16,13 +16,10 @@ export default class ProductController {
         }
     }
 
-    async getProductById(req, res) {
+    async getProductAndDetailsById(req, res) {
         let { id } = req.params;
         try {
-            const result = await this.productService.getProductById(id);
-            if (!result) {
-                return res.notFound("Product not found.")
-            }
+            const result = await this.productService.getProductAndDetailsById(id);
             return res.success(result, "Product fetched successfully.", 200);
         } catch(err) {
             return res.error(err.message, err.statusCode || 500)

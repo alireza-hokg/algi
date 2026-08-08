@@ -72,4 +72,16 @@ export default class ProductRepository {
         })
         return product;
     }
+
+    async getProductAndDetailsById(id) {
+        const result = await this.Product.findByPk(id, {
+            include: [
+                {
+                    model: this.Product_Image,
+                    required: false
+                }
+            ]
+        })
+        return result
+    }
 }

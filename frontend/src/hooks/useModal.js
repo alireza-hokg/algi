@@ -3,6 +3,7 @@ import { useState } from "react"
 
 export const useModal = () => {
     const [isActive, setIsActive] = useState(false);
+    const [modalType, setModalType] = useState(null);
 
     const toggleActive = () => {
         setIsActive(prev => !prev)
@@ -26,5 +27,7 @@ export const useModal = () => {
     return {
         isActive,
         toggleActive,
+        modalType,
+        setModalType
     }
 }

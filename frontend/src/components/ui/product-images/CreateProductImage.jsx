@@ -1,4 +1,4 @@
-import { useProductImage } from "../../hooks/useProductImage.js";
+import { useCreateProductImage } from "../../../hooks/useCreateProductImage.js";
 
 const CreateProductImage = ({ product }) => {
     
@@ -10,7 +10,7 @@ const CreateProductImage = ({ product }) => {
         loading,
         handleCreateProductImage,
         onChangeFile,
-    } = useProductImage();
+    } = useCreateProductImage();
 
     return (
         <div className="flex-1 mb-4 flex flex-col gap-y-2 h-full">

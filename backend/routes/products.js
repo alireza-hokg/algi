@@ -12,7 +12,8 @@ const productController = new ProductController(productService);
 const router = express.Router();
 
 router.get("/products", productController.getAllProductsAndImages.bind(productController));
-router.get("/products/:id", productController.getProductById.bind(productController))
+
+router.get("/products/:id", productController.getProductAndDetailsById.bind(productController))
 router.get("/products/slug/:slug", productController.getProductAndDetailsBySlug.bind(productController))
 router.post("/products", productController.createProduct.bind(productController));
 router.put("/products/:id", productController.updateProduct.bind(productController));

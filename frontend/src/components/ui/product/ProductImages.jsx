@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ProductImages = ({ product_images = [] }) => {
     const mainImage = product_images.find(image => image.is_main) || product_images[0]
@@ -8,7 +8,7 @@ const ProductImages = ({ product_images = [] }) => {
             : 0
     );
     const image = product_images[selectedImage] || mainImage;
-    
+
     return (
         <div className="lg:w-1/2 lg:relative">
             <div className="lg:sticky lg:top-8">

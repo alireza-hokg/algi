@@ -1,4 +1,4 @@
-import { X } from "lucide-react"
+import { X } from "lucide-react";
 
 const Modal = ({
     toggleActive,
@@ -6,24 +6,34 @@ const Modal = ({
 }) => {
     const handleClickOutside = e => {
         if (e.target === e.currentTarget) {
-            toggleActive()
+            toggleActive();
         }
-    }
+    };
+
     return (
         <div
-            className="z-10 fixed inset-0 flex justify-center items-center bg-black/30 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center
+            bg-black/40 backdrop-blur-sm p-4"
             onClick={handleClickOutside}
         >
-            <div className="bg-white flex flex-col relative max-w-sm min-h-80 rounded-md shadow-lg py-4 px-8
-            ">
+            <div
+                className="relative flex w-full max-w-md flex-col
+                rounded-xl bg-white p-6 shadow-2xl"
+            >
                 <X
-                    className="absolute top-0 left-0 "
-                    size={32}
+                    className="absolute right-4 top-4 cursor-pointer
+                    rounded-md text-gray-400 transition
+                    hover:bg-gray-100 hover:text-gray-700"
+                    size={30}
                     onClick={toggleActive}
                 />
-                {children}
+
+                <div className="pt-8">
+                    {children}
+                </div>
             </div>
         </div>
-    )
-}
-export default Modal
+    );
+};
+
+export default Modal;
