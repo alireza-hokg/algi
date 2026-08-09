@@ -14,6 +14,7 @@ export const useProductImages = (id) => {
             const { data: productData } = await get(`products/${id}`);
             if (productData.success) {
                 setProduct(productData.body);
+                console.log(productData)
             }
         }
         fetchData()

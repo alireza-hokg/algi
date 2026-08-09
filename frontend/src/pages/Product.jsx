@@ -6,6 +6,7 @@ import DetailsTab from "../components/ui/product/DetailsTab.jsx";
 import ProductQuantity from "../components/ui/product/ProductQuantity.jsx";
 import { useProduct } from "../hooks/useProduct.js";
 import ProductImages from "../components/ui/product/ProductImages.jsx";
+import Container from "../components/layout/Container.jsx";
 
 const Product = () => {
     const { slug } = useParams();
@@ -42,7 +43,7 @@ const Product = () => {
     
     {/* ////////// Product page //////////// */}
     return (
-        <section className="px-6 py-8">
+        <Container>
             <div className="bg-white">
                 <div
                     className="mb-8"
@@ -52,7 +53,7 @@ const Product = () => {
                         cursor-pointer"
                         to={`/products/${product.id}/images`}
                     >
-                        ساخت عکس برای محصول
+                        عکس های این محصول
                     </Link>
                 </div>
 
@@ -114,9 +115,7 @@ const Product = () => {
                 {/* Product Variants Details */}
                 <DetailsTab variants={product?.variants} />
             </div>
-            
-            
-        </section>
+        </Container>
     );
 };
 

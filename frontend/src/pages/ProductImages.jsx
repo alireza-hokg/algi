@@ -5,6 +5,7 @@ import CreateProductImage from "../components/ui/product-images/CreateProductIma
 import { useModal } from "../hooks/useModal.js";
 import { useProductImages } from "../hooks/useProductImages.js";
 import DeleteProductImage from "../components/ui/product-images/DeleteProductImage.jsx";
+import Container from "../components/layout/Container.jsx";
 
 const ProductImages = () => {
     const { id } = useParams();
@@ -19,9 +20,9 @@ const ProductImages = () => {
     const {
         product,
     } = useProductImages(id);
-
+    
     return (
-        <section>
+        <Container>
             <button
                 className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
                 cursor-pointer mb-8"
@@ -37,7 +38,10 @@ const ProductImages = () => {
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     product?.Product_Images?.map(image => (
-                        <li className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                        <li 
+                            className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+                            key={image.id}
+                        >
                             <div className="bg-gray-100 overflow-hidden">
                                 <img
                                     src={`http://localhost:9000/uploads/${image?.image_url}`}
@@ -79,7 +83,7 @@ const ProductImages = () => {
                     </Modal>
                 ) : null
             }
-        </section>
+        </Container>
     )
 }
 export default ProductImages;
