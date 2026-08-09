@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react"
-import { get } from "../services/api"
+import { get, del } from "../services/api.js"
 
 export const useProductImages = (id) => {
     const [product, setProduct] = useState({});
+
+    const handleDeleteImage = async (imageId) => {
+        const deletedImage = await del(`/product-images/${imageId}`)
+        console.log(deletedImage)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,6 +20,7 @@ export const useProductImages = (id) => {
     }, [])
     return {
         product,
-        setProduct
+        setProduct,
+        handleDeleteImage
     }
 }

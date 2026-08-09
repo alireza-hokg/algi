@@ -3,16 +3,17 @@ import { ShoppingCart } from "lucide-react";
 
 const ProductItem = ({ product }) => {
     return(
-        <li>
-            <figure className="h-full flex flex-col">
-                <Link 
+        <li className="pb-4 rounded-md shadow-sm overflow-hidden">
+            <figure className="h-full flex flex-col gap-y-12">
+                <Link
                     to={`/products/slug/${product.slug}`}
                     className="flex-1"
                 >
-                    <div className="mb-2 rounded-md overflow-hidden shadow-lg shadow-gray-400 h-full">
+                    <div className="overflow-hidden h-70">
                         {product.Product_Images.length > 0 ? (
                             <img
-                                className="w-full inline-block h-full"
+                                className="w-full inline-block h-full hover:scale-110 transition duration-300
+                                object-cover"
                                 src={`http://localhost:9000/uploads/${product.Product_Images.find(image => {
                                     if (image.is_main) {
                                         return true

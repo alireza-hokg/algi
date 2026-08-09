@@ -3,6 +3,7 @@ import Loading from "../common/Loading.jsx";
 import ProductSectionTitle from "./ProductSectionTitle.jsx";
 import ProductGrid from "../ui/ProductGrid.jsx";
 import { useProducts } from "../../hooks/useProducts.js";
+import Container from "../layout/Container.jsx";
 
 const ProductList = () => {
     const { 
@@ -31,18 +32,18 @@ const ProductList = () => {
         )
     }
     return (
-        <div className="my-10">
-            {/* Title for products */}
+        <>
             <ProductSectionTitle />
-            {/* Products list */}
-            {
-                isEmpty === 0 ? (
-                    <div>محصولی وجود ندارد</div>
-                ) : (
-                    <ProductGrid products={products?.body}/>
-                )
-            }
-        </div>
+            <Container>
+                {
+                    isEmpty === 0 ? (
+                        <div>محصولی وجود ندارد</div>
+                    ) : (
+                        <ProductGrid products={products?.body}/>
+                    )
+                }
+            </Container>
+        </>
     )
 }
 export default ProductList;

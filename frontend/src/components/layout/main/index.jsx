@@ -7,7 +7,7 @@ import Footer from "../Footer.jsx";
 
 import "./style.css"
 
-const CustomerLayout = () => {
+const MainLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
@@ -46,11 +46,11 @@ const CustomerLayout = () => {
             <Header
                 toggleSidebar={toggleSidebar}
             />
-            <main className="flex-1 flex flex-col px-6 py-10">
+            <main>
                 <Outlet />
             </main>
             <Footer />
         </div>
     )
 }
-export default CustomerLayout;
+export default MainLayout;

@@ -5,7 +5,9 @@ const Home = () => {
     return (
         <>
             <HeroSection />
-            <ProductList />
+            <div className="py-10">
+                <ProductList />
+            </div>
         </>
     )
 }

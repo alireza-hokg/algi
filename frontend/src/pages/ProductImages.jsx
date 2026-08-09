@@ -74,7 +74,7 @@ const ProductImages = () => {
                         )}
 
                         {modalType === "delete" && (
-                            <DeleteProductImage />
+                            <DeleteProductImage product={product} />
                         )}
                     </Modal>
                 ) : null
