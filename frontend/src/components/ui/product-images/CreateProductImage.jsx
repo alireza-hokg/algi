@@ -1,6 +1,6 @@
 import { useCreateProductImage } from "../../../hooks/useCreateProductImage.js";
 
-const CreateProductImage = ({ product }) => {
+const CreateProductImage = ({ product, toggleActive }) => {
     
     const {
         file,
@@ -60,7 +60,12 @@ const CreateProductImage = ({ product }) => {
             </div>
             
             <button
-                onClick={()=> handleCreateProductImage(product?.id)}
+                onClick={()=> {
+                    const isCreated = handleCreateProductImage(product?.id)
+                    if (isCreated) {
+                        toggleActive()
+                    }
+                }}
                 disabled={loading || !file}
                 className={`py-2 px-4 bg-linear-to-r from-cyan-500 to-blue-500 rounded-md text-white 
                     cursor-pointer ${(loading || !file) && 'opacity-50 cursor-not-allowed'}`}

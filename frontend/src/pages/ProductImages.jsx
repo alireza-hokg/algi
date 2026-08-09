@@ -6,9 +6,11 @@ import { useModal } from "../hooks/useModal.js";
 import { useProductImages } from "../hooks/useProductImages.js";
 import DeleteProductImage from "../components/ui/product-images/DeleteProductImage.jsx";
 import Container from "../components/layout/Container.jsx";
+import { useState } from "react";
 
 const ProductImages = () => {
     const { id } = useParams();
+    const [imageId, setImageId] = useState(null)
 
     const {
         isActive,
@@ -28,8 +30,8 @@ const ProductImages = () => {
                 cursor-pointer mb-8"
                 to={`/products/${product.id}/images`}
                 onClick={()=> {
-                    toggleActive();
                     setModalType("create")
+                    toggleActive();
                 }}
             >
                 ساخت عکس برای محصول
@@ -56,8 +58,9 @@ const ProductImages = () => {
                                     px-4 py-2 text-sm font-medium text-white cursor-pointer
                                     transition hover:from-red-500 hover:to-red-600"
                                     onClick={()=> {
-                                        toggleActive();
                                         setModalType("delete")
+                                        toggleActive();
+                                        setImageId(image?.id)
                                     }}
                                 >
                                     حذف عکس
@@ -74,11 +77,11 @@ const ProductImages = () => {
                         toggleActive={toggleActive}
                     >
                         {modalType === "create" && (
-                            <CreateProductImage product={product} />
+                            <CreateProductImage product={product} toggleActive={toggleActive} />
                         )}
 
                         {modalType === "delete" && (
-                            <DeleteProductImage product={product} />
+                            <DeleteProductImage imageId={imageId} toggleActive={toggleActive} />
                         )}
                     </Modal>
                 ) : null

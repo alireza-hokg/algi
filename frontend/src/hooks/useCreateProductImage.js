@@ -49,8 +49,7 @@ export const useCreateProductImage = () => {
                     duration: 2000,
                     position: "top-center"
                 })
-                return data;
-
+                return data.success;
             }
             
         } catch (err) {

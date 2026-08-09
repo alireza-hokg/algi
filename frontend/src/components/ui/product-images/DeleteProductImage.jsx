@@ -1,15 +1,17 @@
-import { useModal } from "../../../hooks/useModal.js";
-import { useProductImages } from "../../../hooks/useProductImages.js";
+import { del } from "../../../services/api.js";
+import { toast } from "react-hot-toast";
 
-const DeleteProductImage = ({ product }) => {
+const DeleteProductImage = ({ imageId, toggleActive }) => {
 
-    const {
-        handleDeleteImage
-    } = useProductImages()
 
-    const {
-        toggleActive
-    } = useModal();
+    const handleDeleteImage = async (imageId) => {
+        const { data } = await del(`/product-images/${imageId}`)
+        if (data.body) {
+            toast.success("عکس با موفقیت حذف شد.")
+            toggleActive()
+        }
+    }
+
     return (
         <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
 
@@ -39,7 +41,7 @@ const DeleteProductImage = ({ product }) => {
                     className="rounded-md bg-linear-to-r from-red-400 to-red-500
                     px-5 py-2 text-sm font-medium text-white cursor-pointer
                     transition hover:from-red-500 hover:to-red-600"
-                    onClick={()=> handleDeleteImage(product?.id)}
+                    onClick={()=> handleDeleteImage(imageId)}
                 >
                     بله، حذف کن
                 </button>

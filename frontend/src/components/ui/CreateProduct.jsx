@@ -15,7 +15,7 @@ const CreateProduct = () => {
     } = useProducts();
 
     return(
-        <div className="py-8 px-4 flex gap-x-12 gap-y-6 flex-wrap">
+        <div className="flex gap-x-12 gap-y-6 flex-wrap">
             <div className="flex gap-x-0.5 items-center">
                 <label>نام محصول</label>
                 <input

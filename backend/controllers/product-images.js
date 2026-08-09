@@ -50,7 +50,6 @@ export default class ProductImageController {
         const {id} = req.params;
         try {
             const result = await this.productImageService.deleteImage(id);
-            console.log(result)
             res.deleted(result, "عکس با موفقیت حذف شد.");
         } catch(err) {
             res.error(err.message)

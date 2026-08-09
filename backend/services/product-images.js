@@ -2,6 +2,10 @@
 import { ConflictError, DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
 import { createValidationSchema } from "../schemas/product-image.js"
 
+import path from "path";
+import process from "process";
+import fs from "fs"
+
 export default class ProductImageService {
     constructor(productImageRepo, productService) {
         this.productImageRepo = productImageRepo
@@ -75,11 +79,18 @@ export default class ProductImageService {
     async deleteImage(imageId) {
         const NumericImageId = Number(imageId)
 
-        await this.getImage(NumericImageId);
-
+        const image = await this.getImage(NumericImageId);
         try {
-            const image = await this.productImageRepo.remove(NumericImageId);
-            return image;
+            const deletedImage = await this.productImageRepo.remove(NumericImageId);
+            const filePath = path.join(
+                process.cwd(),
+                "uploads",
+                image.image_url
+            )
+            if (deletedImage) {
+                await fs.promises.unlink(filePath);
+                return deletedImage;
+            }
         } catch(err) {
             console.log(err)
             throw new DatabaseError(err.message)

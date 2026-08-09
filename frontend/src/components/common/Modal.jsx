@@ -4,6 +4,7 @@ const Modal = ({
     toggleActive,
     children
 }) => {
+    
     const handleClickOutside = e => {
         if (e.target === e.currentTarget) {
             toggleActive();

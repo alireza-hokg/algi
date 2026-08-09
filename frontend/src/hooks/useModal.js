@@ -26,6 +26,7 @@ export const useModal = () => {
 
     return {
         isActive,
+        setIsActive,
         toggleActive,
         modalType,
         setModalType
