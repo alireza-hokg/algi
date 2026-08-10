@@ -1,7 +1,7 @@
 import { useCreateProductImage } from "../../../hooks/useCreateProductImage.js";
 
-const CreateProductImage = ({ product, toggleActive }) => {
-    
+const CreateProductImage = ({ product, toggleActive, setProduct }) => {
+
     const {
         file,
         fileText,
@@ -60,9 +60,17 @@ const CreateProductImage = ({ product, toggleActive }) => {
             </div>
             
             <button
-                onClick={()=> {
-                    const isCreated = handleCreateProductImage(product?.id)
-                    if (isCreated) {
+                onClick={async ()=> {
+                    const createdImage = await handleCreateProductImage(product?.id)
+                    console.log(createdImage)
+                    if (createdImage.success) {
+                        setProduct(prev => ({ 
+                            ...prev,
+                            Product_Images: [
+                                ...prev.Product_Images,
+                                createdImage.body
+                            ]
+                        }))
                         toggleActive()
                     }
                 }}

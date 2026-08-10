@@ -21,6 +21,7 @@ const ProductImages = () => {
     
     const {
         product,
+        setProduct
     } = useProductImages(id);
     
     return (
@@ -77,7 +78,11 @@ const ProductImages = () => {
                         toggleActive={toggleActive}
                     >
                         {modalType === "create" && (
-                            <CreateProductImage product={product} toggleActive={toggleActive} />
+                            <CreateProductImage 
+                                product={product} 
+                                toggleActive={toggleActive} 
+                                setProduct={setProduct}
+                            />
                         )}
 
                         {modalType === "delete" && (

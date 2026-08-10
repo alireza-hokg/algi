@@ -39,7 +39,7 @@ export const useCreateProductImage = () => {
             formData.append('product_id', product_id)
             // ارسال به سرور
             const { data } = await post("/product-images", formData);
-            
+            console.log(data)
             if (data.success) {
                 // ریست کردن فرم بعد از آپلود موفق
                 setFile(null);
@@ -49,7 +49,7 @@ export const useCreateProductImage = () => {
                     duration: 2000,
                     position: "top-center"
                 })
-                return data.success;
+                return data;
             }
             
         } catch (err) {

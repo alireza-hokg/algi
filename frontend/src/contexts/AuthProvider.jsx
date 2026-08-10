@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(user)
+    
     const logout = async () => {
         setLoading(true);
         try {
