@@ -16,7 +16,11 @@ const Product = () => {
         loading,
         error
     } = useProduct(slug)
-    
+
+    // Get variants that has size
+    const variants = product?.Variants?.filter(variant => variant.size) ?? [];
+    const sizes = variants?.map(variant => variant.size) ?? [];
+
     {/* ////////// LOADING //////////// */}
     if (loading) {
         return (
@@ -95,7 +99,7 @@ const Product = () => {
                             <div className="bg-gray-50 rounded-xl p-4">
                                 <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایزهای موجود:</h3>
                                 <div className="flex justify-center flex-wrap gap-2">
-                                    {/* {variantSize.map((size, index) => (
+                                    {sizes?.map((size, index) => (
                                         <span 
                                             key={index}
                                             className="px-3 py-1.5 bg-white border border-gray-300 
@@ -103,7 +107,7 @@ const Product = () => {
                                         >
                                             {size}
                                         </span>
-                                    ))} */}
+                                    ))}
                                 </div>
                             </div>
 
@@ -113,7 +117,7 @@ const Product = () => {
                     </div>
                 </div>
                 {/* Product Variants Details */}
-                <DetailsTab variants={product?.variants} />
+                <DetailsTab variants={variants} />
             </div>
         </Container>
     );

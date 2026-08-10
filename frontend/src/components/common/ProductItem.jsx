@@ -13,30 +13,32 @@ const ProductItem = ({ product }) => {
     return(
         <li className="pb-4 rounded-md shadow-sm overflow-hidden">
             <figure className="h-full flex flex-col gap-y-12">
-                <Link
-                    to={`/products/slug/${product.slug}`}
-                    className="flex-1"
-                >
-                    <div className="overflow-hidden h-70">
-                        {product.Product_Images.length > 0 ? (
+            
+                {/* IMAGE */}
+                <div className="overflow-hidden h-70">
+                    {product.Product_Images.length > 0 ? (
+                        <Link
+                            to={`/products/slug/${product.slug}`}
+                            className="flex-1"
+                        >
                             <img
                                 className="w-full inline-block h-full hover:scale-110 transition duration-300
                                 object-cover"
                                 src={`http://localhost:9000/uploads/${image?.image_url}`}
                             />
-                        ) : (
-                            <div className="flex justify-center items-center h-full">
-                                <Link
-                                    className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded-md
-                                    text-white"
-                                    to={`/products/${product?.id}/images`}
-                                >
-                                    ساخت عکس
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-                </Link>
+                        </Link>
+                    ) : (
+                        <div className="flex justify-center items-center h-full">
+                            <Link
+                                className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded-md
+                                text-white"
+                                to={`/products/${product?.id}/images`}
+                            >
+                                ساخت عکس
+                            </Link>
+                        </div>
+                    )}
+                </div>
                 <figcaption>
                     <div className="space-y-4">
                         <div className="flex flex-col mx-4 space-y-1 items-center">
