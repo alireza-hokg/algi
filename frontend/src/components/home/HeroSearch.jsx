@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import Sylvanas from "../../assets/images/download.jpg"
+import Sylvanas from "../../assets/images/big.jpg"
 
 const HeroSearch = () => {
     return(

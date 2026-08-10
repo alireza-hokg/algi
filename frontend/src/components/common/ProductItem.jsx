@@ -2,6 +2,14 @@ import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 
 const ProductItem = ({ product }) => {
+    const imageIdx = product?.Product_Images.findIndex(image => {
+        return image.is_main
+    })
+
+    const image = imageIdx > 0 ? 
+        product?.Product_Images.find(image => image.is_main) :
+        product?.Product_Images[0]
+
     return(
         <li className="pb-4 rounded-md shadow-sm overflow-hidden">
             <figure className="h-full flex flex-col gap-y-12">
@@ -14,13 +22,19 @@ const ProductItem = ({ product }) => {
                             <img
                                 className="w-full inline-block h-full hover:scale-110 transition duration-300
                                 object-cover"
-                                src={`http://localhost:9000/uploads/${product.Product_Images.find(image => {
-                                    if (image.is_main) {
-                                        return true
-                                    }
-                                })?.image_url}`}
+                                src={`http://localhost:9000/uploads/${image?.image_url}`}
                             />
-                        ) : null}
+                        ) : (
+                            <div className="flex justify-center items-center h-full">
+                                <Link
+                                    className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded-md
+                                    text-white"
+                                    to={`/products/${product?.id}/images`}
+                                >
+                                    ساخت عکس
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </Link>
                 <figcaption>
