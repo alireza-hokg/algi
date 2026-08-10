@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth.js"
 
 const ProductItem = ({ product }) => {
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })
 
+    const { user } = useAuth();
+
     const image = imageIdx > 0 ? 
         product?.Product_Images.find(image => image.is_main) :
-        product?.Product_Images[0]
+        product?.Product_Images[0];
 
     return(
         <li className="pb-4 rounded-md shadow-sm overflow-hidden">
@@ -29,13 +32,15 @@ const ProductItem = ({ product }) => {
                         </Link>
                     ) : (
                         <div className="flex justify-center items-center h-full">
-                            <Link
-                                className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded-md
-                                text-white"
-                                to={`/products/${product?.id}/images`}
-                            >
-                                ساخت عکس
-                            </Link>
+                            {user?.role === "admin" && (
+                                <Link
+                                    className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded-md
+                                    text-white"
+                                    to={`/products/${product?.id}/images`}
+                                >
+                                    ساخت عکس
+                                </Link>
+                            )}
                         </div>
                     )}
                 </div>

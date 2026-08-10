@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-
+    console.log(user)
     const logout = async () => {
         setLoading(true);
         try {
@@ -21,8 +21,8 @@ const AuthProvider = ({ children }) => {
             setError(err.message);
             console.log('logout error', err.message)
         } finally {
-            setIsLogin(false);
             setUser(null);
+            setIsLogin(false);
             setLoading(false);
             navigate("/auth", { replace: true });
         }

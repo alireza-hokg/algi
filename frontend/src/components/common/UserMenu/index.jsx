@@ -1,5 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
-import { post } from "../../../services/api";
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 import "./style.css";
@@ -8,19 +7,7 @@ import { useAuth } from "../../../hooks/useAuth";
 
 const UserMenu = ({ buttonRef, isUserDropdown, setIsUserDropdown }) => {
   const dropDownRef = useRef(null);
-  const naviagte = useNavigate();
-  const { user } = useAuth();
-
-  const handleLogout = async () => {
-    try {
-      const response = await post("/auth/logout");
-      if (response.data.success) {
-        naviagte("/auth");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { user, logout } = useAuth();
 
   const toggleDropDown = () => {
     setIsUserDropdown((prev) => !prev);
@@ -82,7 +69,7 @@ const UserMenu = ({ buttonRef, isUserDropdown, setIsUserDropdown }) => {
             className="w-full text-center p-2 rounded-b-sm bg-red-400 hover:bg-red-500 
             cursor-pointer transition-colors duration-300 ease-in-out"
             onClick={() => {
-              handleLogout();
+              logout();
             }}
           >
             خروج

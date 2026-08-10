@@ -1,5 +1,3 @@
-import { DatabaseError } from "../utils/Error.js";
-
 export default class ProductImageController {
     constructor(productImageService) {
         this.productImageService = productImageService
