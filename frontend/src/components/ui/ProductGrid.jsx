@@ -1,4 +1,4 @@
-import ProductItem from "../common/ProductItem.jsx"
+import ProductItem from "../common/ProductItem/ProductItem.jsx"
 
 const ProductGrid = ({ products, emptyMessage = "محصولی وجود ندارد"}) => {
     if (!products || products?.rows?.length === 0) {

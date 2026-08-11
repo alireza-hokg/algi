@@ -13,7 +13,6 @@ export const useProductImages = (id) => {
         }
         fetchData()
     }, [])
-    console.log('use', product)
     return {
         product,
         setProduct,

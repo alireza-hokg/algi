@@ -7,9 +7,12 @@ import ProductQuantity from "../components/ui/product/ProductQuantity.jsx";
 import { useProduct } from "../hooks/useProduct.js";
 import ProductImages from "../components/ui/product/ProductImages.jsx";
 import Container from "../components/layout/Container.jsx";
+import { useAuth } from "../hooks/useAuth.js";
 
 const Product = () => {
     const { slug } = useParams();
+
+    const { user } = useAuth()
 
     const {
         product,
@@ -49,17 +52,19 @@ const Product = () => {
     return (
         <Container>
             <div className="bg-white">
-                <div
-                    className="mb-8"
-                >
-                    <Link
-                        className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
-                        cursor-pointer"
-                        to={`/products/${product.id}/images`}
+                {user?.role === "admin" && (
+                    <div
+                        className="mb-8"
                     >
-                        عکس های این محصول
-                    </Link>
-                </div>
+                        <Link
+                            className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
+                            cursor-pointer"
+                            to={`/products/${product.id}/images`}
+                        >
+                            عکس های این محصول
+                        </Link>
+                    </div>
+                )}
 
                 <div className="flex flex-col lg:flex-row gap-8 pb-10 border-b 
                 border-b-gray-300">

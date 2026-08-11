@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth.js"
+import { Heart, Search, ShoppingCart, TrendingUpDown } from "lucide-react";
+import { useAuth } from "../../../hooks/useAuth.js"
+import "./style.css"
 
 const ProductItem = ({ product }) => {
     const imageIdx = product?.Product_Images.findIndex(image => {
@@ -14,19 +15,51 @@ const ProductItem = ({ product }) => {
         product?.Product_Images[0];
 
     return(
-        <li className="pb-4 rounded-md shadow-sm overflow-hidden">
-            <figure className="h-full flex flex-col gap-y-12">
+        <li className="pb-10 rounded-md shadow-sm overflow-hidden">
+            <figure className="h-full flex flex-col gap-y-12 group/card">
             
                 {/* IMAGE */}
-                <div className="overflow-hidden h-70">
+                <div className="relative overflow-hidden h-70">
+                    <ul className="absolute top-1 left-1 flex flex-col bg-white/80 text-gray-800 gap-y-2
+                    group-hover/card:flex rounded-sm py-1 opacity-0 group-hover/card:opacity-100">
+                        <li className="relative group/action">
+                            <button className="cursor-pointer px-3 py-1.5 hover:text-gray-500 border-b">
+                                <TrendingUpDown />
+                            </button>
+                            <span className="absolute top-0 bottom-0 left-full translate-x-4 badge bg-black
+                            px-3 h-8 text-sm text-white flex items-center opacity-0 group-hover/action:opacity-100
+                            pointer-events-none whitespace-nowrap">
+                                مقایسه
+                            </span>
+                        </li>
+                        <li className="relative group/action">
+                            <button className="cursor-pointer px-3 py-1.5 hover:text-gray-500 border-b">
+                                <Heart />
+                            </button>
+                            <span className="absolute top-0 bottom-0 left-full translate-x-4 badge bg-black
+                            px-3 h-8 text-sm text-white flex items-center opacity-0 group-hover/action:opacity-100
+                            pointer-events-none whitespace-nowrap">
+                                علاقه مندی ها
+                            </span>
+                        </li>
+                        <li className="relative group/action">
+                            <button className="cursor-pointer px-3 py-1.5 hover:text-gray-500">
+                                <Search />
+                            </button>
+                            <span className="absolute top-0 bottom-0 left-full translate-x-4 badge bg-black
+                            px-3 h-8 text-sm text-white flex items-center opacity-0 group-hover/action:opacity-100
+                            pointer-events-none whitespace-nowrap">
+                                جستجوی سریع
+                            </span>
+                        </li>
+                    </ul>
                     {product.Product_Images.length > 0 ? (
                         <Link
                             to={`/products/slug/${product.slug}`}
                             className="flex-1"
                         >
                             <img
-                                className="w-full inline-block h-full hover:scale-110 transition duration-300
-                                object-cover"
+                                className="w-full inline-block h-full object-cover"
                                 src={`http://localhost:9000/uploads/${image?.image_url}`}
                             />
                         </Link>
