@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { Heart, Search, ShoppingCart, TrendingUpDown } from "lucide-react";
+import { Check, Heart, Search, ShoppingCart, TrendingUpDown } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth.js"
 import "./style.css"
+import { useCompare } from "../../../hooks/useCompare.js";
+import Spinner from "../Spinner.jsx";
 
 const ProductItem = ({ product }) => {
     const imageIdx = product?.Product_Images.findIndex(image => {
@@ -9,6 +11,7 @@ const ProductItem = ({ product }) => {
     })
 
     const { user } = useAuth();
+    const { handleAddCompare, loading, isCompared } = useCompare()
 
     const image = imageIdx > 0 ? 
         product?.Product_Images.find(image => image.is_main) :
@@ -21,11 +24,24 @@ const ProductItem = ({ product }) => {
                 {/* IMAGE */}
                 <div className="relative overflow-hidden h-70">
                     <ul className="absolute top-1 left-1 flex flex-col bg-white/80 text-gray-800 gap-y-2
-                    group-hover/card:flex rounded-sm py-1 opacity-0 group-hover/card:opacity-100">
+                    group-hover/card:flex rounded-sm py-1 opacity-0 group-hover/card:opacity-100 duration-300">
                         <li className="relative group/action">
-                            <button className="cursor-pointer px-3 py-1.5 hover:text-gray-500 border-b">
-                                <TrendingUpDown />
-                            </button>
+                            <div
+                                className="cursor-pointer px-3 py-1.5 hover:text-gray-500 border-b"
+                            >
+                                {loading ? <Spinner /> : 
+                                isCompared(product?.id) ? (
+                                    <Link to={"/compare"}>
+                                        <Check />
+                                    </Link>
+                                ) : (
+                                    <button
+                                        onClick={() => handleAddCompare(product)}
+                                    >
+                                        <TrendingUpDown />
+                                    </button>
+                                )}
+                            </div>
                             <span className="absolute top-0 bottom-0 left-full translate-x-4 badge bg-black
                             px-3 h-8 text-sm text-white flex items-center opacity-0 group-hover/action:opacity-100
                             pointer-events-none whitespace-nowrap">

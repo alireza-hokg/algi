@@ -1,4 +1,4 @@
-import { LogIn, Menu, Search, ShoppingBag } from "lucide-react";
+import { LogIn, Menu, Search, ShoppingBag, TrendingUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../../hooks/useAuth.js";
@@ -6,12 +6,17 @@ import { useRef, useState } from "react";
 import UserMenu from "../../common/UserMenu/index.jsx";
 
 import "./style.css"
+import { useCompare } from "../../../hooks/useCompare.js";
 // import { useCart } from "../../../hooks/useCart.js";
 
 const Header = ({
     toggleSidebar={toggleSidebar}
 }) => {
     const { user } = useAuth();
+
+    const { 
+        compareList
+    } = useCompare()
 
     const [isUserDropdown, setIsUserDropdown] = useState(false);
     const buttonRef = useRef(null);
@@ -57,12 +62,32 @@ const Header = ({
                     )}
                 </div>
                 {/* Search and basket icon for width < md */}
-                <div className="flex space-x-4">
+                <div className="flex space-x-6 items-center">
                     <div>
-                        <Search color="#666"/>
+                        <Search
+                            size={22}
+                            color="#666"/>
                     </div>
+                    <Link
+                        title="مقایسه محصولات"
+                        to={"/compare"}
+                        className="relative">
+                        <div
+                            className="flex justify-center items-center absolute bottom-8/12 right-8/12
+                            bg-amber-500 rounded-full py-0.5 px-1.5 text-white"
+                        >
+                            <span className="text-[10px] font-bold">
+                                {compareList?.length}
+                            </span>
+                        </div>
+                        <TrendingUpDown 
+                            size={22}
+                            className="hover:text-gray-300 duration-150"
+                        />
+                    </Link>
                     {user ? (
                         <Link
+                            title="سبد خرید فروشگاه"
                             to={`/carts`}
                             className="flex gap-x-2 text-[#666] hover:text-white cursor-pointer duration-150
                             ease-in-out"
@@ -78,7 +103,9 @@ const Header = ({
                                             </span>
                                     </div>
                                 )} */}
-                                <ShoppingBag />
+                                <ShoppingBag 
+                                    size={22}
+                                />
                             </div>
                             
                             <span className="hidden lg:inline-block text-[13px]">

@@ -8,10 +8,16 @@ export default class ProductRepository {
 
     async getAllProductsAndImages() {
         const result = await this.Product.findAndCountAll({
-            include: { 
-                model: this.Product_Image,
-                required: false
-            }
+            include: [
+                {
+                    model: this.Product_Image,
+                    required: false
+                },
+                { 
+                    model: this.Variant,
+                    required: false
+                }
+            ]
         });
         return {
             rows: result.rows,

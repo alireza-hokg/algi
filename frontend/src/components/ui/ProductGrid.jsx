@@ -4,6 +4,7 @@ const ProductGrid = ({ products, emptyMessage = "محصولی وجود ندار�
     if (!products || products?.rows?.length === 0) {
         return <div className="text-center py-10 text-gray-500">{emptyMessage}</div>;
     }
+
     return (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-12
             gap-x-6"

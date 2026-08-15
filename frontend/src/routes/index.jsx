@@ -12,6 +12,7 @@ import Transactions from "../pages/admin/Transactions.jsx";
 import Products from "../pages/Products.jsx";
 import ProductImages from "../pages/ProductImages.jsx";
 import AllProductsImages from "../pages/AllProductsImages.jsx";
+import Compare from "../pages/Compare.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -48,6 +49,10 @@ const AppRoutes = () => {
                 <Route
                     path="/orders"
                     element={<Orders />}
+                />
+                <Route
+                    path="/compare"
+                    element={<Compare />}
                 />
             </Route>
             {/* ADMIN */}
