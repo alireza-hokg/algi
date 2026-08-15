@@ -6,7 +6,7 @@ export default class VariantRepo {
         this.Product = Product;
     }
 
-    async findOneByProductIdAndSizeAndColor(uniqueValue) {
+    async findByProductIdAndSize(uniqueValue) {
         return await this.Variant.findOne({
             where: uniqueValue
         })

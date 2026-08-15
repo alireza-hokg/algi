@@ -8,19 +8,8 @@ export default class VariantController {
 
     // Create product-variant
     async createVariant(req, res) {
-        const { product_id, size, color, quantity, width, height, waist } = req.body;
-        
-        const formattedData = {
-            product_id,
-            size,
-            color,
-            quantity,
-            width,
-            height,
-            waist
-        }
         try {
-            const result = await this.variantService.createVariant(formattedData);
+            const result = await this.variantService.createVariant(req.body);
 
             return res.created(result)
         } catch(err) {

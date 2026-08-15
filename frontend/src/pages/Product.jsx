@@ -54,7 +54,7 @@ const Product = () => {
             <div className="bg-white">
                 {user?.role === "admin" && (
                     <div
-                        className="mb-8"
+                        className="mb-8 flex gap-x-4"
                     >
                         <Link
                             className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
@@ -62,6 +62,13 @@ const Product = () => {
                             to={`/products/${product.id}/images`}
                         >
                             عکس های این محصول
+                        </Link>
+                        <Link
+                            className="bg-linear-to-r from-blue-500 to-cyan-500 text-white py-2 px-4 rounded-md
+                            cursor-pointer"
+                            to={`/admin/products/slug/${product?.slug}`}
+                        >
+                            مشخصات محصول
                         </Link>
                     </div>
                 )}

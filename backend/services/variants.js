@@ -1,5 +1,6 @@
 import UpdateVariantDto from "../dtos/variant/updateVariant.js";
 import { NotFoundError, DatabaseError, ValidationError, ConflictError } from "../utils/Error.js";
+import { createValidationSchema } from "../schemas/variant.js";
 
 export default class VariantService {
     constructor(variantRepo, productService) {
@@ -13,33 +14,24 @@ export default class VariantService {
         return existing !== null && Object.keys(existing).length > 0;
     }
     
-    async createVariant(variantData) {
-        
-        const { product_id, size, color, quantity, width, height, waist } = variantData;
+    async createVariant(body) {
         try {
-            if (!(product_id && size && color && quantity)) {
-                throw new ValidationError("product_id, size, color, quantity is required.")
+            const { value: variantValue, error: variantError } = createValidationSchema.validate({
+                product_id: body.product_id,
+                size: body.size,
+                quantity: body.quantity,
+                height: body.height,
+                width: body.width,
+                waist: body.waist
+            })
+            if (variantError) {
+                throw new ValidationError(variantError.message)
             }
-            const isDuplicate = await this.isVariantDuplicate({product_id, size, color})
-            if (isDuplicate) {
-                throw new ConflictError("createVariant conflict error");
-            }
-            const allowedFields = {
-                product_id,
-                size,
-                color,
-                quantity,
-                width,
-                height,
-                waist
-            };
-            const cleanFields = Object.fromEntries(
-                Object.entries(allowedFields).filter(([_, v])=> v !== undefined && v !== null)
-            )
-            const createdVariant = await this.variantRepo.create(cleanFields);
-            return createdVariant.dataValues;
+
+            const createdVariant = await this.variantRepo.create(variantValue);
+            return createdVariant;
         } catch(err) {
-            if (err instanceof ValidationError || err instanceof ConflictError) {
+            if (err instanceof ValidationError) {
                 throw err;
             }
             throw new DatabaseError("createVariant database error");

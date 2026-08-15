@@ -13,6 +13,7 @@ import Products from "../pages/Products.jsx";
 import ProductImages from "../pages/ProductImages.jsx";
 import AllProductsImages from "../pages/AllProductsImages.jsx";
 import Compare from "../pages/Compare.jsx";
+import Variants from "../pages/admin/Variants.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -60,7 +61,8 @@ const AppRoutes = () => {
                 <Route index element={<Dashboard />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
                 <Route path="/admin/transactions" element={<Transactions />} />
-                <Route path="/admin/all-products-images" element={<AllProductsImages />}/>
+                <Route path="/admin/all-products-images" element={<AllProductsImages />} />
+                <Route path="/admin/products/slug/:slug/" element={<Variants />} />
             </Route>
             <Route path="/*" element={<div 
                 className="flex justify-center items-center min-h-screen">404</div>}
