@@ -17,14 +17,13 @@ const Compare = () => {
     return (
         <div className="overflow-x-auto">
             <table className="w-full border-collapse">
-
                 <thead>
                     <tr>
                         {/* ستون ویژگی */}
                         <th className="w-40 border p-4"></th>
 
                         {/* محصولات */}
-                        {compareList?.map(product => {
+                        {compareList.length > 0 ? compareList?.map(product => {
 
                             const mainImage =
                                 product.Product_Images?.find(
@@ -53,12 +52,12 @@ const Compare = () => {
                                     </div>
                                 </th>
                             )
-                        })}
+                        }) : null}
                     </tr>
                 </thead>
 
                 <tbody>
-                    {variantFields?.map(field => (
+                    {compareList.length > 0 ? variantFields?.map(field => (
                         <tr key={field.key}>
 
                             {/* نام ویژگی */}
@@ -87,7 +86,7 @@ const Compare = () => {
                             })}
 
                         </tr>
-                    ))}
+                    )) : <div>هیچ محصولی برای مقایسه وجود ندارد</div>}
                 </tbody>
 
             </table>

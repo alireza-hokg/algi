@@ -1,3 +1,5 @@
-export default class ColorsVariantsController {
-    
+export default class VariantColorController {
+    constructor(VariantColor) {
+        this.VariantColor = VariantColor
+    }
 }
