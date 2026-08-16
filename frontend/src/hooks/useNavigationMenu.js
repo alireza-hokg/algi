@@ -19,6 +19,7 @@ export const useNavigationMenu = () => {
         { path: "/admin/orders", text: "مدیریت سفارشات", icon: "ShoppingBag"},
         { path: "/admin/transactions", text: "مدیریت تراکنش ها", icon: "Wallet"},
         { path: "/admin/all-products-images", text: "عکس های محصولات", icon: "Image"},
+        { path: "/admin/colors", text: "مدیریت رنگ ها", icon: "Palette" },
         { path: "/admin", text: "داشبورد", icon: "UserStar"},
         { path: null, text: "خروج", icon: "LogOut", danger: true },
     ] : [], [isLogin])

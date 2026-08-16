@@ -1,4 +1,3 @@
-import { NumericFormat } from "react-number-format";
 
 const CreateVariant = ({ 
     variant,

@@ -2,6 +2,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/colors-variants")
+router.post("/variants-colors", )
 
 export default router;

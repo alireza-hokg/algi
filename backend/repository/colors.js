@@ -19,17 +19,17 @@ export default class ColorRepo {
         })
     }
 
-    async create(color) {
-        return await this.Color.create(color)
+    async create(data) {
+        return await this.Color.create(data)
     }
 
-    async update(color) {
+    async update(data) {
         return await this.Color.update({
-            name: color.name,
-            hex: color.hex
+            name: data.name,
+            hex: data.hex
         }, {
             where: {
-                id: color.id
+                id: data.id
             }
         })
     }
