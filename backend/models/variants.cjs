@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
                 onUpdate: "CASCADE"
             })
 
-            this.hasMany(models.ColorVariant, {
+            this.hasMany(models.Variant_Color, {
                 foreignKey: {
                     name: "variant_id",
                     allowNull: false

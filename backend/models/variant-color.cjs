@@ -44,21 +44,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER.UNSIGNED,
       defaultValue: 0
     },
-    is_primary: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    }
   }, {
     timestamps: true,
     sequelize,
-    modelName: 'ColorVariant',
-    tableName: "colors_variants",
+    modelName: 'Variant_Color',
+    tableName: "variants_colors",
     paranoid: true,
     indexes: [
       {
         unique: true,
         fields: ["color_id", "variant_id"],
-        name: "colors_variants_color_id_variant_id_unq"
+        name: "variants_colors_color_id_variant_id_unq"
       }
     ]
   });

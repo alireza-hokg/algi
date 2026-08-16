@@ -16,6 +16,7 @@ import orderItemsRoute from "./routes/order-items.js"
 import cartsRoute from "./routes/carts.js";
 import categoriesRoute from "./routes/categories.js"
 import colorsRoute from "./routes/colors.js"
+import variantsColorsRoute from "./routes/variants-colors.js"
 
 import { responseFormatter } from "./middlewares/responseFormatter.js";
 
@@ -54,6 +55,7 @@ app.use("/api/v1", orderItemsRoute)
 app.use("/api/v1", cartsRoute)
 app.use("/api/v1", categoriesRoute)
 app.use("/api/v1/", colorsRoute)
+app.use("/api/v1", variantsColorsRoute)
 
 async function startServer() {
     const isDevelopment = process.env.NODE_ENV === "development";

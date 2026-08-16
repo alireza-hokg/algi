@@ -31,7 +31,8 @@ module.exports = {
           allowNull: false
       },
       category_id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.INTEGER.UNSIGNED,
+          allowNull: false
       },
       sku: {
           type: Sequelize.STRING,
