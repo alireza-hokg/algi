@@ -31,6 +31,7 @@ export const useColor = () => {
                     ...prev,
                     data.body
                 ])
+                return data
             }
         }
         catch(err) {
@@ -43,6 +44,7 @@ export const useColor = () => {
     }
 
     const handleUpdateColor = async (colorData, colorId) => {
+        setLoading(true);
         try {
             const { data } = await put(`/colors/${colorId}`, colorData)
             console.log(data)
@@ -55,11 +57,16 @@ export const useColor = () => {
                         return color
                     })
                 )
-                toast.success("رنگ با موفقیت ویرایش شد.")
+                setColor({})
+                toast.success("رنگ با موفقیت ویرایش شد.");
+                return data
             }
         }
         catch(err) {
             toast.error(err?.response.data.message)
+        }
+        finally {
+            setLoading(false)
         }
     }
 

@@ -6,6 +6,7 @@ import Container from "../../components/layout/Container";
 import { useModal } from "../../hooks/useModal";
 import Modal from "../../components/common/Modal";
 import { useColor } from "../../hooks/useColor";
+import { useVariantsColors } from "../../hooks/useVariantsColors.js";
 
 const Variants = () => {
     const { slug } = useParams();
@@ -28,8 +29,6 @@ const Variants = () => {
 
     const {
         colors,
-        color,
-        setColor,
     } = useColor()
     
     const {
@@ -37,6 +36,12 @@ const Variants = () => {
         onChangeVariant,
         handleCreateVariant
     } = useVariants()
+
+    const {
+        variantColor,
+        setVariantColor,
+        handleCreateVariantColor
+    } = useVariantsColors()
 
     const variants = product?.Variants;
 
@@ -59,22 +64,28 @@ const Variants = () => {
                 product_id={product?.id}
             />
 
-            {variants?.map((product) => (
+            {variants?.map((variant) => (
                 <div
-                    key={product.id}
+                    key={variant.id}
                     className="max-w-lg mx-auto rounded-lg py-4 mb-10"
                 >
                     <div className="text-center mb-2">
-                        <span className="font-bold text-gray-700">سایز {product.size}</span>
+                        <span className="font-bold text-gray-700">سایز {variant.size}</span>
                     </div>
                     <div>
                         <button
+                            type="button"
                             className="rounded-lg bg-gray-900 px-6 py-2.5
                             text-sm font-medium text-white transition
                             hover:bg-gray-800 active:scale-95 cursor-pointer"
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.preventDefault()
                                 setModalType("create")
                                 toggleActive()
+                                setVariantColor(prev => ({
+                                    ...prev,
+                                    variant_id: variant.id
+                                }))
                             }}
                         >
                             اضافه کردن رنگ تنوع
@@ -82,155 +93,182 @@ const Variants = () => {
                     </div>
                     <ul className="flex flex-col">
                         {existingAttributes.map(({key, label, unit}) => {
-                            return product[key] ? (
+                            return variant[key] ? (
                                 <li
                                     key={key}
                                     className={`flex-1 flex items-center justify-between py-3
-                                    ${product[key] ? "border-b-gray-200 border-b" : null} text-sm`}
+                                    ${variant[key] ? "border-b-gray-200 border-b" : null} text-sm`}
                                 >
-                                    {product[key] ? (
+                                    {variant[key] ? (
                                         <>
                                             <span className="font-bold text-gray-800 ">{label}</span>
-                                            <span className="text-gray-400">{product[key]}{" "}{unit}</span>
+                                            <span className="text-gray-400">{variant[key]}{" "}{unit}</span>
                                         </>
                                     ) : null}
                                 </li>
                             ) : null
                         })}
                     </ul>
+                    <div>
+                        {variant?.Variant_Colors?.map(variant_color => (
+                            <div>
+                                {console.log(variant_color)}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ))}
             {isActive ? (
-    <Modal toggleActive={toggleActive}>
-        {modalType === "create" ? (
-            <div className="w-full max-w-md">
-                <h2 className="text-xl font-bold text-gray-800 mb-6">
-                    اضافه کردن رنگ
-                </h2>
+                <Modal
+                    toggleActive={toggleActive}
+                >
+                    {modalType === "create" ? (
+                        <div className="w-full max-w-md">
+                            <h2 className="text-xl font-bold text-gray-800 mb-6">
+                                اضافه کردن رنگ
+                            </h2>
 
-                <div className="space-y-5">
-                    <div>
-                        <label
-                            htmlFor="color"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                        >
-                            انتخاب رنگ
-                        </label>
+                            <div className="space-y-5">
+                                <div>
+                                    <label
+                                        htmlFor="color"
+                                        className="block mb-2 text-sm font-medium text-gray-700"
+                                    >
+                                        انتخاب رنگ
+                                    </label>
 
-                        <select
-                            id="color"
-                            className="w-full rounded-lg border border-gray-300
-                            bg-white px-4 py-3 text-sm text-gray-700
-                            outline-none transition
-                            focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                            onChange={(e)=> {
-                                let selectedOption = e.target.selectedOptions[0].dataset;
-                                setColor(prev => ({
-                                    ...prev,
-                                    name: selectedOption.name,
-                                    hex: selectedOption.hex
-                                }))
-                            }}
-                        >
-                            <option value="">
-                                یک رنگ انتخاب کنید
-                            </option>
+                                    <select
+                                        id="color"
+                                        className="w-full rounded-lg border border-gray-300
+                                        bg-white px-4 py-3 text-sm text-gray-700
+                                        outline-none transition
+                                        focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                        onChange={(e)=> {
+                                            let selectedOption = e.target.selectedOptions[0];
+                                            setVariantColor(prev => ({
+                                                ...prev,
+                                                color_id: Number(selectedOption.value)
+                                            }))
+                                        }}
+                                    >
+                                        <option value="">
+                                            یک رنگ انتخاب کنید
+                                        </option>
 
-                            {colors?.map(c => (
-                                <option
-                                    key={c.id}
-                                    value={c.id}
-                                    data-name={c.name}
-                                    data-hex={c.hex}
-                                >
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                                        {colors?.map(c => (
+                                            <option
+                                                key={c.id}
+                                                value={c.id}
+                                                data-name={c.name}
+                                                data-hex={c.hex}
+                                            >
+                                                {c.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        htmlFor="color"
+                                        className="block mb-2 text-sm font-medium text-gray-700"
+                                    >
+                                        تعداد
+                                    </label>
+                                    <input
+                                        className="w-full rounded-lg border border-gray-300
+                                        bg-white px-4 py-3 text-sm text-gray-700
+                                        outline-none transition
+                                        focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                        onChange={(e) => {
+                                            setVariantColor(prev => ({
+                                                ...prev,
+                                                stock_quantity: e.target.value
+                                            }))
+                                        }}
+                                    />
+                                </div>
 
-                    <div className="flex justify-end gap-3 pt-3">
-                        <button
-                            type="button"
-                            onClick={toggleActive}
-                            className="rounded-lg border border-gray-300
-                            px-5 py-2.5 text-sm font-medium text-gray-600
-                            transition hover:bg-gray-50 cursor-pointer"
-                        >
-                            انصراف
-                        </button>
+                                <div className="flex justify-end gap-3 pt-3">
+                                    <button
+                                        type="button"
+                                        onClick={toggleActive}
+                                        className="rounded-lg border border-gray-300
+                                        px-5 py-2.5 text-sm font-medium text-gray-600
+                                        transition hover:bg-gray-50 cursor-pointer"
+                                    >
+                                        انصراف
+                                    </button>
 
-                        <button
-                            type="button"
-                            className="rounded-lg bg-gray-900
-                            px-6 py-2.5 text-sm font-medium text-white
-                            transition hover:bg-gray-800
-                            active:scale-95 cursor-pointer"
-                            onClick={() => {
+                                    <button
+                                        className="rounded-lg bg-gray-900
+                                        px-6 py-2.5 text-sm font-medium text-white
+                                        transition hover:bg-gray-800
+                                        active:scale-95 cursor-pointer"
+                                        onClick={() => {
+                                            handleCreateVariantColor(variantColor)
+                                        }}
+                                    >
+                                        افزودن
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="w-full max-w-md">
+                            <h2 className="text-xl font-bold text-gray-800 mb-6">
+                                ویرایش رنگ
+                            </h2>
 
-                            }}
-                        >
-                            افزودن
-                        </button>
-                    </div>
-                </div>
-            </div>
-        ) : (
-            <div className="w-full max-w-md">
-                <h2 className="text-xl font-bold text-gray-800 mb-6">
-                    ویرایش رنگ
-                </h2>
+                            <div className="space-y-5">
+                                <div>
+                                    <label
+                                        htmlFor="color"
+                                        className="block mb-2 text-sm font-medium text-gray-700"
+                                    >
+                                        انتخاب رنگ
+                                    </label>
 
-                <div className="space-y-5">
-                    <div>
-                        <label
-                            htmlFor="color"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                        >
-                            انتخاب رنگ
-                        </label>
+                                    <select
+                                        id="color"
+                                        className="w-full rounded-lg border border-gray-300
+                                        bg-white px-4 py-3 text-sm text-gray-700
+                                        outline-none transition
+                                        focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    >
+                                        <option value="">
+                                            یک رنگ انتخاب کنید
+                                        </option>
 
-                        <select
-                            id="color"
-                            className="w-full rounded-lg border border-gray-300
-                            bg-white px-4 py-3 text-sm text-gray-700
-                            outline-none transition
-                            focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                        >
-                            <option value="">
-                                یک رنگ انتخاب کنید
-                            </option>
+                                        
+                                    </select>
+                                </div>
 
-                            
-                        </select>
-                    </div>
+                                <div className="flex justify-end gap-3 pt-3">
+                                    <button
+                                        type="button"
+                                        onClick={toggleActive}
+                                        className="rounded-lg border border-gray-300
+                                        px-5 py-2.5 text-sm font-medium text-gray-600
+                                        transition hover:bg-gray-50 cursor-pointer"
+                                    >
+                                        انصراف
+                                    </button>
 
-                    <div className="flex justify-end gap-3 pt-3">
-                        <button
-                            type="button"
-                            onClick={toggleActive}
-                            className="rounded-lg border border-gray-300
-                            px-5 py-2.5 text-sm font-medium text-gray-600
-                            transition hover:bg-gray-50 cursor-pointer"
-                        >
-                            انصراف
-                        </button>
-
-                        <button
-                            type="button"
-                            className="rounded-lg bg-blue-600
-                            px-6 py-2.5 text-sm font-medium text-white
-                            transition hover:bg-blue-700
-                            active:scale-95 cursor-pointer"
-                        >
-                            ویرایش
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-    </Modal>
-) : null}
+                                    <button
+                                        type="button"
+                                        className="rounded-lg bg-blue-600
+                                        px-6 py-2.5 text-sm font-medium text-white
+                                        transition hover:bg-blue-700
+                                        active:scale-95 cursor-pointer"
+                                    >
+                                        ویرایش
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </Modal>
+            ) : null}
         </Container>
     )
 }

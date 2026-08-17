@@ -18,6 +18,7 @@ const Colors = () => {
 
     const {
         isActive,
+        setIsActive,
         toggleActive,
     } = useModal()
 
@@ -44,7 +45,7 @@ const Colors = () => {
                 handleCreateColor={handleCreateColor}
             />
             <ul
-                className="grid grid-cols-1"
+                className="grid grid-cols-1 gap-y-4"
             >
                 {colors?.map(c=> (
                     <li
@@ -127,7 +128,12 @@ const Colors = () => {
                         </button>
 
                         <button
-                            onClick={() => handleUpdateColor(color, color.id)}
+                            onClick={() => {
+                                const {success} = handleUpdateColor(color, color.id);
+                                if (success) {
+                                    setIsActive(false);
+                                }
+                            }}
                             type="button"
                             className="rounded-lg bg-gray-900 px-6 py-2.5
                             text-sm font-medium text-white transition

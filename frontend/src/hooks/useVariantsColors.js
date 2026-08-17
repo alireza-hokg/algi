@@ -1,15 +1,34 @@
-import { useEffect } from "react";
+import { toast } from "react-hot-toast";
+
+import { useState } from "react";
+
+import { post } from "../services/api.js";
 
 export const useVariantsColors = () => {
-    useEffect(() => {
-        const fetchData = async () => {
-            // try {
+    const [variantColor, setVariantColor] = useState({
+        color_id: "",
+        variant_id: "",
+        stock_quantity: ""
+    });
 
-            // }
-            // catch(err) {
-            //     console.log(err?.response.data.message)
-            // }
+    const handleCreateVariantColor = async (variantColorBody) => {
+        console.log(variantColorBody)
+        try {
+            const { data } = await post("/variants-colors", variantColorBody)
+            if (data.success) {
+                console.log(data)
+                toast.success("رنگ برای این نوع با موفقیت ساخته شد.")
+            }
         }
-        fetchData();
-    }, [])
+        catch(err) {
+            console.log(err.message)
+            toast.error(err?.response?.data?.message)
+        }
+    }
+
+    return {
+        variantColor,
+        setVariantColor,
+        handleCreateVariantColor,
+    }
 }

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       })
   
       this.belongsToMany(models.Variant, {
-        through: "Color_Variant",
+        through: "Variant_Color",
         foreignKey: "variant_id",
         otherKey: "color_id"
       })

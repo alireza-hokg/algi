@@ -5,11 +5,12 @@ export default class VariantColorController {
 
     async create(req, res) {
         try {
-            const result = await this.variant_colorService.create(req.body)
-            res.success(result)
+            const result = await this.variant_colorService.create(req.body);
+            console.log(result)
+            return res.success(result)
         }
         catch(err) {
-            console.log(err.message)
+            return res.error(err.message)
         }
     }
 }

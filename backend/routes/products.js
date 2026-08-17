@@ -5,7 +5,12 @@ import ProductService from "../services/products.js";
 import ProductController from "../controllers/products.js";
 import db from "../models/index.cjs";
 
-const productRepository = new ProductRepository(db.Product, db.Product_Image, db.Variant);
+const productRepository = new ProductRepository(
+    db.Product,
+    db.Product_Image,
+    db.Variant,
+    db.Variant_Color
+);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
