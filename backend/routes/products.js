@@ -9,7 +9,7 @@ const productRepository = new ProductRepository(
     db.Product,
     db.Product_Image,
     db.Variant,
-    db.Variant_Color
+    db.Color
 );
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);

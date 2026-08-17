@@ -22,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: "RESTRICT",
                 onUpdate: "CASCADE"
             })
+
+            this.belongsToMany(models.Color, {
+                through: "Variant_Color",
+                foreignKey: 'variant_id',
+                otherKey: 'color_id'
+            })
         }
   }
 

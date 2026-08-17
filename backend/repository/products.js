@@ -1,10 +1,10 @@
 
 export default class ProductRepository {
-    constructor(Product, Product_Image, Variant, Variant_Color) {
+    constructor(Product, Product_Image, Variant, Color) {
         this.Product = Product;
         this.Product_Image = Product_Image;
         this.Variant = Variant;
-        this.Variant_Color = Variant_Color
+        this.Color = Color
     }
 
     async getAllProductsAndImages() {
@@ -76,7 +76,7 @@ export default class ProductRepository {
                     required: false,
                     include: [
                         {
-                            model: this.Variant_Color,
+                            model: this.Color,
                             required: false
                         }
                     ]

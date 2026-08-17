@@ -69,6 +69,7 @@ const Variants = () => {
                     key={variant.id}
                     className="max-w-lg mx-auto rounded-lg py-4 mb-10"
                 >
+                    {console.log(variant)}
                     <div className="text-center mb-2">
                         <span className="font-bold text-gray-700">سایز {variant.size}</span>
                     </div>
@@ -91,7 +92,7 @@ const Variants = () => {
                             اضافه کردن رنگ تنوع
                         </button>
                     </div>
-                    <ul className="flex flex-col">
+                    <ul className="flex flex-col mb-6">
                         {existingAttributes.map(({key, label, unit}) => {
                             return variant[key] ? (
                                 <li
@@ -109,12 +110,24 @@ const Variants = () => {
                             ) : null
                         })}
                     </ul>
-                    <div>
-                        {variant?.Variant_Colors?.map(variant_color => (
-                            <div>
-                                {console.log(variant_color)}
-                            </div>
-                        ))}
+                    <div className="border-b border-b-gray-200 py-3">
+                        <div className="mb-4">
+                            <span>رنگ ها</span>
+                        </div>
+                        <div className="flex flex-wrap gap-x-8 gap-y-4">
+                            {variant?.Colors?.map(c => (
+                                <div
+                                    key={c.id}
+                                    className="flex"
+                                >
+                                    <span>{c.name}</span>
+                                    <span
+                                        style={{ backgroundColor: `#${c.hex}`}}
+                                        className={`w-6 h-6 block`}
+                                    ></span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             ))}
