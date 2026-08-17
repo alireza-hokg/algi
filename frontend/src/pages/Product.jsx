@@ -122,6 +122,7 @@ const Product = () => {
                                     ))}
                                 </div>
                             </div>
+                            
 
                             {/* Add to Cart Button */}
                             <ProductQuantity />
