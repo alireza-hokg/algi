@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE"
       })
       
-      this.belongsToMany(models.Product, {
+      this.belongsToMany(models.Variant, {
         through: models.Cart_Item,
-        foreignKey: "product_id",
-        otherKey: "cart_id"
+        foreignKey: "cart_id",
+        otherKey: "variant_id"
       })
     }
   }
@@ -42,19 +42,19 @@ module.exports = (sequelize, DataTypes) => {
             isIn: [["active", "purchased", "abandoned"]]
         }
     },
-    totalPrice: {
+    total_price: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    discountAmount: {
+    discount_amount: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: true
     },
-    finalPrice: {
+    final_price: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    expiresAt: {
+    expires_at: {
       type: DataTypes.DATE,
       allowNull: false,
     }

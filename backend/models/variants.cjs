@@ -24,9 +24,24 @@ module.exports = (sequelize, DataTypes) => {
             })
 
             this.belongsToMany(models.Color, {
-                through: "Variant_Color",
+                through: models.Variant_Color,
                 foreignKey: 'variant_id',
                 otherKey: 'color_id'
+            })
+
+            this.hasMany(models.Cart_Item, {
+                foreignKey: {
+                    name: "variant_id",
+                    allowNull: false
+                },
+                onDelete: "RESTRICT",
+                onUpdate: "CASCADE"
+            })
+
+            this.belongsToMany(models.Cart, {
+                through: models.Cart_Item,
+                foreignKey: "cart_id",
+                otherKey: "variant_id"
             })
         }
   }

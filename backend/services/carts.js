@@ -1,183 +1,101 @@
-import Joi from "joi";
-import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js"
+import { DatabaseError, NotFoundError, ValidationError } from "../utils/Error.js";
+import { createCartSchema } from "../schemas/carts.js"
+import db from "../models/index.cjs"
 
 export default class CartService {
-    constructor(cartRepo, userService) {
-        this.cartRepo = cartRepo
-        this.userService = userService
+    constructor(cartRepo, cartItemService, variantService) {
+        this.cartRepo = cartRepo;
+        this.cartItemService = cartItemService;
+        this.variantService = variantService
     }
 
-    async getCartById(id) {
-        const numericId = Number(id)
+    async exists(body, transaction) {
         try {
-            const cart = await this.cartRepo.findById(numericId);
+            const result = await this.cartRepo.exists(body, transaction)
+            return result
+        }
+        catch(err) {
+            throw new DatabaseError(err);
+        }
+    }
+
+    async getCartByUserIdAndStatus(body) {
+        try {
+            const result = await this.cartRepo.getCartAndItems(body);
+            return result
+        }
+        catch(err) {
+            throw new DatabaseError(err)
+        }
+    }
+
+    async addToCart(body, userId) {
+        const transaction = await db.sequelize.transaction();
+        try {
+            const { value: cartValue, error: cartError } = createCartSchema.validate({
+                variant_id: body.variant_id,
+                quantity: body.quantity
+            })
+
+            if (cartError) {
+                throw new ValidationError(cartError.message)
+            }
+
+            // Check cart exists
+            let cart = await this.getCartByUserIdAndStatus({
+                user_id: userId,
+                status: "active"
+            }, transaction)
+
             if (!cart) {
-                throw new NotFoundError("سبد خرید پیدا نشد.")
+                cart = await this.cartRepo.create({
+                    user_id: userId,
+                    status: "active",
+                    total_price: 0,
+                    discount_amount: 0,
+                    final_price: 0,
+                    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                }, transaction)
             }
-            return cart;
-        }
-        catch(err) {
-            throw new DatabaseError(err.message);
-        }
-    }
 
-    // تمامی سبد های خرید با user, status
-    async getCartsByUserAndStatus(body) {
-        const cartValidationSchema = Joi.object().keys({
-            user_id: Joi.number().required(),
-            status: Joi.string().required().valid("active", "removed", "purchased")
-        })
-        const { value: validateCart, error: cartError } = cartValidationSchema.validate({
-            user_id: body.user_id,
-            status: body.status
-        })
-        
-        if (cartError) {
-            throw new ValidationError(error.message);
-        }
-        
-        try {
-            return await this.cartRepo.findCartsByUserAndStatus(validateCart);
-        }
-        catch(err) {
-            throw new DatabaseError(err.message)
-        }
-    }
+            let cartItem = await this.cartItemService.getCartItems({
+                cart_id: cart.id, 
+                variant_id: cartValue.variant_id
+            }, transaction);
 
-    /**
-     * گرفتن سبد خرید کاربر با status 
-     * @param {string} body.string
-     * @param {number} body.productId
-     * @param {number} body.userId
-     * @returns {Promise<Object>}
-     */
-    async getActiveCartByUserAndStatus(body) {
-        try {
-            return await this.cartRepo.findOneByUserAndStatus(body);
-        }
-        catch(err) {
-            throw new DatabaseError(err.message);
-        }
-    }
-    
-    // اگر کالا در سبد خرید وجود نداشت اضافه کن
-    async addToCart(body) {
-        
-        try {
-            const result = await this.cartRepo.create(body);
-            return result.dataValues;
-        }
-        catch(err) {
-            throw new DatabaseError(err.message)
-        }
-    }
-
-    /**
-     * بروزرسانی تعداد محصول در سبد خرید اگر محصول وجود داشت
-     * 
-     * @param {Object} body 
-     * @param {number} body.quantity تعداد برای اضافه یا کم کردن
-     * @param {*} id - id سبد خرید برای بروزرسانی
-     * @returns {Promise<Object|boolean>} Returns updated cart data or false if operation fails
-     */
-    async updateCart(validateCart, activeCart) {
-        console.log(validateCart)
-        console.log(activeCart)
-        try {
-            if (validateCart.quantity > 0) {
-                activeCart.quantity += validateCart.quantity
+            if (cartItem) {
+                cartItem.quantity += cartValue.quantity;
+                await cartItem.save({ transaction })
             }
-            else if (validateCart.quantity < 0 && Math.abs(validateCart.quantity) < activeCart.quantity) {
-                activeCart.quantity += validateCart.quantity
-            }
-            activeCart.save();
-            return activeCart.dataValues
-        }
-        catch(err) {
-            throw new DatabaseError(err.message)
-        }
-    }
+            else {
+                const variant = await this.variantService.getById(cartValue.variant_id);
+                if (!variant) {
+                    throw new NotFoundError("variant not found.");
+                }
+                console.log(variant)
+                cartItem = await this.cartItemService.create({
+                    cart_id: cart.id,
+                    variant_id: cartValue.variant_id,
+                    quantity: cartValue.quantity,
+                    unit_price: variant.Product.price,
+                    total_price: variant.Product.price * cartValue.quantity,
+                    discount_amount: 0,
+                    final_price: variant.Product.price * cartValue.quantity
+                }, transaction);
 
-    // استفاده از addToCart و updateCart برای اضافه کردن محصول به سبد خرید
-    async upsertCart(body) {
-        const cartValidationSchema = Joi.object().keys({
-            user_id: Joi.number().required(),
-            product_id: Joi.number().required(),
-            quantity: Joi.number().required(),
-            price: Joi.number().required(),
-            status: Joi.string().valid("active")
-        })
-        // چک کردن سبد
-        // true => validateCart
-        // false => cartError
-        const {value: validateCart, error: cartError} = cartValidationSchema.validate({
-            user_id: body.user_id,
-            product_id: body.product_id,
-            quantity: body.quantity,
-            price: body.price,
-            status: body?.status
-        })
-
-        if (cartError) {
-            throw new ValidationError(cartError?.message)
-        }
-        
-        const activeCart = await this.getActiveCartByUserAndStatus(validateCart);
-        // اگر کالا در سبد خرید وجود داشت بهش اضافه کن
-        // اگر کالا در سبد خرید وجود نداشت یکی بساز
-        try {
-            if (activeCart?.id) {
-                return await this.updateCart(validateCart, activeCart);
-            } else {
-                return await this.addToCart(validateCart);
+                await transaction.commit();
+                return {
+                    cart,
+                    cartItem
+                }
             }
         }
         catch(err) {
-            throw new DatabaseError(err.message)
-        }
-    }
-
-    async adjustCartQuantity(body) {
-        const adjustValidationSchema = Joi.object().keys({
-            cartId: Joi.string().required(),
-            quantity: Joi.number().required()
-        })
-        const { value: validateCart, error: errorCart } = adjustValidationSchema.validate({
-            cartId: body.cartId,
-            quantity: body.quantity
-        })
-
-        if (errorCart) {
-            throw new ValidationError(errorCart.message)
-        }
-        const cart = await this.getCartById(validateCart.cartId);
-        console.log(cart.dataValues)
-        try {
-            if (cart.quantity > 0) {
-                cart.quantity = validateCart.quantity;
-            } else {
-                return
-            }
-            cart.save();
-            return true
-        }
-        catch(err) {
+            await transaction.rollback();
             if (err instanceof ValidationError) {
                 throw err
             }
-            throw new DatabaseError(err.message)
-        }
-    }
-
-    // حذف محصول از سبد خرید
-    async removeFromCart(id) {
-        const cart = await this.getCartById(id);
-        try {
-            await cart.destroy();
-            return true
-        }
-        catch(err) {
-            throw new DatabaseError(err.message)
+            throw new DatabaseError(err)
         }
     }
 }

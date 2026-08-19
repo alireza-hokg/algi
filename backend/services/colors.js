@@ -84,8 +84,10 @@ export default class ColorService {
             if (colorExists && colorExists.id !== colorValue.id) {
                 throw new ConflictError("A color with this name exists.")
             }
-            const updatedColor = await this.colorRepo.update(colorValue);
-            return updatedColor;
+            const [isUpdated] = await this.colorRepo.update(colorValue);
+            if (isUpdated) {
+                return colorValue;
+            }
         }
         catch(err) {
             if (err instanceof ValidationError && err instanceof ConflictError) {

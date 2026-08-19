@@ -36,6 +36,7 @@ const ProductItem = ({ product }) => {
                                     </Link>
                                 ) : (
                                     <button
+                                        className="cursor-pointer"
                                         onClick={() => handleAddCompare(product)}
                                     >
                                         <TrendingUpDown />

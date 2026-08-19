@@ -1,9 +1,6 @@
 # algi
-It is my shop for selling clothes
+My shop for selling clothes
 
-//////// comment ///////
-utils done
-middleware done
-services undone
-repository undone
-////////
+Cart body, => req.body
+who is this Cart belong to, => 
+Cart Item, => 

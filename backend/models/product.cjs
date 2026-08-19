@@ -2,7 +2,26 @@ const { Model } = require("sequelize")
 
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    
+    static associate(models) {
+      this.hasMany(models.Variant, {
+        foreignKey: {
+          name: "product_id",
+          allowNull: false,
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      })
+      
+      this.hasMany(models.Product_Image, {
+        foreignKey: {
+          name: "product_id",
+          allowNull: false,
+          as: "Product_Images"
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      })
+    }
   }
 
   Product.init({
@@ -62,35 +81,6 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   })
 
-  Product.associate = function(models) {
-    this.hasMany(models.Variant, {
-      foreignKey: {
-        name: "product_id",
-        allowNull: false,
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
-    })
-    
-    this.hasMany(models.Product_Image, {
-      foreignKey: {
-        name: "product_id",
-        allowNull: false,
-        as: "Product_Images"
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    })
-
-    this.hasMany(models.Cart_Item, {
-      foreignKey: {
-        name: "product_id",
-        allowNull: false
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "CASCADE"
-    })
-  }
 
   return Product
 }

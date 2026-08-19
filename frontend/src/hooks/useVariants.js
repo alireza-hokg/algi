@@ -1,4 +1,7 @@
+import { toast } from "react-hot-toast"
+
 import { useState } from "react"
+
 import { post } from "../services/api.js";
 
 export const useVariants = () => {
@@ -20,13 +23,17 @@ export const useVariants = () => {
     }
 
     const handleCreateVariant = async (variant, product_id) => {
-        const data = {
+        const body = {
             ...variant,
             product_id
         }
         try {
-            const result = await post('/variants', data);
-            console.log(result)
+            const { data } = await post('/variants', body);
+            if (data.success) {
+                console.log(data)
+                toast.success("تنوع با موفقیت ساخته شد.")
+                return data
+            }
         }
         catch(err) {
             console.log(err.message)

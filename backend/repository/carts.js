@@ -1,56 +1,48 @@
-import { Op } from "sequelize";
 
 export default class CartRepo {
-    constructor(Cart, Product) {
+    constructor(Cart, Variant, Cart_Item) {
         this.Cart = Cart;
-        this.Product = Product;
+        this.Variant = Variant
+        this.Cart_Item = Cart_Item
     }
-
-    async findById(id) {
-        return await Cart.findByPk(id);
-    }
-
-    async findOneByUserAndStatus(cartBody) {
-        return await Cart.findOne({
+    // body {
+    // user_id => req.userId
+    // status => active - abandoned - purchased
+    // }
+    async exists(body, transaction) {
+        const result = await this.Cart.findOne({
             where: {
-                [Op.and]: [
-                    { user_id: cartBody.user_id },
-                    { status: cartBody.status },
-                    { product_id: cartBody.product_id}
-                ]
-            }
-        })
-    }
-
-    // تمام سبد ها بر اساس وضعیت
-    async findCartsByUserAndStatus(cartBody) {
-        const carts = await Cart.findAll({
-            where: {
-                [Op.and]: [
-                    { user_id: cartBody.user_id }, 
-                    { status: cartBody.status }
-                ]
+                user_id: body.user_id,
+                status: body.status
             },
-            include: {
-                model: Product,
-                attributes: ["name", "price"],
-                nested: false
-            }
-        });
-        return carts;
-    }
-    
-    async create(cartData) {
-        return await Cart.create(cartData)
+        }, {
+            transaction
+        })
+        return !!result
     }
 
-    async update(cartData) {
-        return await Cart.update(
-            cartData, {
-                where: {
-                    id: cartData.id
+    async getCartAndItems(body) {
+        const result = await this.Cart.findOne({
+            where: {
+                status: body.status,
+                user_id: body.user_id
+            },
+            include: [
+                {
+                    model: this.Cart_Item,
                 }
+            ]
+        })
+        return result
+    }
+
+    async create(body, transaction) {
+        return await this.Cart.create(
+            body,
+            {
+                transaction
             }
         )
     }
+
 }

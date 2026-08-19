@@ -13,6 +13,17 @@ export default class VariantService {
         const existing = await this.variantRepo.findOneByProductIdAndSizeAndColor(variantData);
         return existing !== null && Object.keys(existing).length > 0;
     }
+
+    // get variant by id
+    async getById(id) {
+        try {
+            const result = await this.variantRepo.getById(id);
+            return result
+        }
+        catch(err) {
+            throw new DatabaseError(err)
+        }
+    }
     
     async createVariant(body) {
         try {

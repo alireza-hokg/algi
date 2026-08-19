@@ -89,7 +89,7 @@ const Header = ({
                         <Link
                             title="سبد خرید فروشگاه"
                             to={`/carts`}
-                            className="flex gap-x-2 text-[#666] hover:text-white cursor-pointer duration-150
+                            className="flex gap-x-2 cursor-pointer duration-150
                             ease-in-out"
                         >
                             <div className="relative">
@@ -103,7 +103,8 @@ const Header = ({
                                             </span>
                                     </div>
                                 )} */}
-                                <ShoppingBag 
+                                <ShoppingBag
+                                    className="text-white hover:text-gray-300 duration-150"
                                     size={22}
                                 />
                             </div>

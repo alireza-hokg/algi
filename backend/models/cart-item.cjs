@@ -2,10 +2,10 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
     class CartItem extends Model {
-        static associations(models) {
-            this.belongsTo(models.Product, {
+        static associate(models) {
+            this.belongsTo(models.Variant, {
                 foreignKey: {
-                    name: "product_id",
+                    name: "variant_id",
                     allowNull: false
                 },
                 onDelete: "RESTRICT",
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
-    product_id: {
+    variant_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
     },
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
             min: 1
         }
     },
-    unitPrice: {
+    unit_price: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -55,15 +55,15 @@ module.exports = (sequelize, DataTypes) => {
             min: 0
         }
     },
-    totalprice: {
+    total_price: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    discountAmount: {
+    discount_amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true
     },
-    finalPrice: {
+    final_price: {
         type: DataTypes.INTEGER,
         allowNull: false
     }
@@ -74,20 +74,5 @@ module.exports = (sequelize, DataTypes) => {
         tableName: "cart_items",
         paranoid: true
     })
-
-    CartItem.associate = function(models) {
-        this.belongsTo(models.Cart, {
-            foreignKey: "cart_id",
-            targetKey: "id",
-            onUpdate: "CASCADE",
-            onDelete: "RESTRICT"
-        })
-
-        this.belongsTo(models.Product, {
-            foreignKey: "product_id",
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE"
-        })
-    }
     return CartItem
 }

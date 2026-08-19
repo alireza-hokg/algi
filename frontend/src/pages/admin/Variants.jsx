@@ -69,7 +69,6 @@ const Variants = () => {
                     key={variant.id}
                     className="max-w-lg mx-auto rounded-lg py-4 mb-10"
                 >
-                    {console.log(variant)}
                     <div className="text-center mb-2">
                         <span className="font-bold text-gray-700">سایز {variant.size}</span>
                     </div>
@@ -217,8 +216,12 @@ const Variants = () => {
                                         px-6 py-2.5 text-sm font-medium text-white
                                         transition hover:bg-gray-800
                                         active:scale-95 cursor-pointer"
-                                        onClick={() => {
-                                            handleCreateVariantColor(variantColor)
+                                        onClick={async () => {
+                                            const result = await handleCreateVariantColor(variantColor)
+                                            console.log(result)
+                                            if (result.success) {
+                                                toggleActive()
+                                            }
                                         }}
                                     >
                                         افزودن

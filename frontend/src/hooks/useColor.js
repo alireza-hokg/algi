@@ -59,7 +59,7 @@ export const useColor = () => {
                 )
                 setColor({})
                 toast.success("رنگ با موفقیت ویرایش شد.");
-                return data
+                return true
             }
         }
         catch(err) {

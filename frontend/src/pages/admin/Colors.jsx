@@ -49,14 +49,14 @@ const Colors = () => {
             >
                 {colors?.map(c=> (
                     <li
-                        className="px-4 py-2 shadow-sm rounded-sm flex justify-between"
+                        className="px-4 py-2 shadow-sm rounded-sm flex justify-between bg-gray-50"
                         key={c.id}
                     >
                         <div className="flex justify-between min-w-25">
                             <span>{c.name}</span>
                             <span
                                 style={{ backgroundColor: `#${c.hex}`}}
-                                className={`w-6 h-6 block`}
+                                className={`w-6 h-6 block border`}
                             ></span>
                         </div>
                         <div>
@@ -87,7 +87,7 @@ const Colors = () => {
                             </label>
                             <input
                                 name="name"
-                                placeholder="مثلاً XL"
+                                placeholder="مشکی"
                                 className="rounded-lg border border-gray-300 bg-gray-50
                                 px-3 py-2.5 text-sm outline-none transition
                                 focus:border-blue-500 focus:bg-white
@@ -129,9 +129,9 @@ const Colors = () => {
 
                         <button
                             onClick={() => {
-                                const {success} = handleUpdateColor(color, color.id);
-                                if (success) {
-                                    setIsActive(false);
+                                const isUpdated = handleUpdateColor(color, color.id);
+                                if (isUpdated) {
+                                    setIsActive(false)
                                 }
                             }}
                             type="button"

@@ -4,14 +4,12 @@ import AppRoutes from "./routes/index.jsx"
 import AuthProvider from "./contexts/AuthProvider.jsx"
 import { Toaster } from "react-hot-toast";
 import CompareProvider from "./contexts/CompareProvider.jsx";
-// import CartProvider from "./contexts/CartProvider.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <CompareProvider>
         <AuthProvider>
-          {/* <CartProvider> */}
             <Toaster
               position="top-center"
               toastOptions={{
@@ -32,7 +30,6 @@ function App() {
               }}
             />
             <AppRoutes />
-          {/* </CartProvider> */}
         </AuthProvider>
       </CompareProvider>
     </BrowserRouter>

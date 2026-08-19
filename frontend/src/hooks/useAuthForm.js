@@ -87,7 +87,6 @@ export const useAuthForm = () => {
                 password
             });
             if (response.data.success) {
-                console.log(response)
                 toast.success("با موفقیت ثبت نام شدید!", {
                     duration: 2000, // مدت زمان نمایش
                     position: "top-center",

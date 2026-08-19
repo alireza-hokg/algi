@@ -6,7 +6,7 @@ export default class ColorController {
     async getAll(req, res) {
         try {
             const result = await this.colorService.getAll();
-            res.success(result, "Colors loaded successfully.")
+            return res.success(result, "Colors loaded successfully.")
         }
         catch(err) {
             res.error(err.message, err.statusCode || 500)

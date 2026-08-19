@@ -1,9 +1,18 @@
-import { where } from "sequelize";
-
 export default class VariantRepo {
-    constructor(Variant, Product) {
+    constructor(Variant) {
         this.Variant = Variant;
-        this.Product = Product;
+    }
+
+    async getById(id) {
+        const result = await this.Variant.findByPk(id, {
+            include: [
+                {
+                    association: "Product",
+                    attributes: ["id", "price"]
+                }
+            ]
+        });
+        return result
     }
 
     async findByProductIdAndSize(uniqueValue) {

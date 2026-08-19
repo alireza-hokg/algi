@@ -12,12 +12,11 @@ export const useVariantsColors = () => {
     });
 
     const handleCreateVariantColor = async (variantColorBody) => {
-        console.log(variantColorBody)
         try {
             const { data } = await post("/variants-colors", variantColorBody)
             if (data.success) {
-                console.log(data)
                 toast.success("رنگ برای این نوع با موفقیت ساخته شد.")
+                return data
             }
         }
         catch(err) {

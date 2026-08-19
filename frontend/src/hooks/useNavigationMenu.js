@@ -13,7 +13,6 @@ export const useNavigationMenu = () => {
     ] : [], [isLogin])
 
     const adminMenu = useMemo(()=> isLogin ? [
-        { path: "/admin/products-list", text: "مدیریت محصولات", icon: "Box" },
         { path: "/admin/profile", text: "پروفایل", icon: "User" },
         { path: "/admin/customers", text: "مشتریان", icon: "BookUser" },
         { path: "/admin/orders", text: "مدیریت سفارشات", icon: "ShoppingBag"},
