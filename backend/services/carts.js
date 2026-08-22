@@ -52,7 +52,7 @@ export default class CartService {
                     user_id: userId,
                     status: "active",
                     total_price: 0,
-                    discount_amount: 0,
+                    discount_price: 0,
                     final_price: 0,
                     expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
                 }, transaction)
@@ -64,6 +64,7 @@ export default class CartService {
             }, transaction);
 
             if (cartItem) {
+                
                 cartItem.quantity += cartValue.quantity;
                 await cartItem.save({ transaction })
             }
@@ -72,15 +73,15 @@ export default class CartService {
                 if (!variant) {
                     throw new NotFoundError("variant not found.");
                 }
-                console.log(variant)
+                
                 cartItem = await this.cartItemService.create({
                     cart_id: cart.id,
                     variant_id: cartValue.variant_id,
                     quantity: cartValue.quantity,
                     unit_price: variant.Product.price,
                     total_price: variant.Product.price * cartValue.quantity,
-                    discount_amount: 0,
-                    final_price: variant.Product.price * cartValue.quantity
+                    discount_price: variant.Product.discount,
+                    final_price: variant.Product.discount_price * cartValue.quantity
                 }, transaction);
 
                 await transaction.commit();
@@ -98,4 +99,6 @@ export default class CartService {
             throw new DatabaseError(err)
         }
     }
+
+    
 }

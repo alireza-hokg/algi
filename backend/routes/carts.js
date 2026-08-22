@@ -14,7 +14,7 @@ const router = express.Router();
 
 const cartRepo = new CartRepo(db.Cart, db.Variant, db.Cart_Item);
 const variantRepo = new VariantRepo(db.Variant);
-const cartItemRepo = new CartItemRepo(db.Cart_Item)
+const cartItemRepo = new CartItemRepo(db.Cart_Item);
 
 const cartItemService = new CartItemService(cartItemRepo)
 const variantService = new VariantService(variantRepo)

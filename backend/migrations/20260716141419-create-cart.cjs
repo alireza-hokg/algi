@@ -24,19 +24,19 @@ module.exports = {
               isIn: [["active", "purchased"]]
           }
       },
-      totalPrice: {
+      total_price: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      discountAmount: {
+      discount_amount: {
         type: Sequelize.DECIMAL(10,2),
         allowNull: true
       },
-      finalPrice: {
+      final_price: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      expiresAt: {
+      expires_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },

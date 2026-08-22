@@ -7,13 +7,13 @@ import UserMenu from "../../common/UserMenu/index.jsx";
 
 import "./style.css"
 import { useCompare } from "../../../hooks/useCompare.js";
-// import { useCart } from "../../../hooks/useCart.js";
+import { useCart } from "../../../hooks/useCart.js";
 
 const Header = ({
     toggleSidebar={toggleSidebar}
 }) => {
     const { user } = useAuth();
-
+    const { cartQuantity } = useCart();
     const { 
         compareList
     } = useCompare()
@@ -21,7 +21,6 @@ const Header = ({
     const [isUserDropdown, setIsUserDropdown] = useState(false);
     const buttonRef = useRef(null);
     const { isLogin } = useAuth();
-    // const { cartCount, cartTotal } = useCart()
 
     return (
         <header className="bg-black text-white">
@@ -93,16 +92,16 @@ const Header = ({
                             ease-in-out"
                         >
                             <div className="relative">
-                                {/* {cartCount === 0 ? null : (
+                                {cartQuantity === 0 ? null : (
                                     <div
                                         className="flex justify-center items-center absolute bottom-8/12 right-8/12
                                         bg-amber-500 rounded-full py-0.5 px-1.5 text-white"
                                     >
-                                            <span className="text-[10px] font-bold">
-                                                {cartCount}
-                                            </span>
+                                        <span className="text-[10px] font-bold">
+                                            {cartQuantity}
+                                        </span>
                                     </div>
-                                )} */}
+                                )}
                                 <ShoppingBag
                                     className="text-white hover:text-gray-300 duration-150"
                                     size={22}

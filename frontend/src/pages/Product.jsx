@@ -8,6 +8,8 @@ import { useProduct } from "../hooks/useProduct.js";
 import ProductImages from "../components/ui/product/ProductImages.jsx";
 import Container from "../components/layout/Container.jsx";
 import { useAuth } from "../hooks/useAuth.js";
+import { useCart } from "../hooks/useCart.js";
+import { useState } from "react";
 
 const Product = () => {
     const { slug } = useParams();
@@ -19,10 +21,16 @@ const Product = () => {
         loading,
         error
     } = useProduct(slug)
+    
+    const {
+        cart,
+        handleAddToCart
+    } = useCart()
 
     // Get variants that has size
     const variants = product?.Variants?.filter(variant => variant.size) ?? [];
-    const sizes = variants?.map(variant => variant.size) ?? [];
+
+    const [selectedVariantId, setSelectedVariantId] = useState(null);
 
     {/* ////////// LOADING //////////// */}
     if (loading) {
@@ -111,24 +119,31 @@ const Product = () => {
                             <div className="bg-gray-50 rounded-xl p-4">
                                 <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایزهای موجود:</h3>
                                 <div className="flex justify-center flex-wrap gap-2">
-                                    {sizes?.map((size, index) => (
-                                        <span 
+                                    {variants?.map((variant, index) => (
+                                        <button
+                                            onClick={() => {
+                                                setSelectedVariantId(variant?.id)
+                                            }}
                                             key={index}
                                             className="px-3 py-1.5 bg-white border border-gray-300 
                                             rounded-lg text-gray-700 text-sm font-medium"
                                         >
-                                            {size}
-                                        </span>
+                                            {variant?.size}
+                                        </button>
                                     ))}
                                 </div>
                             </div>
                             
 
                             {/* Add to Cart Button */}
-                            <ProductQuantity />
+                            <ProductQuantity 
+                                selectedVariantId={selectedVariantId}
+                                handleAddToCart={handleAddToCart}
+                            />
                         </div>
                     </div>
                 </div>
+                
                 {/* Product Variants Details */}
                 <DetailsTab variants={variants} />
             </div>

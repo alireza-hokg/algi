@@ -80,4 +80,5 @@ export default class VariantService {
             throw new DatabaseError("Update variantService database error.")
         }
     }
+
 }

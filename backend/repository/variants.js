@@ -12,6 +12,7 @@ export default class VariantRepo {
                 }
             ]
         });
+        console.log(result)
         return result
     }
 
