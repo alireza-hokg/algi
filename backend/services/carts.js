@@ -21,7 +21,7 @@ export default class CartService {
 
     async getCartByUserIdAndStatus(body) {
         try {
-            const result = await this.cartRepo.getCartAndItems(body);
+            const result = await this.cartRepo.getCartAndDetails(body);
             return result
         }
         catch(err) {

@@ -31,12 +31,11 @@ export const useProducts = () => {
         }
     }
 
-    const handleCreateProduct = async (product) => {
-        const {price} = product
+    const handleCreateProduct = async (newProduct) => {
+        const {price} = newProduct
         const numericPrice = Number(String(price).replace(",", ""));
-
         const updatedProduct = {
-            ...product,
+            ...newProduct,
             price: numericPrice,
         };
 

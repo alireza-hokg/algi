@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "product_id",
           allowNull: false,
-          as: "Product_Images"
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
@@ -39,18 +38,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(70),
       allowNull: false,
       unique: true,
-      validate: {
-        isShort(value) {
-          if (value.length < 3) {
-              throw new Error("value can't have less than 3 characters.")
-          }
-        },
-        isLong(value) {
-          if (value.length > 70) {
-              throw new Error("value can't have more than 70 characters")
-          }
-        }
-      }
     },
     price: {
       type: DataTypes.INTEGER,

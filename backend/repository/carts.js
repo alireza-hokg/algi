@@ -21,7 +21,7 @@ export default class CartRepo {
         return !!result
     }
 
-    async getCartAndItems(body) {
+    async getCartAndDetails(body) {
         const result = await this.Cart.findOne({
             where: {
                 status: body.status,
@@ -30,6 +30,21 @@ export default class CartRepo {
             include: [
                 {
                     model: this.Cart_Item,
+                    include: [
+                        {
+                            association: "Variant",
+                            include: [
+                                {
+                                    association: "Product",
+                                    include: [
+                                        {
+                                            association: "Product_Images"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         })
