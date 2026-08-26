@@ -8,11 +8,10 @@ export default class VariantRepo {
             include: [
                 {
                     association: "Product",
-                    attributes: ["id", "price"]
+                    attributes: ["id", "price", "discount", "discount_price"]
                 }
             ]
         });
-        console.log(result)
         return result
     }
 

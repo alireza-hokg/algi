@@ -100,18 +100,14 @@ export default class ProductService {
             throw new ValidationError(productError.message)
         }
 
-        const discount_price = productValue.price * (productValue.discount/100);
+        // محاسبه قیمت تخفیف خورده
+        const price = Number(productValue.price);
+        const discount = Number(productValue.discount || 0);
+        const discount_price = price - (price * discount/100);
         productValue.discount_price = discount_price;
         try {
             const result = await this.productRepository.create(productValue)
-            return {
-                id: result.id,
-                name: result.name,
-                price: result.price,
-                sku: result.sku,
-                category_id: result.category_id,
-                slug: result.slug
-            }
+            return result
         } catch(err) {
             if (err instanceof ValidationError) {
                 throw err;

@@ -53,10 +53,10 @@ export default class CartService {
             }, transaction)
 
             // محاسبه قیمت کل, قیمت تخفیف خورده و قیمت نهایی
-            let total_price = variant.Product.price * cartValue.quantity;
-            let discount_price = variant.Product.discount_price * cartValue.quantity;
-            let final_price = total_price - discount_price;
-            
+            let total_price = Number(variant.Product.price) * Number(cartValue.quantity);
+            let discount_price = Number(variant.Product.discount_price) * Number(cartValue.quantity);
+            let final_price = Number(total_price) - Number(discount_price);
+
             if (!cart) {
                 cart = await this.cartRepo.create({
                     user_id: userId,
@@ -66,6 +66,16 @@ export default class CartService {
                     final_price,
                     expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
                 }, transaction)
+                console.log(cart.toJSON())
+            } else {
+                const cartData = {
+                    id: cart.id,
+                    total_price: Number(cart.total_price) + Number(total_price),
+                    discount_price: Number(cart.discount_price) + Number(discount_price),
+                    final_price: Number(cart.final_price) + Number(final_price),
+                    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                }
+                cart = await this.cartRepo.update(cartData, transaction)
             }
 
             let cartItem = await this.cartItemService.getCartItems({
@@ -75,10 +85,10 @@ export default class CartService {
 
             // ایتم در سبد وجود دارد و فقط مقدار ان رو زیاد میکنیم
             if (cartItem) {
-                cartItem.quantity += cartValue.quantity;
-                cartItem.total_price += total_price;
-                cartItem.discount_price += discount_price;
-                cartItem.final_price = final_price;
+                cartItem.quantity = Number(cartItem.quantity) + Number(cartValue.quantity);
+                cartItem.total_price = Number(cartItem.total_price) + Number(total_price);
+                cartItem.discount_price = Number(cartItem.discount_price) + Number(discount_price);
+                cartItem.final_price = Number(cartItem.final_price) + Number(final_price);
                 await cartItem.save({ transaction })
             }
             // ایتم در سبد وجود ندارد
@@ -88,16 +98,17 @@ export default class CartService {
                     variant_id: cartValue.variant_id,
                     quantity: cartValue.quantity,
                     unit_price: variant.Product.price,
-                    total_price: total_price,
-                    discount_price: discount_price,
-                    final_price: final_price
+                    total_price,
+                    discount_price,
+                    final_price
                 }, transaction);
 
-                await transaction.commit();
-                return {
-                    cart,
-                    cartItem
-                }
+            }
+
+            await transaction.commit();
+            return {
+                cart,
+                cartItem
             }
         }
         catch(err) {

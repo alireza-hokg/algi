@@ -1,8 +1,14 @@
-const CartItem = () => {
+const CartItem = ({
+    cart_item
+}) => {
     return (
-        <div>
-
-        </div>
+        <>
+            <div>
+                <img
+                    src=""
+                />
+            </div>
+        </>
     )
 }
 export default CartItem;

@@ -7,14 +7,14 @@ import "./style.css";
 import CartItem from "../../components/cart/CartItem";
 
 const Carts = () => {
-    const [carts, setCarts] = useState([]);
+    const [cart, setCart] = useState([]);
 
     // گرفتن سبد خرید کاربر با status و userId(userId خودکار فرستاده میشه)
     useEffect(()=> {
         const fetchData = async () => {
-            const { data: cartsData } = await get("/carts/items?status=active");
-            setCarts(cartsData?.body);
-            console.log(cartsData)
+            const { data: cartData } = await get("/carts/items?status=active");
+            console.log(cartData)
+            setCart(cartData?.body);
         }
         fetchData();
     }, [])
@@ -25,24 +25,27 @@ const Carts = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6 pb-2 border-b-2 border-orange-500 inline-block">
                 سبد خرید
             </h2>
-
             {/* لیست محصولات */}
-            <div className="space-y-4">
-                {carts?.body?.Cart_Items?.map((cart) => (
-                    <CartItem
-                        key={cart.id}
-                        cart={cart}
-                    />
+            <ul className="space-y-4">
+                {cart?.Cart_Items?.map((cart_item) => (
+                    <li
+                        key={cart_item.id}
+                    >
+                        <CartItem
+                            cart_item={cart_item}
+                        />
+                    </li>
                 ))}
-            </div>
+            </ul>
 
             {/* بخش جمع کل */}
             <div className="mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <span className="text-lg font-bold text-gray-800">جمع کل سبد خرید:</span>
                 <span className="text-2xl font-bold text-orange-600">
+                    
                     {Number(
-                    carts?.body?.final_price
+                    cart?.final_price
                     ).toLocaleString("fa-IR")}{" "}
                     تومان
                 </span>
