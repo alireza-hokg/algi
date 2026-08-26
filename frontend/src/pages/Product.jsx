@@ -21,7 +21,7 @@ const Product = () => {
         loading,
         error
     } = useProduct(slug)
-    
+
     const {
         cart,
         handleAddToCart
@@ -117,7 +117,7 @@ const Product = () => {
                         <div className="space-y-6">
                             {/* Sizes Overview */}
                             <div className="bg-gray-50 rounded-xl p-4">
-                                <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایزهای موجود:</h3>
+                                <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایز مورد نظر را انتخاب کنید:</h3>
                                 <div className="flex justify-center flex-wrap gap-2">
                                     {variants?.map((variant, index) => (
                                         <button
@@ -125,8 +125,10 @@ const Product = () => {
                                                 setSelectedVariantId(variant?.id)
                                             }}
                                             key={index}
-                                            className="px-3 py-1.5 bg-white border border-gray-300 
-                                            rounded-lg text-gray-700 text-sm font-medium"
+                                            className={`px-3 py-1.5 border rounded-lg text-sm font-medium
+                                            ${selectedVariantId === variant?.id
+                                            ? "bg-white text-black border-black scale-110"
+                                            : "bg-black text-white border-gray-300"}`}
                                         >
                                             {variant?.size}
                                         </button>

@@ -15,6 +15,7 @@ import AllProductsImages from "../pages/AllProductsImages.jsx";
 import Compare from "../pages/Compare.jsx";
 import Variants from "../pages/admin/Variants.jsx";
 import Colors from "../pages/admin/Colors.jsx";
+import Cart from "../pages/carts/index.jsx"
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -55,6 +56,10 @@ const AppRoutes = () => {
                 <Route
                     path="/compare"
                     element={<Compare />}
+                />
+                <Route
+                    path="/carts"
+                    element={<Cart />}
                 />
             </Route>
             {/* ADMIN */}

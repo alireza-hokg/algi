@@ -28,10 +28,15 @@ const CartProvider = ({children}) => {
     useEffect(() => {
         const fetchData = async () => {
             const { data: cartData } = await get("/carts/items?status=active");
-            setCart(cartData.body)
+            setCart(prev => {
+                return cartData.body
+            })
+
         }
         fetchData()
     }, [])
+
+    
     return (
         <CartContext.Provider value={{
             cart,

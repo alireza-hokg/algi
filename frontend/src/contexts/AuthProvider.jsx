@@ -58,7 +58,16 @@ const AuthProvider = ({ children }) => {
     }, [location.pathname])
 
     return (
-        <AuthContext.Provider value={{ isLogin, setIsLogin, setUser, user, loading, logout}}>
+        <AuthContext.Provider 
+            value={{ 
+                isLogin, 
+                setIsLogin, 
+                setUser, 
+                user, 
+                loading, 
+                logout
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

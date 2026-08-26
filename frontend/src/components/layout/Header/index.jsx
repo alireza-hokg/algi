@@ -13,7 +13,10 @@ const Header = ({
     toggleSidebar={toggleSidebar}
 }) => {
     const { user } = useAuth();
-    const { cartQuantity } = useCart();
+    const { 
+        cartQuantity,
+        cart
+    } = useCart();
     const { 
         compareList
     } = useCompare()
@@ -107,9 +110,12 @@ const Header = ({
                                     size={22}
                                 />
                             </div>
-                            
                             <span className="hidden lg:inline-block text-[13px]">
-                                {/* {(cartTotal).toLocaleString("fa-IR")}{" "}تومان */}
+                                {cart?.total_price
+                                ? (cart?.total_price)?.toLocaleString("fa-IR")
+                                : null}
+                                {" "}
+                                {cart?.total_price ? "تومان" : null}
                             </span>
                         </Link>
                     ) : null}

@@ -38,7 +38,12 @@ export default class CartService {
             })
 
             if (cartError) {
-                throw new ValidationError(cartError.message)
+                throw new ValidationError(cartError)
+            }
+            // Get variant and product data
+            const variant = await this.variantService.getById(cartValue.variant_id);
+            if (!variant) {
+                throw new NotFoundError("variant not found.");
             }
 
             // Check cart exists
@@ -47,13 +52,18 @@ export default class CartService {
                 status: "active"
             }, transaction)
 
+            // محاسبه قیمت کل, قیمت تخفیف خورده و قیمت نهایی
+            let total_price = variant.Product.price * cartValue.quantity;
+            let discount_price = variant.Product.discount_price * cartValue.quantity;
+            let final_price = total_price - discount_price;
+            
             if (!cart) {
                 cart = await this.cartRepo.create({
                     user_id: userId,
                     status: "active",
-                    total_price: 0,
-                    discount_price: 0,
-                    final_price: 0,
+                    total_price,
+                    discount_price,
+                    final_price,
                     expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
                 }, transaction)
             }
@@ -63,25 +73,24 @@ export default class CartService {
                 variant_id: cartValue.variant_id
             }, transaction);
 
+            // ایتم در سبد وجود دارد و فقط مقدار ان رو زیاد میکنیم
             if (cartItem) {
-                
                 cartItem.quantity += cartValue.quantity;
+                cartItem.total_price += total_price;
+                cartItem.discount_price += discount_price;
+                cartItem.final_price = final_price;
                 await cartItem.save({ transaction })
             }
+            // ایتم در سبد وجود ندارد
             else {
-                const variant = await this.variantService.getById(cartValue.variant_id);
-                if (!variant) {
-                    throw new NotFoundError("variant not found.");
-                }
-                
                 cartItem = await this.cartItemService.create({
                     cart_id: cart.id,
                     variant_id: cartValue.variant_id,
                     quantity: cartValue.quantity,
                     unit_price: variant.Product.price,
-                    total_price: variant.Product.price * cartValue.quantity,
-                    discount_price: variant.Product.discount,
-                    final_price: variant.Product.discount_price * cartValue.quantity
+                    total_price: total_price,
+                    discount_price: discount_price,
+                    final_price: final_price
                 }, transaction);
 
                 await transaction.commit();

@@ -9,9 +9,9 @@ import CartProvider from "./contexts/CartProvider.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <CartProvider>
         <CompareProvider>
           <AuthProvider>
+            <CartProvider>
               <Toaster
                 position="top-center"
                 toastOptions={{
@@ -32,9 +32,9 @@ function App() {
                 }}
               />
               <AppRoutes />
+            </CartProvider>
           </AuthProvider>
         </CompareProvider>
-      </CartProvider>
     </BrowserRouter>
   )
 }
