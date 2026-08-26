@@ -38,11 +38,10 @@ export const useProducts = () => {
             ...newProduct,
             price: numericPrice,
         };
-
-        setProduct(updatedProduct);
+        console.log(updatedProduct)
 
         try {
-            const { data } = await post("/products", product);
+            const { data } = await post("/products", updatedProduct);
             if (data.success) {
                 toast.success("محصول با موفقیت ساخته شد.", {
                     duration: 2000,

@@ -16,8 +16,9 @@ const CartProvider = ({children}) => {
     // cartItem => { variant_id, quantity }
     const handleAddToCart = async (cartItem) => {
         try {
-            const result = await post("/carts/items", cartItem);
-            return result
+            const { data } = await post("/carts/items", cartItem);
+            console.log(data)
+            return data
         }
         catch(err) {
             toast.error(err.message)
@@ -31,7 +32,7 @@ const CartProvider = ({children}) => {
             setCart(prev => {
                 return cartData.body
             })
-
+            console.log(cartData)
         }
         fetchData()
     }, [])

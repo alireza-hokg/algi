@@ -22,7 +22,10 @@ export default class VariantRepo {
     }
 
     async create(variantData) {
-        return await this.Variant.create(variantData);
+        console.log(variantData)
+        const result = await this.Variant.create(variantData);
+        console.log(result)
+        return result
     }
 
     async update(variantData, variantId) {

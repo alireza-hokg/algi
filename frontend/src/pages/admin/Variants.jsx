@@ -117,12 +117,13 @@ const Variants = () => {
                             {variant?.Colors?.map(c => (
                                 <div
                                     key={c.id}
-                                    className="flex"
+                                    className="flex gap-x-1"
                                 >
                                     <span>{c.name}</span>
                                     <span
                                         style={{ backgroundColor: `#${c.hex}`}}
-                                        className={`w-6 h-6 block`}
+                                        className={`w-6 h-6 block ${c.hex == "000000"
+                                        ? null : "border border-black"}`}
                                     ></span>
                                 </div>
                             ))}
@@ -218,7 +219,6 @@ const Variants = () => {
                                         active:scale-95 cursor-pointer"
                                         onClick={async () => {
                                             const result = await handleCreateVariantColor(variantColor)
-                                            console.log(result)
                                             if (result.success) {
                                                 toggleActive()
                                             }

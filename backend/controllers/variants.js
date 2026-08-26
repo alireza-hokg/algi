@@ -10,7 +10,6 @@ export default class VariantController {
     async createVariant(req, res) {
         try {
             const result = await this.variantService.createVariant(req.body);
-
             return res.created(result)
         } catch(err) {
             return res.error(err.message, err.statusCode || 500)

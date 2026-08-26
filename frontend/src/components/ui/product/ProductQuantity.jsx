@@ -37,7 +37,10 @@ const ProductQuantity = ({
                 className="flex-1 bg-amber-500 hover:bg-black 
                 text-white font-bold py-4 rounded-xl cursor-pointer transition-all 
                 duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-                onClick={()=> handleAddToCart({variant_id: selectedVariantId, quantity})}
+                onClick={()=> handleAddToCart({
+                    variant_id: selectedVariantId,
+                    quantity
+                })}
             >
                 افزودن به سبد خرید
             </button>

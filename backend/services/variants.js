@@ -45,7 +45,7 @@ export default class VariantService {
             if (err instanceof ValidationError) {
                 throw err;
             }
-            throw new DatabaseError("createVariant database error");
+            throw new DatabaseError(err.message);
         }
     }
 

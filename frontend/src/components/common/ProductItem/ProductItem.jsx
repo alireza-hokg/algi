@@ -100,7 +100,7 @@ const ProductItem = ({ product }) => {
                             <h3 className="text-[#555]">{product.name}</h3>
                             <div className="space-x-1">
                                 <span className="text-sm line-through decoration-1 decoration-gray-500
-                                text-gray-500">{(376000).toLocaleString("fa-IR")}</span>{" "}
+                                text-gray-500">{(product?.discount_price)?.toLocaleString("fa-IR")}</span>{" "}
                                 <span className="text-amber-500 font-extrabold">{(product.price).toLocaleString("fa-IR")} تومان</span>
                             </div>
                         </div>

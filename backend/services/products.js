@@ -88,8 +88,8 @@ export default class ProductService {
     async createProduct(body) {
         const { value: productValue, error: productError } = createValidationSchema.validate({
             name: body.name,
-            price: body.price,
-            discount: body.discount,
+            price: Number(body.price),
+            discount: Number(body.discount),
             sku: body.sku,
             category_id: body.category_id,
             slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
