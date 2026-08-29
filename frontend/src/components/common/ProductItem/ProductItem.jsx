@@ -5,7 +5,12 @@ import "./style.css"
 import { useCompare } from "../../../hooks/useCompare.js";
 import Spinner from "../Spinner.jsx";
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ 
+    product,
+    setProduct,
+    toggleActive,
+    getProduct
+}) => {
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })
@@ -104,7 +109,8 @@ const ProductItem = ({ product }) => {
                                 <span className="text-amber-500 font-extrabold">{(product.price).toLocaleString("fa-IR")} تومان</span>
                             </div>
                         </div>
-                        <div className="table mx-auto text-center mt-4">
+                        <div className={`flex justify-center mt-4 ${user?.role === "admin" ? 
+                        "flex-col items-center gap-y-2" : null}`}>
                             <Link
                                 className="inline-block relative bg-lime-500 py-2 px-6 rounded-lg text-white group overflow-hidden"
                                 to={`/products/slug/${product.slug}`}
@@ -115,6 +121,19 @@ const ProductItem = ({ product }) => {
                                     group-hover:translate-y-0 duration-300"
                                 />
                             </Link>
+                            <button
+                                onClick={async () => {
+                                    toggleActive()
+                                    const selectedProduct = await getProduct(product.id)
+                                    setProduct(selectedProduct)
+                                }}
+                                className="rounded-lg border border-blue-200 bg-blue-50 px-6 py-2.5
+                                text-sm font-medium text-blue-600 transition
+                                hover:bg-blue-100 active:scale-95 cursor-pointer"
+
+                            >
+                                ویرایش
+                            </button>
                         </div>
                     </div>
                 </figcaption>

@@ -45,6 +45,8 @@ export default class ProductRepository {
         return await this.Product.update({
             name: product.name,
             price: product.price,
+            discount: product.discount,
+            discount_price: product.discount_price,
             category_id: product.category_id,
             sku: product.sku,
             slug: product.slug

@@ -17,7 +17,6 @@ const CartProvider = ({children}) => {
     const handleAddToCart = async (cartItem) => {
         try {
             const { data } = await post("/carts/items", cartItem);
-            console.log(data)
             return data
         }
         catch(err) {
@@ -32,7 +31,6 @@ const CartProvider = ({children}) => {
             setCart(prev => {
                 return cartData.body
             })
-            console.log(cartData)
         }
         fetchData()
     }, [])

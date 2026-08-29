@@ -11,7 +11,12 @@ const ProductList = () => {
         error,
         fetchData,
         products,
-        isEmpty
+        isEmpty,
+        product,
+        setProduct,
+        onChangeProduct,
+        getProduct,
+        handleUpdateProduct
     } = useProducts();
     
     if (loading) {
@@ -31,6 +36,7 @@ const ProductList = () => {
             /> 
         )
     }
+
     return (
         <>
             <ProductSectionTitle />
@@ -39,7 +45,14 @@ const ProductList = () => {
                     isEmpty === 0 ? (
                         <div>محصولی وجود ندارد</div>
                     ) : (
-                        <ProductGrid products={products?.body}/>
+                        <ProductGrid
+                            products={products?.body}
+                            product={product}
+                            setProduct={setProduct}
+                            onChangeProduct={onChangeProduct}
+                            getProduct={getProduct}
+                            handleUpdateProduct={handleUpdateProduct}
+                        />
                     )
                 }
             </Container>

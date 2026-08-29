@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 import { useEffect, useState } from "react";
 
-import { get, post } from "../services/api.js";
+import { get, post, put } from "../services/api.js";
 
 export const useProducts = () => {
     const [loading, setLoading] = useState(false);
@@ -31,6 +31,18 @@ export const useProducts = () => {
         }
     }
 
+    const getProduct = async (id) => {
+        try {
+            const { data } = await get(`/products/${id}`)
+            if (data.success) {
+                return data.body
+            }
+        }
+        catch(err) {
+            console.log(err.message)
+        }
+    }
+
     const handleCreateProduct = async (newProduct) => {
         const {price} = newProduct
         const numericPrice = Number(String(price).replace(",", ""));
@@ -54,9 +66,21 @@ export const useProducts = () => {
         }
     }
 
+    const handleUpdateProduct = async (newProduct, productId) => {
+        try {
+            const { data } = await put(`/products/${productId}`, newProduct)
+            console.log(data)
+            if (data.success) {
+                return data.body
+            }
+        }
+        catch(err) {
+            console.log(err.message)
+        }
+    }
+
     const onChangeProduct = e => {
         const { value, name } = e.target;
-        
         setProduct(prevProduct=> ({
             ...prevProduct,
             [name]: value
@@ -75,10 +99,12 @@ export const useProducts = () => {
         setError,
         products,
         setProducts,
+        product,
+        setProduct,
         isEmpty: products?.body?.rows?.length,
         handleCreateProduct,
         onChangeProduct,
-        product,
-        setProduct
+        getProduct,
+        handleUpdateProduct
     }
 }

@@ -41,6 +41,9 @@ export default class CartRepo {
                                             association: "Product_Images"
                                         }
                                     ]
+                                },
+                                {
+                                    association: "Colors"
                                 }
                             ]
                         }

@@ -27,6 +27,7 @@ const Product = () => {
         handleAddToCart
     } = useCart()
 
+
     // Get variants that has size
     const variants = product?.Variants?.filter(variant => variant.size) ?? [];
 
@@ -149,6 +150,7 @@ const Product = () => {
                 {/* Product Variants Details */}
                 <DetailsTab variants={variants} />
             </div>
+            
         </Container>
     );
 };

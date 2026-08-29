@@ -117,13 +117,9 @@ export default class ProductService {
     }
 
     async updateProduct(body, productId) {
-        const numericProductId = Number(productId);
-        if (isNaN(numericProductId)) {
-            throw new ValidationError("productId must be integer");
-        }
-        await this.productRepository.getById(numericProductId);
+        await this.productRepository.getById(productId);
         const { value: productValue, error: productError } = updateValidationSchema.validate({
-            id: numericProductId,
+            id: productId,
             name: body.name,
             price: body.price,
             discount: body.discount,
@@ -132,12 +128,11 @@ export default class ProductService {
             slug: slugify(body.name, { lower: true }) + `-${body.sku}`,
         })
         if (productError) {
-            throw new ValidationError(productError.message)
+            throw new ValidationError(productError)
         }
-        const discount_price = productValue.price * (productValue.discount/100);
+        const discount_price = Number(productValue.price) - (productValue.price * productValue.discount/100);
         productValue.discount_price = discount_price;
         try {
-            
             const [isUpdated] = await this.productRepository.update(productValue);
             if (isUpdated) {
                 return productValue

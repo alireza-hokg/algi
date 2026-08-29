@@ -20,15 +20,16 @@ const Carts = () => {
     }, [])
 
     return(
-        <section className="mx-auto px-4 py-8 max-w-4xl">
+        <section className="mx-auto p-6 max-w-4xl border border-gray-200 rounded-2xl my-6">
             {/* عنوان سبد خرید مشابه هافکو */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 pb-2 border-b-2 border-orange-500 inline-block">
+            <h2 className="text-2xl font-bold text-gray-800 mb-10 pb-2 border-b-2 border-orange-500 inline-block">
                 سبد خرید
             </h2>
             {/* لیست محصولات */}
             <ul className="space-y-4">
                 {cart?.Cart_Items?.map((cart_item) => (
                     <li
+                        className="border-b border-gray-200 py-4"
                         key={cart_item.id}
                     >
                         <CartItem
