@@ -120,5 +120,17 @@ export default class CartService {
         }
     }
 
-    
+    async deleteAllCart(cartId) {
+        const numericCartId = Number(cartId);
+        if (!numericCartId) {
+            throw new ValidationError("cartId must be integer")
+        }
+        try {
+            const result = await this.cartRepo.deleteById(cartId)
+            return result
+        }
+        catch(err) {
+            console.log(err)
+        }
+    }
 }

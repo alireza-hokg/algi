@@ -90,4 +90,12 @@ export default class CartRepo {
         }
     }
 
+    async deleteById(cartId) {
+        const result = await this.Cart.destroy({
+            where: {
+                id: cartId
+            }
+        })
+        return result
+    }
 }

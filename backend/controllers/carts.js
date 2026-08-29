@@ -29,4 +29,16 @@ export default class CartController {
             res.error(err.message)
         }
     }
+
+    async deleteAllCart(req, res) {
+        const { cartId } = req.params
+        try {
+            const result = await this.cartService.deleteAllCart(cartId);
+            res.deleted(result, "cart deleted successfully");
+        }
+        catch(err) {
+            console.log(err.message)
+            res.error(err.message)
+        }
+    }
 }

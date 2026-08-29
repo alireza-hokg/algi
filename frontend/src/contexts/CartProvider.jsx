@@ -5,9 +5,11 @@ import { useEffect } from "react";
 
 import { CartContext } from "./CartContext";
 import { get, post } from "../services/api.js";
+import { useAuth } from "../hooks/useAuth.js";
 
 const CartProvider = ({children}) => {
     const [cart, setCart] = useState();
+    const { user } = useAuth()
     
     const cartQuantity = cart?.Cart_Items?.reduce((total, item) => {
         return total + item.quantity
@@ -33,7 +35,7 @@ const CartProvider = ({children}) => {
             })
         }
         fetchData()
-    }, [])
+    }, [user])
 
     
     return (

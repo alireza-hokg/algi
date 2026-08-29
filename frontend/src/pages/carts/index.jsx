@@ -22,9 +22,26 @@ const Carts = () => {
     return(
         <section className="mx-auto p-6 max-w-4xl border border-gray-200 rounded-2xl my-6">
             {/* عنوان سبد خرید مشابه هافکو */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-10 pb-2 border-b-2 border-orange-500 inline-block">
-                سبد خرید
-            </h2>
+            <div
+                className="flex justify-between"
+            >
+                <div className="space-x-2">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-10 pb-2 border-b-2 border-orange-500 inline-block">
+                        سبد خرید
+                    </h2>
+                    <span className="text-sm text-gray-500">
+                        {cart?.Cart_Items?.length}{" "}
+                        کالا
+                    </span>
+                </div>
+                <div>
+                    <button
+                        className="cursor-pointer"
+                    >
+                        حذف همه
+                    </button>
+                </div>
+            </div>
             {/* لیست محصولات */}
             <ul className="space-y-4">
                 {cart?.Cart_Items?.map((cart_item) => (
