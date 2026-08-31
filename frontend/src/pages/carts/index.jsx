@@ -6,7 +6,8 @@ import { useCart } from "../../hooks/useCart.js";
 const Carts = () => {
     const {
         cart,
-        handleRemoveAllCart
+        handleRemoveAllCart,
+        handleAddToCart
     } = useCart()
     return(
         <section className="mx-auto p-6 max-w-4xl border border-gray-200 rounded-2xl my-6">
@@ -43,6 +44,7 @@ const Carts = () => {
                     >
                         <CartItem
                             cart_item={cart_item}
+                            handleAddToCart={handleAddToCart}
                         />
                     </li>
                 ))}

@@ -1,10 +1,11 @@
 const CartItem = ({
-    cart_item
+    cart_item,
+    handleAddToCart
 }) => {
     const variant = cart_item?.Variant;
     const product = cart_item?.Variant?.Product;
     const colors = cart_item?.Variant?.Colors;
-    
+    console.log(cart_item)
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })
@@ -53,12 +54,28 @@ const CartItem = ({
                         items-center"
                     >
                         <button
+                            onClick={()=> {
+                                handleAddToCart({
+                                    variant_id: variant.id,
+                                    quantity: 1
+                                })
+                            }}
                             className="cursor-pointer text-2xl"
                         >+</button>
-                        <span>1</span>
+                        <span>
+                            {cart_item?.quantity}
+                        </span>
                         <button
+                            onClick={()=> {
+                                handleAddToCart({
+                                    variant_id: variant.id,
+                                    quantity: -1
+                                })
+                            }}
                             className="cursor-pointer"
-                        >حذف</button>
+                        >
+                            -
+                        </button>
                     </div>
                 </div>
             </div>
