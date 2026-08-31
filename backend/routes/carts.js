@@ -24,6 +24,7 @@ const cartController = new CartController(cartService);
 
 router.post("/carts/items", authenticateToken, cartController.addToCart.bind(cartController));
 router.get("/carts/items", authenticateToken, cartController.getCartAndItems.bind(cartController));
-router.delete("/carts/:cartId", authenticateToken, cartController.deleteAllCart.bind(cartController))
+
+router.delete("/carts/:cartId", authenticateToken, cartController.deleteAllCart.bind(cartController));
 
 export default router;

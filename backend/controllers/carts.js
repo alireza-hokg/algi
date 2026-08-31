@@ -30,6 +30,24 @@ export default class CartController {
         }
     }
 
+    // async updateCartItem(req, res) {
+    //     const { cartId, itemId } = req.params;
+    //     const { userId } = req;
+    //     const ids = {
+    //         cartId,
+    //         itemId,
+    //         userId
+    //     }
+    //     try {
+    //         const result = await this.cartService.updateCartItem(body, ids)
+    //         res.update(result)
+    //     }
+    //     catch(err) {
+    //         console.log(err.message);
+    //         res.error(err.message)
+    //     }
+    // }
+
     async deleteAllCart(req, res) {
         const { cartId } = req.params
         try {

@@ -5,8 +5,6 @@ const CartItem = ({
     const product = cart_item?.Variant?.Product;
     const colors = cart_item?.Variant?.Colors;
     
-    console.log(product)
-
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })

@@ -5,7 +5,6 @@ const Compare = () => {
         compareList
     } = useCompare();
 
-    console.log(compareList)
     const variantFields = [
         { key: "size", label: "سایز" },
         { key: "quantity", label: "تعداد" },

@@ -63,33 +63,6 @@ export default class CartRepo {
         )
     }
 
-    async update(body, transaction) {
-        await this.Cart.update(
-            {
-                total_price: body.total_price,
-                discount_price: body.discount_price,
-                final_price: body.final_price,
-                expires_at: body.expires_at
-            },
-            {
-                where: {
-                    id: body.id
-                },
-                transaction
-            }
-        )
-        return {
-            id: body.id,
-            total_price: body.total_price,
-            discount_price: body.discount_price,
-            final_price: body.final_price,
-            expires_at: new Date(new Date() + 7 * 24 * 60 * 60 * 1000),
-            createdAt: body.createdAt,
-            updatedAt: new Date(),
-            deletedAt: null
-        }
-    }
-
     async deleteById(cartId) {
         const result = await this.Cart.destroy({
             where: {
@@ -98,4 +71,5 @@ export default class CartRepo {
         })
         return result
     }
+    
 }

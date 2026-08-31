@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import { CartContext } from "./CartContext";
-import { get, post } from "../services/api.js";
+import { del, get, post } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.js";
 
 const CartProvider = ({children}) => {
     const [cart, setCart] = useState();
+    const [refresh, setRefresh] = useState(false);
     const { user } = useAuth()
     
     const cartQuantity = cart?.Cart_Items?.reduce((total, item) => {
@@ -19,7 +20,10 @@ const CartProvider = ({children}) => {
     const handleAddToCart = async (cartItem) => {
         try {
             const { data } = await post("/carts/items", cartItem);
-            return data
+            if (data.success) {
+                setRefresh(prev => !prev)
+                return data
+            }
         }
         catch(err) {
             toast.error(err.message)
@@ -27,23 +31,38 @@ const CartProvider = ({children}) => {
         }
     }
 
+    const handleRemoveAllCart = async (cartId) => {
+        try {
+            const { data: isRemoved } = await del(`/carts/${cartId}`)
+            if (isRemoved) {
+                setRefresh(prev => !prev)
+                return true
+            } else {
+                return false
+            }
+        }
+        catch(err) {
+            console.log(err.message)
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const { data: cartData } = await get("/carts/items?status=active");
             setCart(prev => {
-                return cartData.body
+                return cartData.body || []
             })
         }
         fetchData()
-    }, [user])
+    }, [user, refresh])
 
-    
     return (
         <CartContext.Provider value={{
             cart,
             setCart,
             handleAddToCart,
-            cartQuantity
+            cartQuantity,
+            handleRemoveAllCart
         }}>
             {children}
         </CartContext.Provider>

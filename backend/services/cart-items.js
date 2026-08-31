@@ -5,14 +5,18 @@ export default class CartItemService {
         this.cartItemRepo = cartItemRepo;
     }
 
-    async getCartItems(body, transaction) {
+    async getCartItem(body, transaction) {
         try {
-            const result = await this.cartItemRepo.exists(body, transaction);
+            const result = await this.cartItemRepo.getOne(body, transaction);
             return result
         }
         catch(err) {
             throw new DatabaseError(err)
         }
+    }
+
+    async getById(id) {
+        return await this.cartItemRepo.getByPk(id);
     }
 
     async create(body, transaction) {
@@ -27,4 +31,5 @@ export default class CartItemService {
             throw new DatabaseError(err)
         }
     }
+
 }

@@ -1,24 +1,13 @@
 
-import { useState } from "react";
-import { useEffect } from "react";
-
-import { get } from "../../services/api";
 import "./style.css";
 import CartItem from "../../components/cart/CartItem";
+import { useCart } from "../../hooks/useCart.js";
 
 const Carts = () => {
-    const [cart, setCart] = useState([]);
-
-    // گرفتن سبد خرید کاربر با status و userId(userId خودکار فرستاده میشه)
-    useEffect(()=> {
-        const fetchData = async () => {
-            const { data: cartData } = await get("/carts/items?status=active");
-            console.log(cartData)
-            setCart(cartData?.body);
-        }
-        fetchData();
-    }, [])
-
+    const {
+        cart,
+        handleRemoveAllCart
+    } = useCart()
     return(
         <section className="mx-auto p-6 max-w-4xl border border-gray-200 rounded-2xl my-6">
             {/* عنوان سبد خرید مشابه هافکو */}
@@ -37,6 +26,9 @@ const Carts = () => {
                 <div>
                     <button
                         className="cursor-pointer"
+                        onClick={() => {
+                            handleRemoveAllCart(cart?.id)
+                        }}
                     >
                         حذف همه
                     </button>

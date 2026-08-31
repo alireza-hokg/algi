@@ -3,7 +3,7 @@ export default class cartItemRepo {
         this.Cart_Item = Cart_Item
     }
 
-    async exists(body, transaction) {
+    async getOne(body, transaction) {
         return await this.Cart_Item.findOne({
             where: {
                 cart_id: body.cart_id,
