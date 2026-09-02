@@ -31,7 +31,7 @@ export default class UserRepo {
             where: {
                 phoneNumber
             },
-            attributes: ["id", "phoneNumber", "password", "role", "address"],
+            attributes: ["id", "firstName", "lastName", "phoneNumber", "role", "password"],
             raw: true
         })
     }

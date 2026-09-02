@@ -1,3 +1,4 @@
+
 /**
  * @class UserController
  * @description Handles HTTP requests for user-related operations
@@ -76,6 +77,16 @@ export default class UserController {
         }
         catch(err) {
             console.log(err.message)
+            res.error(err.message)
+        }
+    }
+
+    async updateRole(req, res) {
+
+        try {
+            const result = await this.userService.updateRole()
+        }
+        catch(err) {
             res.error(err.message)
         }
     }

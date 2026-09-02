@@ -37,7 +37,6 @@ export default class UserService {
                 password: user.password
             });
             if (errorValue) {
-                console.log('s')
                 throw new ValidationError(errorValue.message)
             }
 
@@ -45,13 +44,10 @@ export default class UserService {
             if (existingUser) {
                 throw new ConflictError("این شماره قبلا ثبت شده");
             }
-            
             // هش کردن پسورد
             const hashedPass = await bcrypt.hash(userValue.password, 10);
-
             // ساخت ابجکت کاربر برای ذخیره
             const newUser = {phoneNumber: userValue.phoneNumber, role: "customer", password: hashedPass}
-            
             // ذخیره در دیتابیس
             const result = await this.userRepo.create(newUser);
             return result
@@ -64,24 +60,29 @@ export default class UserService {
         }
     }
 
-    async login(userData) {
-        const { phoneNumber, password } = userData;
+    async login(body) {
         try {
-            // Validation
-            if (!phoneNumber || !password) {
-                throw new ValidationError("شماره و رمز الزامی است")
+            const { value: userValue, error: userError } = registerValidationSchema.validate({
+                phoneNumber: body.phoneNumber,
+                password: body.password
+            })
+            if (userError) {
+                throw new ValidationError(userError)
             }
-    
+
             // Find user
-            const user = await this.userRepo.findByPhone(phoneNumber);
+            const user = await this.userRepo.findByPhone(userValue.phoneNumber);
+            console.log(user)
+            
             // Validation for user
             if (!user) {
                 throw new UnauthorizedError(".شماره یا رمز اشتباه است");
             }
-            const isPasswordValid = await bcrypt.compare(password, user.password);
+            const isPasswordValid = await bcrypt.compare(userValue.password, user.password);
             if (!isPasswordValid) {
                 throw new UnauthorizedError(".شماره یا رمز اشتباه است.")
             }
+            console.log(isPasswordValid)
             // ساخت token
             const token = jwt.sign(
                 {
@@ -100,10 +101,12 @@ export default class UserService {
         }
         catch(err) {
             console.log(err.message)
-            if (err instanceof ValidationError || err instanceof NotFoundError) {
+            if (err instanceof ValidationError
+                || err instanceof NotFoundError
+                || err instanceof UnauthorizedError) {
                 throw err;
             }
-            throw new DatabaseError("کاربر یافت نشد." || "خطای سرور")
+            throw new DatabaseError(err.message || "خطای سرور")
         }
     }
 
