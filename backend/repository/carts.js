@@ -9,7 +9,7 @@ export default class CartRepo {
     // user_id => req.userId
     // status => active - abandoned - purchased
     // }
-    async exists(body, transaction) {
+    async getCart(body, transaction) {
         const result = await this.Cart.findOne({
             where: {
                 user_id: body.user_id,
@@ -18,7 +18,7 @@ export default class CartRepo {
         }, {
             transaction
         })
-        return !!result
+        return result
     }
 
     async getCartAndDetails(body) {
@@ -63,13 +63,5 @@ export default class CartRepo {
         )
     }
 
-    async deleteById(cartId) {
-        const result = await this.Cart.destroy({
-            where: {
-                id: cartId
-            }
-        })
-        return result
-    }
     
 }

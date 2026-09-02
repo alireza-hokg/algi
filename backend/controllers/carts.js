@@ -7,7 +7,7 @@ export default class CartController {
         const { status } = req.query;
         const { userId } = req
         try {
-            const result = await this.cartService.getCartByUserIdAndStatus({
+            const result = await this.cartService.getByUserIdAndStatus({
                 status,
                 user_id: userId
             })
@@ -22,7 +22,7 @@ export default class CartController {
         const { userId } = req
         try {
             const result = await this.cartService.addToCart(req.body, userId);
-            return res.created(result)
+            return res.created(result, "ایتم به سبد اضافه شد")
         }
         catch(err) {
             console.log(err.message)
@@ -30,23 +30,22 @@ export default class CartController {
         }
     }
 
-    // async updateCartItem(req, res) {
-    //     const { cartId, itemId } = req.params;
-    //     const { userId } = req;
-    //     const ids = {
-    //         cartId,
-    //         itemId,
-    //         userId
-    //     }
-    //     try {
-    //         const result = await this.cartService.updateCartItem(body, ids)
-    //         res.update(result)
-    //     }
-    //     catch(err) {
-    //         console.log(err.message);
-    //         res.error(err.message)
-    //     }
-    // }
+    async deleteCartAndItem(req, res) {
+        const { cartId, itemId } = req.params
+        const { userId } = req;
+        const ids = {
+            cartId,
+            itemId,
+            userId
+        }
+        try {
+            const result = await this.cartService.deleteCartAndItem(ids);
+            res.deleted(result, "ایتم از سبد خرید حذف شد.")
+        }
+        catch(err) {
+            res.error(err.message)
+        }
+    }
 
     async deleteAllCart(req, res) {
         const { cartId } = req.params

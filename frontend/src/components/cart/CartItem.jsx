@@ -1,11 +1,13 @@
 const CartItem = ({
+    cart,
     cart_item,
-    handleAddToCart
+    handleAddToCart,
+    handleRemoveCart
 }) => {
+    
     const variant = cart_item?.Variant;
     const product = cart_item?.Variant?.Product;
     const colors = cart_item?.Variant?.Colors;
-    console.log(cart_item)
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })
@@ -28,6 +30,9 @@ const CartItem = ({
             <div
                 className="flex flex-col flex-1"
             >
+                <div>
+                    قیمت نهایی{cart_item?.final_price}
+                </div>
                 <div
                     className="flex-1 flex justify-between"
                 >
@@ -65,17 +70,26 @@ const CartItem = ({
                         <span>
                             {cart_item?.quantity}
                         </span>
-                        <button
+                        {cart_item?.quantity > 1 
+                        ? (<button
                             onClick={()=> {
                                 handleAddToCart({
                                     variant_id: variant.id,
                                     quantity: -1
                                 })
                             }}
-                            className="cursor-pointer"
+                            className="cursor-pointer text-2xl"
                         >
-                            -
-                        </button>
+                        -
+                        </button>)
+                        : (<button
+                            onClick={()=> {
+                                handleRemoveCart(cart.id, cart_item.id)
+                            }}
+                            className="cursor-pointer text-2xl"
+                        >
+                            حذف
+                        </button>)}
                     </div>
                 </div>
             </div>

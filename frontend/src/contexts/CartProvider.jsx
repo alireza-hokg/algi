@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import { CartContext } from "./CartContext";
-import { del, get, post } from "../services/api.js";
+import { del, get, patch, post } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.js";
 
 const CartProvider = ({children}) => {
@@ -46,6 +46,20 @@ const CartProvider = ({children}) => {
         }
     }
 
+    const handleRemoveCart = async (cartId, itemId) => {
+        try {
+            const { data } = await patch(`/carts/${cartId}/items/${itemId}`);
+            if (data.success) {
+                setRefresh(prev => !prev)
+                return data
+            }
+        }
+        catch(err) {
+            toast.error(err.message);
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const { data: cartData } = await get("/carts/items?status=active");
@@ -62,7 +76,8 @@ const CartProvider = ({children}) => {
             setCart,
             handleAddToCart,
             cartQuantity,
-            handleRemoveAllCart
+            handleRemoveAllCart,
+            handleRemoveCart
         }}>
             {children}
         </CartContext.Provider>

@@ -26,5 +26,6 @@ router.post("/carts/items", authenticateToken, cartController.addToCart.bind(car
 router.get("/carts/items", authenticateToken, cartController.getCartAndItems.bind(cartController));
 
 router.delete("/carts/:cartId", authenticateToken, cartController.deleteAllCart.bind(cartController));
+router.patch("/carts/:cartId/items/:itemId", authenticateToken, cartController.deleteCartAndItem.bind(cartController))
 
 export default router;

@@ -15,8 +15,8 @@ export default class CartItemService {
         }
     }
 
-    async getById(id) {
-        return await this.cartItemRepo.getByPk(id);
+    async getById(id, transaction) {
+        return await this.cartItemRepo.getById(id, transaction);
     }
 
     async create(body, transaction) {
@@ -32,4 +32,14 @@ export default class CartItemService {
         }
     }
 
+    async removeById(id, transaction) {
+        try {
+            const deletedItem = await this.cartItemRepo.removeById(id, transaction);
+            console.log(deletedItem)
+            return deletedItem
+        }
+        catch(err) {
+            throw new DatabaseError(err)
+        }
+    }
 }

@@ -14,6 +14,12 @@ export default class cartItemRepo {
         })
     }
 
+    async getById(id, transaction) {
+        return await this.Cart_Item.findByPk(id, {
+            transaction
+        })
+    }
+
     async create(body, transaction) {
         return await this.Cart_Item.create(
             body,
@@ -21,5 +27,15 @@ export default class cartItemRepo {
                 transaction
             }
         )
+    }
+
+    async removeById(id, transaction) {
+        return await this.Cart_Item.destroy({
+            where: {
+                id
+            }
+        }, {
+            transaction
+        })
     }
 }

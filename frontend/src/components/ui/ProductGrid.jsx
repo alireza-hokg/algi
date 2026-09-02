@@ -17,6 +17,8 @@ const ProductGrid = ({
         toggleActive,
     } = useModal();
 
+    const discount_price = Number(product?.price) - Number(product?.price * product?.discount / 100);
+
     if (!products || products?.rows?.length === 0) {
         return <div className="text-center py-10 text-gray-500">{emptyMessage}</div>;
     }
@@ -108,7 +110,7 @@ const ProductGrid = ({
                     {/* discount_price */}
                     <div className="flex flex-col gap-y-2">
                         <label className="text-sm font-medium text-gray-700">
-                            قیمت تخفیف
+                            قیمت با تخفیف
                         </label>
 
                         <div className="flex items-center gap-x-2">
@@ -120,12 +122,12 @@ const ProductGrid = ({
                                 bg-gray-50 px-3 py-2.5 text-sm outline-none transition
                                 focus:border-blue-500 focus:bg-white
                                 focus:ring-2 focus:ring-blue-100"
-                                value={product?.discount_price || undefined}
-                                onChange={onChangeProduct}
+                                value={discount_price || undefined}
+                                disabled={true}
                             />
 
                             <span className="text-xs text-gray-400">
-                                cm
+                                تومان
                             </span>
                         </div>
                     </div>

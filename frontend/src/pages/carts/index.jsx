@@ -7,7 +7,8 @@ const Carts = () => {
     const {
         cart,
         handleRemoveAllCart,
-        handleAddToCart
+        handleAddToCart,
+        handleRemoveCart
     } = useCart()
     return(
         <section className="mx-auto p-6 max-w-4xl border border-gray-200 rounded-2xl my-6">
@@ -43,8 +44,10 @@ const Carts = () => {
                         key={cart_item.id}
                     >
                         <CartItem
+                            cart={cart}
                             cart_item={cart_item}
                             handleAddToCart={handleAddToCart}
+                            handleRemoveCart={handleRemoveCart}
                         />
                     </li>
                 ))}

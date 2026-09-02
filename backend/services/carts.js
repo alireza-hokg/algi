@@ -9,23 +9,13 @@ export default class CartService {
         this.variantService = variantService
     }
 
-    async exists(body, transaction) {
+    async getByUserIdAndStatus(body, transaction) {
         try {
-            const result = await this.cartRepo.exists(body, transaction)
+            const result = await this.cartRepo.getCartAndDetails(body, transaction)
             return result
         }
         catch(err) {
             throw new DatabaseError(err);
-        }
-    }
-
-    async getCartByUserIdAndStatus(body) {
-        try {
-            const result = await this.cartRepo.getCartAndDetails(body);
-            return result
-        }
-        catch(err) {
-            throw new DatabaseError(err)
         }
     }
 
@@ -47,7 +37,7 @@ export default class CartService {
             }
 
             // Check cart exists
-            let cart = await this.getCartByUserIdAndStatus({
+            let cart = await this.cartRepo.getCartAndDetails({
                 user_id: userId,
                 status: "active"
             }, transaction)
@@ -76,7 +66,7 @@ export default class CartService {
                 cart.discount_price = newDiscountPrice;
                 cart.final_price = newFinalPrice;
                 cart.expires_at = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                cart.save({ transaction })
+                await cart.save({ transaction })
             }
 
             // Check cartItem exists
@@ -123,6 +113,41 @@ export default class CartService {
             if (err instanceof ValidationError) {
                 throw err
             }
+            throw new DatabaseError(err)
+        }
+    }
+
+    // ids => cartId, itemId and userId
+    async deleteCartAndItem(ids) {
+        const transaction = await db.sequelize.transaction()
+        try {
+            // Check cart exists
+            let cart = await this.cartRepo.getCart({
+                user_id: ids.userId,
+                status: "active"
+            }, transaction)
+            if (!cart || cart.id != ids.cartId) {
+                throw new NotFoundError("No cart exists.")
+            }
+
+            // Check cartItem exists
+            let cartItem = await this.cartItemService.getById(ids.itemId, transaction)
+            if (!cartItem) {
+                throw new NotFoundError("No cartItem exists.")
+            }
+
+            if (cartItem.length > 1) {
+                await this.cartItemService.removeById(ids.itemId, transaction);
+            } else {
+                await this.cartItemService.removeById(ids.itemId, transaction);
+                cart.status = "abandoned";
+                await cart.save({ transaction });
+            }
+            transaction.commit();
+            return true;
+        }
+        catch(err) {
+            transaction.rollback();
             throw new DatabaseError(err)
         }
     }
