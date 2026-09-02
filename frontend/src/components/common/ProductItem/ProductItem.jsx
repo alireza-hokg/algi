@@ -28,6 +28,18 @@ const ProductItem = ({
             
                 {/* IMAGE */}
                 <div className="relative overflow-hidden h-70">
+                    {product?.discount ? (
+                        <div
+                            className="flex justify-center items-center absolute top-1 right-1 w-11 h-11 bg-red-500
+                            text-white rounded-full"
+                        >
+                            <div className="flex">
+                                <span className="order-1">%</span>
+                                <span className="order-2">{product?.discount}</span>
+                                <span className="order-3">-</span>
+                            </div>
+                        </div>
+                    ) : null}
                     <ul className="absolute top-1 left-1 flex flex-col bg-white/80 text-gray-800 gap-y-2
                     group-hover/card:flex rounded-sm py-1 opacity-0 group-hover/card:opacity-100 duration-300">
                         <li className="relative group/action">
