@@ -44,4 +44,19 @@ export default class UserRepo {
         });
         return user;
     }
+
+    async update(body, userId) {
+        const user = await this.User.update({
+            firstName: body.firstName,
+            lastName: body.lastName
+        }, {
+            where: {
+                id: userId
+            }
+        })
+        return {
+            firstName: body.firstName,
+            lastName: body.lastName
+        }
+    }
 }

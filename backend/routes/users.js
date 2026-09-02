@@ -20,6 +20,8 @@ router.post("/auth/register", userController.register.bind(userController));
 
 router.post("/auth/logout", userController.logout.bind(userController));
 
+router.put("/auth/me/update/:userId", authenticateToken, userController.update.bind(userController))
+
 router.get("/auth/me", authenticateToken, userController.isLoggedIn.bind(userController))
 
 

@@ -22,8 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    phoneNumber: {
+    firstName: {
       type: DataTypes.STRING,
+      allowNull: true
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    phoneNumber: {
+      type: DataTypes.STRING(11),
       unique: true,
       allowNull: false
     },
@@ -39,10 +47,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "customer",
       allowNull: false
     },
-    address: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    }
   }, {
     timestamps: true,
     sequelize,

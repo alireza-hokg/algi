@@ -16,6 +16,7 @@ import Compare from "../pages/Compare.jsx";
 import Variants from "../pages/admin/Variants.jsx";
 import Colors from "../pages/admin/Colors.jsx";
 import Cart from "../pages/carts/index.jsx"
+import ManagaCustomer from "../pages/admin/ManageCustomer.jsx";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -70,6 +71,7 @@ const AppRoutes = () => {
                 <Route path="/admin/all-products-images" element={<AllProductsImages />} />
                 <Route path="/admin/products/slug/:slug/" element={<Variants />} />
                 <Route path="/admin/colors" element={<Colors />} />
+                <Route path="/admin/manage-customers" element={<ManagaCustomer/>} />
             </Route>
             <Route path="/*" element={<div 
                 className="flex justify-center items-center min-h-screen">404</div>}

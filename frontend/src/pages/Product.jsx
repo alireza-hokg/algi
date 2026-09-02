@@ -10,6 +10,7 @@ import Container from "../components/layout/Container.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useCart } from "../hooks/useCart.js";
 import { useState } from "react";
+import { Check } from "lucide-react";
 
 const Product = () => {
     const { slug } = useParams();
@@ -126,12 +127,20 @@ const Product = () => {
                                                 setSelectedVariantId(variant?.id)
                                             }}
                                             key={index}
-                                            className={`px-3 py-1.5 border rounded-lg text-sm font-medium
+                                            className={`px-3 py-1.5 border rounded-lg text-sm font-medium text-gray-700
+                                            cursor-pointer
                                             ${selectedVariantId === variant?.id
-                                            ? "bg-white text-black border-black scale-110"
-                                            : "bg-black text-white border-gray-300"}`}
+                                            ? "border-blue-500 border-2"
+                                            : ""}`}
                                         >
-                                            {variant?.size}
+                                            <div className="flex items-center gap-x-1">
+                                                <span className="order-1">{variant?.size}</span>
+                                                {variant?.id === selectedVariantId ? (
+                                                    <Check 
+                                                        size={16}
+                                                    /> 
+                                                ) : null}
+                                            </div>
                                         </button>
                                     ))}
                                 </div>

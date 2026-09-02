@@ -24,7 +24,7 @@ const ProductItem = ({
 
     return(
         <li className="pb-10 rounded-md shadow-sm overflow-hidden">
-            <figure className="h-full flex flex-col gap-y-12 group/card">
+            <figure className="h-full flex flex-col gap-y-4 group/card">
             
                 {/* IMAGE */}
                 <div className="relative overflow-hidden h-70">
@@ -93,6 +93,7 @@ const ProductItem = ({
                             className="flex-1"
                         >
                             <img
+                                title={product?.name}
                                 className="w-full inline-block h-full object-cover"
                                 src={`http://localhost:9000/uploads/${image?.image_url}`}
                             />

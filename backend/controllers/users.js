@@ -58,7 +58,6 @@ export default class UserController {
         res.success(null, "با موفقیت logged out شد");
     }
 
-    
     async isLoggedIn(req, res) {
         try {
             const { userId } = req
@@ -66,6 +65,18 @@ export default class UserController {
             res.success(user, "توکن معتبر است")
         } catch(err) {
             res.error(err.message, err.statusCode || 500)
+        }
+    }
+
+    async update(req, res) {
+        const { userId } = req.params;
+        try {
+            const result = await this.userService.update(req.body, userId);
+            res.updated(result, "کاربر با موفقیت بروز شد.")
+        }
+        catch(err) {
+            console.log(err.message)
+            res.error(err.message)
         }
     }
 }

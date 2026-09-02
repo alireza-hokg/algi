@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../utils/Error.js";
-import { registerValidationSchema } from "../schemas/user.js"
+import { registerValidationSchema, updateValidationSchema } from "../schemas/user.js"
 
 export default class UserService {
     constructor(userRepo) {
@@ -31,7 +31,6 @@ export default class UserService {
     }
 
     async register(user) {
-        console.log(user)
         try {
             const { value: userValue, error: errorValue } = registerValidationSchema.validate({
                 phoneNumber: user.phoneNumber,
@@ -120,6 +119,27 @@ export default class UserService {
                 throw err
             }
             throw new DatabaseError(`isLoggedIn error: ${err.message}`)
+        }
+    }
+
+    // Update firstname and lastname
+    async update(body, userId) {
+        try {
+            const { value: userValue, error: userError } = updateValidationSchema.validate({
+                firstName: body.firstName,
+                lastName: body.lastName
+            })
+            if (userError) {
+                throw new ValidationError(userError);
+            }
+            const result = await this.userRepo.update(userValue, userId);
+            return result
+        }
+        catch(err) {
+            if (err instanceof ValidationError) {
+                throw err
+            }
+            throw new DatabaseError(err)
         }
     }
 }
