@@ -82,9 +82,10 @@ export default class UserController {
     }
 
     async updateRole(req, res) {
-
+        const {userId: adminId} = req.params;
         try {
-            const result = await this.userService.updateRole()
+            const result = await this.userService.updateRole(req.body, adminId)
+            res.updated(result, "کاربر به ادمین بروز شد.")
         }
         catch(err) {
             res.error(err.message)

@@ -59,4 +59,15 @@ export default class UserRepo {
             lastName: body.lastName
         }
     }
+
+    async updateRole(body) {
+        const [affectedRows] = await this.User.update({
+            role: body.role
+        }, {
+            where: {
+                id: body.id,
+            }
+        })
+        return affectedRows;
+    }
 }

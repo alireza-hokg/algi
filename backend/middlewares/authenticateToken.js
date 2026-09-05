@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 export const authenticateToken = (req, res, next) => {
     const token = req.cookies?.token;
-    console.log(token)
     try {
         if (!token) {
             throw new UnauthorizedError("token نامعتبر")

@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../utils/Error.js";
-import { registerValidationSchema, updateValidationSchema } from "../schemas/user.js"
+import { registerValidationSchema, updateRoleValidationSchema, updateValidationSchema } from "../schemas/user.js"
 
 export default class UserService {
     constructor(userRepo) {
@@ -143,6 +143,33 @@ export default class UserService {
                 throw err
             }
             throw new DatabaseError(err)
+        }
+    }
+
+    async updateRole(body, adminId) {
+        try {
+            const { value: userValue, error: userError } = updateRoleValidationSchema.validate({
+                id: body.id,
+                role: body.role
+            })
+            if (userError) {
+                throw new ValidationError(userError)
+            }
+            // get user by body.adminId
+            // Check role = admin
+            const user = await this.getUser(adminId);
+            if (user.role !== "admin") {
+                throw new ValidationError("No permission with this role")
+            }
+
+            const affectedRows = await this.userRepo.updateRole(userValue)
+            if (!affectedRows) {
+                throw new ValidationError("User not found.")
+            }
+            return affectedRows
+        }
+        catch(err) {
+            throw new DatabaseError(err.message)
         }
     }
 }
