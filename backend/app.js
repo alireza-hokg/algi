@@ -68,7 +68,7 @@ async function startServer() {
             // await sequelize.sync({ force: true });
             // await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
             console.log("Development database synced (force: true)")
-        }
+        }   
         app.listen(SERVER_PORT, () => {
             console.log(`Server is listening to port ${SERVER_PORT}`)
         })

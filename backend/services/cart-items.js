@@ -35,7 +35,6 @@ export default class CartItemService {
     async removeById(id, transaction) {
         try {
             const deletedItem = await this.cartItemRepo.removeById(id, transaction);
-            console.log(deletedItem)
             return deletedItem
         }
         catch(err) {

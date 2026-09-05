@@ -2,7 +2,8 @@ import { useQuantity } from "../../../hooks/useQuantity.js";
 
 const ProductQuantity = ({ 
     handleAddToCart,
-    selectedVariantId
+    selectedVariantId,
+    selectedColorId
  }) => {
     const {
         quantity,
@@ -39,7 +40,8 @@ const ProductQuantity = ({
                 duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                 onClick={()=> handleAddToCart({
                     variant_id: selectedVariantId,
-                    quantity
+                    quantity,
+                    color_id: selectedColorId
                 })}
             >
                 افزودن به سبد خرید

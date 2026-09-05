@@ -24,7 +24,7 @@ const CartItem = ({
             >
                 <img
                     className="w-full h-full"
-                    src={`http://localhost:9000/uploads/${image.image_url}`}
+                    src={`http://localhost:9000/uploads/${image?.image_url}`}
                 />
             </div>
             <div

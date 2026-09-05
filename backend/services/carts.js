@@ -24,7 +24,8 @@ export default class CartService {
         try {
             const { value: cartValue, error: cartError } = createCartSchema.validate({
                 variant_id: body.variant_id,
-                quantity: body.quantity
+                quantity: body.quantity,
+                color_id: body.color_id
             })
             if (cartError) {
                 throw new ValidationError(cartError)
@@ -72,7 +73,8 @@ export default class CartService {
             // Check cartItem exists
             let cartItem = await this.cartItemService.getCartItem({
                 cart_id: cart.id,
-                variant_id: cartValue.variant_id
+                variant_id: cartValue.variant_id,
+                color_id: cartValue.color_id
             }, transaction);
 
             // ایتم در سبد وجود دارد و فقط مقدار ان رو زیاد میکنیم
@@ -94,6 +96,7 @@ export default class CartService {
                 cartItem = await this.cartItemService.create({
                     cart_id: cart.id,
                     variant_id: cartValue.variant_id,
+                    color_id: cartValue.color_id,
                     quantity: cartValue.quantity,
                     unit_price: variant.Product.price,
                     total_price: addedTotalPrice,

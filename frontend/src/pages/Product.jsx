@@ -33,6 +33,18 @@ const Product = () => {
     const variants = product?.Variants?.filter(variant => variant.size) ?? [];
 
     const [selectedVariantId, setSelectedVariantId] = useState(null);
+    const [colors, setColors] = useState([])
+    const [selectedColorId, setSelectedColorId] = useState(null);
+
+    const onChangeColors = size => {
+        const variant = product?.Variants.find(variant=> variant.size === size)
+        const colors = variant?.Colors || [];
+        setColors(prev => colors)
+    }
+
+    const onChangeColor = id => {
+        setSelectedColorId(prev=> id)
+    }
 
     {/* ////////// LOADING //////////// */}
     if (loading) {
@@ -114,45 +126,67 @@ const Product = () => {
                                 </span>
                             </div>
                         </div>
-
-                        {/* Details List */}
-                        <div className="space-y-6">
-                            {/* Sizes Overview */}
-                            <div className="bg-gray-50 rounded-xl p-4">
-                                <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایز مورد نظر را انتخاب کنید:</h3>
-                                <div className="flex justify-center flex-wrap gap-2">
-                                    {variants?.map((variant, index) => (
-                                        <button
-                                            onClick={() => {
-                                                setSelectedVariantId(variant?.id)
-                                            }}
-                                            key={index}
-                                            className={`px-3 py-1.5 border rounded-lg text-sm font-medium text-gray-700
-                                            cursor-pointer
-                                            ${selectedVariantId === variant?.id
-                                            ? "border-blue-500 border-2"
-                                            : ""}`}
-                                        >
-                                            <div className="flex items-center gap-x-1">
-                                                <span className="order-1">{variant?.size}</span>
-                                                {variant?.id === selectedVariantId ? (
-                                                    <Check 
-                                                        size={16}
-                                                    /> 
-                                                ) : null}
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
+                        {/* Sizes Overview */}
+                        <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                            <h3 className="font-bold text-gray-800 mb-3 text-lg">📏 سایز مورد نظر را انتخاب کنید:</h3>
+                            <div className="flex justify-center flex-wrap gap-2">
+                                {variants?.map((variant, index) => (
+                                    <button
+                                        onClick={() => {
+                                            setSelectedVariantId(variant?.id)
+                                            onChangeColors(variant?.size)
+                                        }}
+                                        key={index}
+                                        className={`px-3 py-1.5 border rounded-lg text-sm font-medium text-gray-700
+                                        cursor-pointer
+                                        ${selectedVariantId === variant?.id
+                                        ? "border-blue-500 border-2"
+                                        : ""}`}
+                                    >
+                                        <div className="flex items-center gap-x-1">
+                                            <span className="order-1">{variant?.size}</span>
+                                            {variant?.id === selectedVariantId ? (
+                                                <Check 
+                                                    size={16}
+                                                /> 
+                                            ) : null}
+                                        </div>
+                                    </button>
+                                ))}
                             </div>
-                            
-
-                            {/* Add to Cart Button */}
-                            <ProductQuantity 
-                                selectedVariantId={selectedVariantId}
-                                handleAddToCart={handleAddToCart}
-                            />
                         </div>
+                        <div>
+                            <p>رنگ مورد نظر را انتخاب کنید.</p>
+                            {colors.map(color=> (
+                            <button
+                                key={color.id}
+                                onClick={()=>{
+                                    onChangeColor(color.id)
+                                }}
+                                className={`px-3 py-1.5 border rounded-lg text-sm font-medium text-gray-700
+                                cursor-pointer
+                                ${selectedColorId === color?.id
+                                ? "border-blue-500 border-2"
+                                : ""}`}
+                            >
+                                <div
+                                    className="flex"
+                                >
+                                    <span>{color.name}</span>
+                                    <span
+                                        style={{ backgroundColor: `#${color.hex}`}}
+                                        className={`w-6 h-6 block`}
+                                    ></span>
+                                </div>
+                            </button>
+                            ))}
+                        </div>
+                        {/* Add to Cart Button */}
+                        <ProductQuantity 
+                            selectedVariantId={selectedVariantId}
+                            handleAddToCart={handleAddToCart}
+                            selectedColorId={selectedColorId}
+                        />
                     </div>
                 </div>
                 

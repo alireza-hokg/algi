@@ -7,7 +7,8 @@ export default class cartItemRepo {
         return await this.Cart_Item.findOne({
             where: {
                 cart_id: body.cart_id,
-                variant_id: body.variant_id
+                variant_id: body.variant_id,
+                color_id: body.color_id
             }
         }, {
             transaction

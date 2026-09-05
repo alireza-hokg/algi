@@ -12,6 +12,16 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       })
+
+      this.hasMany(models.Cart_Item, {
+        foreignKey: {
+          allowNull: false,
+          name: "color_id"
+        },
+        targetKey: "id",
+        onDelete: "RESTRICT",
+        onUpdate: "CASCADE",
+      })
   
       this.belongsToMany(models.Variant, {
         through: "Variant_Color",

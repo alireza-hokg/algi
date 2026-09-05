@@ -20,6 +20,15 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: "RESTRICT",
                 onUpdate: "CASCADE"
             })
+
+            this.belongsTo(models.Color, {
+                foreignKey: {
+                    name: "color_id",
+                    allowNull: false
+                },
+                onDelete: "RESTRICT",
+                onUpdate: "CASCADE"
+            })
         }
     }
 
@@ -35,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     },
     variant_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+    },
+    color_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
     },
