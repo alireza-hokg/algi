@@ -85,7 +85,15 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: "Cart_Item",
         tableName: "cart_items",
-        paranoid: true
+        paranoid: true,
+
+        indexes: [
+            {
+                unique: true,
+                fields: ["cart_id", "variant_id", "color_id"],
+                name: "cart_items_cart_variant_color_unique"
+            }
+        ]
     })
     return CartItem
 }

@@ -63,6 +63,7 @@ export default class UserController {
         try {
             const { userId } = req
             const user = await this.userService.isLoggedIn(userId)
+            console.log('controller', user)
             res.success(user, "توکن معتبر است")
         } catch(err) {
             res.error(err.message, err.statusCode || 500)

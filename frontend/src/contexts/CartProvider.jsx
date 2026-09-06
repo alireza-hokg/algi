@@ -21,6 +21,7 @@ const CartProvider = ({children}) => {
         try {
             const { data } = await post("/carts/items", cartItem);
             if (data.success) {
+                console.log(data)
                 setRefresh(prev => !prev)
                 return data
             }

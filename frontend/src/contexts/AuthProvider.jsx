@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
             try {
                 const response = await get("/auth/me");
                 if (response.data && response.data.success === true) {
+                    console.log(response.data)
                     setIsLogin(true);
                     setUser(response.data.body);
                 } else {

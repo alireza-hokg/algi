@@ -112,7 +112,7 @@ export default class UserService {
 
     async isLoggedIn(userId) {
         try {
-            const user = this.userRepo.findByUserId(userId);
+            const user = await this.userRepo.findByUserId(userId);
             if (!user) {
                 throw new NotFoundError("کاربری یافت نشد.")
             }

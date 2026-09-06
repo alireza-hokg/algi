@@ -42,7 +42,7 @@ export default class CartService {
                 user_id: userId,
                 status: "active"
             }, transaction)
-            
+
             // محاسبه قیمت کل, قیمت تخفیف خورده و قیمت نهایی
             // باید عدد جدید رو به عدد دیتا بیس اضافه کنیم
             let addedTotalPrice = Number(variant.Product.price) * Number(cartValue.quantity);
