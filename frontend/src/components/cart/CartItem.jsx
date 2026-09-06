@@ -8,6 +8,8 @@ const CartItem = ({
     const variant = cart_item?.Variant;
     const product = cart_item?.Variant?.Product;
     const colors = cart_item?.Variant?.Colors;
+    const color = colors.find(c=> c.id === cart_item.color_id);
+
     const imageIdx = product?.Product_Images.findIndex(image => {
         return image.is_main
     })
@@ -43,7 +45,7 @@ const CartItem = ({
                             {product?.name}
                         </span>
                         <div>
-                            رنگ {}
+                            رنگ {color.name}
                         </div>
                     </div>
                     <div>

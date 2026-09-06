@@ -20,14 +20,14 @@ export default class CartController {
 
     async addToCart(req, res) {
         const { userId } = req
-        try {
+        // try {
             const result = await this.cartService.addToCart(req.body, userId);
             return res.created(result, "ایتم به سبد اضافه شد")
-        }
-        catch(err) {
-            console.log(err.message)
-            res.error(err.message)
-        }
+        // }
+        // catch(err) {
+        //     console.log(err.message)
+        //     res.error(err.message)
+        // }
     }
 
     async deleteCartAndItem(req, res) {

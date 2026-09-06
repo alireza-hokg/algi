@@ -26,8 +26,8 @@ const CartProvider = ({children}) => {
             }
         }
         catch(err) {
-            toast.error(err.message)
-            console.log(err)
+            toast.error(err.response?.data?.message)
+            console.dir(err)
         }
     }
 

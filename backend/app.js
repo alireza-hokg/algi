@@ -19,6 +19,7 @@ import colorsRoute from "./routes/colors.js"
 import variantsColorsRoute from "./routes/variants-colors.js"
 
 import { responseFormatter } from "./middlewares/responseFormatter.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const { SERVER_PORT = 9000 } = process.env;
 
@@ -56,6 +57,7 @@ app.use("/api/v1", cartsRoute)
 app.use("/api/v1", categoriesRoute)
 app.use("/api/v1/", colorsRoute)
 app.use("/api/v1", variantsColorsRoute)
+app.use(errorHandler)
 
 async function startServer() {
     const isDevelopment = process.env.NODE_ENV === "development";

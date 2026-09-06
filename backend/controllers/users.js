@@ -88,6 +88,7 @@ export default class UserController {
             res.updated(result, "کاربر به ادمین بروز شد.")
         }
         catch(err) {
+            console.log(err.message)
             res.error(err.message)
         }
     }
