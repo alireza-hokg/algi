@@ -64,7 +64,8 @@ const CartItem = ({
                             onClick={()=> {
                                 handleAddToCart({
                                     variant_id: variant.id,
-                                    quantity: 1
+                                    quantity: 1,
+                                    color_id: color.id
                                 })
                             }}
                             className="cursor-pointer text-2xl"
@@ -77,7 +78,8 @@ const CartItem = ({
                             onClick={()=> {
                                 handleAddToCart({
                                     variant_id: variant.id,
-                                    quantity: -1
+                                    quantity: -1,
+                                    color_id: color.id
                                 })
                             }}
                             className="cursor-pointer text-2xl"
